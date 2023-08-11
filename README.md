@@ -71,4 +71,4 @@ Note: GraphQL is introspective. This means you can query a GraphQL schema for de
 
 # TODOs
 
-Chech the todos here: https://github.com/mahmoudmoravej/testui/issues/2
+Check todos here: https://github.com/mahmoudmoravej/testui/issues/2
