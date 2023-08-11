@@ -1,4 +1,3 @@
-import { gql, useQuery } from "@apollo/client";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
@@ -40,10 +39,11 @@ export default function Managers() {
   const { data, loading, error } = useManagersQuery();
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{JSON.stringify(error)}</p>;
+  if (data?.managers?.nodes == null) return <p>no data</p>;
 
-  const managers = (data?.managers?.nodes)!.map(({ name, id }) => ({
-    name,
-    id,
+  const managers = data.managers.nodes.map((node) => ({
+    name: node?.name,
+    id: node?.id,
   }));
 
   return (
