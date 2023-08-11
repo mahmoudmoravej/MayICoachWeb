@@ -10,10 +10,16 @@ import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
+const process = {
+  env: {
+    GRAPHQL_SCHEMA_URL: "http://localhost:3000/graphql",
+  },
+};
+
 startTransition(() => {
   const client = new ApolloClient({
     cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
-    uri: "http://localhost:5225/graphql/", // the same uri in our entry.server file
+    uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET", // the same uri in our entry.server file
   });
 
   hydrateRoot(

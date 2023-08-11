@@ -1,17 +1,15 @@
 query managers {
-  managers(first: 10, order: { name: ASC }) {
+  # managers(first: 10, order: { name: ASC }) { ## FOR .NET CORE version
+  managers(first: 10, orderBy: { field: "name", direction: "ASC" }) {
     nodes {
-      id
-      name
-      reports {
-        id
-        name
+      id: Id
+      name: Name
+      reports: Reports {
+        nodes {
+          id: Id
+          name: Name
+        }
       }
-      # reports {
-      #   nodes(first: 3) {
-      #     name
-      #   }
-      # }
     }
   }
 }
