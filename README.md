@@ -1,13 +1,11 @@
-# Welcome to Remix!
-
-- [Remix Docs](https://remix.run/docs)
+# Welcome to Performa!
 
 ## Development
 
 From your terminal:
 
 ```sh
-npm run dev
+yarn dev
 ```
 
 This starts your app in development mode, rebuilding assets on file changes.
@@ -17,13 +15,13 @@ This starts your app in development mode, rebuilding assets on file changes.
 First, build your app for production:
 
 ```sh
-npm run build
+yarn build
 ```
 
 Then run the app in production mode:
 
 ```sh
-npm start
+yarn start
 ```
 
 Now you'll need to pick a host to deploy it to.
@@ -56,3 +54,11 @@ rm -rf app
 # copy your app over
 cp -R ../my-old-remix-app/app app
 ```
+
+## Helps / Docs
+
+- GraphQL Integration
+  - https://www.apollographql.com/blog/apollo-client/how-to-use-apollo-client-with-remix/
+- Authentication:
+  - Remix Auth: https://github.com/sergiodxa/remix-auth
+  - Google Auth: https://github.com/pbteja1998/remix-auth-google
