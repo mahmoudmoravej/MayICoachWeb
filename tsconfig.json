@@ -1,5 +1,5 @@
 {
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", ".graphql-codegen.ts"],
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "isolatedModules": true,
@@ -15,8 +15,7 @@
     "paths": {
       "~/*": ["./app/*"]
     },
-    "typeRoots": ["node_modules/@types", "src/@types"],
-  // "files": ["src/@types/graphql.d.ts"],
+    "typeRoots": ["node_modules/@types", "app/@types"],
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true

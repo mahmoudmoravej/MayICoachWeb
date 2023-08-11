@@ -1,16 +1,17 @@
 {
   "private": true,
   "sideEffects": false,
-  "type": "module",
   "scripts": {
     "build": "remix build",
     "dev": "PORT=4000 remix dev",
     "start": "remix-serve build",
     "typecheck": "tsc",
-    "graphql": "graphql-codegen --config graphql.config.ts"
+    "graphql": "graphql-codegen --config graphql.codegen.ts",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@apollo/client": "^3.8.1",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@heroicons/react": "^2.0.18",
     "@material-tailwind/react": "^2.1.0",
     "@remix-run/css-bundle": "^1.19.3",

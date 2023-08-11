@@ -17,12 +17,7 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
-import MANAGERS_QUERY from "./query.graphql";
-
-interface Manager {
-  id: string;
-  name: string;
-}
+import { useManagersQuery } from "~/@types/graphql";
 
 const TABS = [
   {
@@ -42,19 +37,14 @@ const TABS = [
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
 export default function Managers() {
-  const { data, loading, error } = useQuery(gql`
-    ${MANAGERS_QUERY}
-  `);
+  const { data, loading, error } = useManagersQuery();
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{JSON.stringify(error)}</p>;
 
-  const managers = (data.managers.nodes as any[]).map(
-    (manager: Manager) =>
-      ({
-        name: manager.name,
-        id: manager.id,
-      }) as Manager,
-  );
+  const managers = (data?.managers?.nodes)!.map(({ name, id }) => ({
+    name,
+    id,
+  }));
 
   return (
     <Card className="h-full w-full">

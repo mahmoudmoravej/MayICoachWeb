@@ -1,9 +1,12 @@
-query MANAGERS_QUERY {
+query managers {
   managers(first: 10, order: { name: ASC }) {
     nodes {
       id
       name
-
+      reports {
+        id
+        name
+      }
       # reports {
       #   nodes(first: 3) {
       #     name
