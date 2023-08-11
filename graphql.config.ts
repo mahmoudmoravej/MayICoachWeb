@@ -1,7 +1,7 @@
 import type { IGraphQLConfig } from "graphql-config";
 
 const config: IGraphQLConfig = {
-  schema: "http://localhost:5225/graphql/",
+  schema: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET",
   documents: ["app/**/*.graphql"],
 };
 

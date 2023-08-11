@@ -104,7 +104,7 @@ function handleBrowserRequest(
       ssrMode: true,
       cache: new InMemoryCache(),
       link: createHttpLink({
-        uri: "http://localhost:5225/graphql/", // from Apollo's Voyage tutorial series (https://www.apollographql.com/tutorials/voyage-part1/)
+        uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET", // from Apollo's Voyage tutorial series (https://www.apollographql.com/tutorials/voyage-part1/)
         headers: Object.fromEntries(request.headers),
         credentials: request.credentials ?? "include", // or "same-origin" if your backend server is the same domain
       }),
