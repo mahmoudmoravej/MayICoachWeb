@@ -4,13 +4,22 @@
  * For more information, see https://remix.run/file-conventions/entry.server
  */
 
-import { PassThrough } from "node:stream";
+import { PassThrough, Transform } from "node:stream";
 
 import type { AppLoadContext, EntryContext } from "@remix-run/node";
 import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import { renderToString } from "react-dom/server";
+import {
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  createHttpLink,
+} from "@apollo/client";
+import { getDataFromTree } from "@apollo/client/react/ssr";
+
 
 const ABORT_DELAY = 5_000;
 
@@ -23,17 +32,17 @@ export default function handleRequest(
 ) {
   return isbot(request.headers.get("user-agent"))
     ? handleBotRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext
-      )
+      request,
+      responseStatusCode,
+      responseHeaders,
+      remixContext
+    )
     : handleBrowserRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext
-      );
+      request,
+      responseStatusCode,
+      responseHeaders,
+      remixContext
+    );
 }
 
 function handleBotRequest(
@@ -91,18 +100,51 @@ function handleBrowserRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  return new Promise((resolve, reject) => {
+
+  return new Promise(async (resolve, reject) => {
+    const client = new ApolloClient({
+      ssrMode: true,
+      cache: new InMemoryCache(),
+      link: createHttpLink({
+        uri: "http://localhost:5225/graphql/", // from Apollo's Voyage tutorial series (https://www.apollographql.com/tutorials/voyage-part1/)
+        headers: Object.fromEntries(request.headers),
+        credentials: request.credentials ?? "include", // or "same-origin" if your backend server is the same domain
+      }),
+    });
+
     let shellRendered = false;
-    const { pipe, abort } = renderToPipeableStream(
+
+    const App = (<ApolloProvider client={client}>
       <RemixServer
         context={remixContext}
         url={request.url}
         abortDelay={ABORT_DELAY}
-      />,
+      />
+    </ApolloProvider>);
+
+    await getDataFromTree(App);
+
+    const { pipe, abort } = renderToPipeableStream(
+      App,
       {
         onShellReady() {
           shellRendered = true;
           const body = new PassThrough();
+
+          var state = new Transform({
+            transform(chunk, encoding, callback) {
+              callback(null, chunk);
+            },
+            flush(callback) {
+              // Extract the entirety of the Apollo Client cache's current state
+              const initialState = client.extract();
+
+              this.push(
+                `<script>window.__APOLLO_STATE__=${JSON.stringify(initialState).replace(/</g, '\\u003c')}</script>`
+              );
+              callback();
+            },
+          });
 
           responseHeaders.set("Content-Type", "text/html");
 
