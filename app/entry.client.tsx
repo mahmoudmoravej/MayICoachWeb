@@ -4,6 +4,7 @@
  * For more information, see https://remix.run/file-conventions/entry.client
  */
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ThemeProvider } from "@material-tailwind/react";
 
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
@@ -19,8 +20,10 @@ startTransition(() => {
     document,
     <StrictMode>
       <ApolloProvider client={client}>
-        <RemixBrowser />
+        <ThemeProvider>
+          <RemixBrowser />
+        </ThemeProvider>
       </ApolloProvider>
-    </StrictMode>
+    </StrictMode>,
   );
 });
