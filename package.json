@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.1",
+    "@heroicons/react": "^2.0.18",
     "@material-tailwind/react": "^2.1.0",
     "@remix-run/css-bundle": "^1.19.3",
     "@remix-run/node": "^1.19.3",
