@@ -20,7 +20,6 @@ import {
 } from "@apollo/client";
 import { getDataFromTree } from "@apollo/client/react/ssr";
 
-
 const ABORT_DELAY = 5_000;
 
 export default function handleRequest(
@@ -28,28 +27,28 @@ export default function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext,
-  loadContext: AppLoadContext
+  loadContext: AppLoadContext,
 ) {
   return isbot(request.headers.get("user-agent"))
     ? handleBotRequest(
-      request,
-      responseStatusCode,
-      responseHeaders,
-      remixContext
-    )
+        request,
+        responseStatusCode,
+        responseHeaders,
+        remixContext,
+      )
     : handleBrowserRequest(
-      request,
-      responseStatusCode,
-      responseHeaders,
-      remixContext
-    );
+        request,
+        responseStatusCode,
+        responseHeaders,
+        remixContext,
+      );
 }
 
 function handleBotRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext
+  remixContext: EntryContext,
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
@@ -70,7 +69,7 @@ function handleBotRequest(
             new Response(body, {
               headers: responseHeaders,
               status: responseStatusCode,
-            })
+            }),
           );
 
           pipe(body);
@@ -87,7 +86,7 @@ function handleBotRequest(
             console.error(error);
           }
         },
-      }
+      },
     );
 
     setTimeout(abort, ABORT_DELAY);
@@ -98,9 +97,8 @@ function handleBrowserRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext
+  remixContext: EntryContext,
 ) {
-
   return new Promise(async (resolve, reject) => {
     const client = new ApolloClient({
       ssrMode: true,
@@ -114,63 +112,64 @@ function handleBrowserRequest(
 
     let shellRendered = false;
 
-    const App = (<ApolloProvider client={client}>
-      <RemixServer
-        context={remixContext}
-        url={request.url}
-        abortDelay={ABORT_DELAY}
-      />
-    </ApolloProvider>);
+    const App = (
+      <ApolloProvider client={client}>
+        <RemixServer
+          context={remixContext}
+          url={request.url}
+          abortDelay={ABORT_DELAY}
+        />
+      </ApolloProvider>
+    );
 
     await getDataFromTree(App);
 
-    const { pipe, abort } = renderToPipeableStream(
-      App,
-      {
-        onShellReady() {
-          shellRendered = true;
-          const body = new PassThrough();
+    const { pipe, abort } = renderToPipeableStream(App, {
+      onShellReady() {
+        shellRendered = true;
+        const body = new PassThrough();
 
-          var state = new Transform({
-            transform(chunk, encoding, callback) {
-              callback(null, chunk);
-            },
-            flush(callback) {
-              // Extract the entirety of the Apollo Client cache's current state
-              const initialState = client.extract();
+        var state = new Transform({
+          transform(chunk, encoding, callback) {
+            callback(null, chunk);
+          },
+          flush(callback) {
+            // Extract the entirety of the Apollo Client cache's current state
+            const initialState = client.extract();
 
-              this.push(
-                `<script>window.__APOLLO_STATE__=${JSON.stringify(initialState).replace(/</g, '\\u003c')}</script>`
-              );
-              callback();
-            },
-          });
+            this.push(
+              `<script>window.__APOLLO_STATE__=${JSON.stringify(
+                initialState,
+              ).replace(/</g, "\\u003c")}</script>`,
+            );
+            callback();
+          },
+        });
 
-          responseHeaders.set("Content-Type", "text/html");
+        responseHeaders.set("Content-Type", "text/html");
 
-          resolve(
-            new Response(body, {
-              headers: responseHeaders,
-              status: responseStatusCode,
-            })
-          );
+        resolve(
+          new Response(body, {
+            headers: responseHeaders,
+            status: responseStatusCode,
+          }),
+        );
 
-          pipe(body);
-        },
-        onShellError(error: unknown) {
-          reject(error);
-        },
-        onError(error: unknown) {
-          responseStatusCode = 500;
-          // Log streaming rendering errors from inside the shell.  Don't log
-          // errors encountered during initial shell rendering since they'll
-          // reject and get logged in handleDocumentRequest.
-          if (shellRendered) {
-            console.error(error);
-          }
-        },
-      }
-    );
+        pipe(body);
+      },
+      onShellError(error: unknown) {
+        reject(error);
+      },
+      onError(error: unknown) {
+        responseStatusCode = 500;
+        // Log streaming rendering errors from inside the shell.  Don't log
+        // errors encountered during initial shell rendering since they'll
+        // reject and get logged in handleDocumentRequest.
+        if (shellRendered) {
+          console.error(error);
+        }
+      },
+    });
 
     setTimeout(abort, ABORT_DELAY);
   });

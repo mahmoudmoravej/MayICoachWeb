@@ -3,6 +3,7 @@ query MANAGERS_QUERY {
     nodes {
       id
       name
+
       # reports {
       #   nodes(first: 3) {
       #     name

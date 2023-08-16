@@ -1,12 +1,13 @@
 {
   "private": true,
   "sideEffects": false,
+  "type": "module",
   "scripts": {
     "build": "remix build",
     "dev": "PORT=4000 remix dev",
     "start": "remix-serve build",
     "typecheck": "tsc",
-    "graphql": "graphql-codegen --config .graphql-codegen.ts"
+    "graphql": "graphql-codegen --config graphql.config.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.8.1",
@@ -17,14 +18,16 @@
     "@remix-run/react": "^1.19.3",
     "@remix-run/serve": "^1.19.3",
     "graphql": "^16.7.1",
+    "graphql-config": "^5.0.2",
     "graphql-tag": "^2.12.6",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.0",
-    "@graphql-codegen/client-preset": "^4.1.0",
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/client-preset": "4.1.0",
+    "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@remix-run/dev": "^1.19.3",
     "@remix-run/eslint-config": "^1.19.3",
     "@types/react": "^18.0.35",
