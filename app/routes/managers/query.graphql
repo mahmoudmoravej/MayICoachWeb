@@ -1,0 +1,13 @@
+query MANAGERS_QUERY {
+  managers(first: 10, order: { name: ASC }) {
+    nodes {
+      id
+      name
+      # reports {
+      #   nodes(first: 3) {
+      #     name
+      #   }
+      # }
+    }
+  }
+}
