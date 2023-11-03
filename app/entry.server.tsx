@@ -7,11 +7,11 @@
 import { PassThrough, Transform } from "node:stream";
 
 import type { AppLoadContext, EntryContext } from "@remix-run/node";
-import { Response } from "@remix-run/node";
+import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
-import { renderToString } from "react-dom/server";
+
 import {
   ApolloProvider,
   ApolloClient,
@@ -66,7 +66,7 @@ function handleBotRequest(
           responseHeaders.set("Content-Type", "text/html");
 
           resolve(
-            new Response(body, {
+            new Response(createReadableStreamFromReadable(body), {
               headers: responseHeaders,
               status: responseStatusCode,
             }),
@@ -100,12 +100,18 @@ function handleBrowserRequest(
   remixContext: EntryContext,
 ) {
   return new Promise(async (resolve, reject) => {
+    const token =
+      "eyJhbGciOiJSUzI1NiIsImtpZCI6ImY1ZjRiZjQ2ZTUyYjMxZDliNjI0OWY3MzA5YWQwMzM4NDAwNjgwY2QiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMDU3NjQyODgyNDkxLTk5ZjdzYXFxdmhuNTZzZ3I2NGtqaWVpa2FkcWFqOGU1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTA1NzY0Mjg4MjQ5MS05OWY3c2FxcXZobjU2c2dyNjRramllaWthZHFhajhlNS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwMjUyODE0NDM5OTU0Njg1MDQ2MCIsImVtYWlsIjoibW9yYXZlakBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6ImZpWjN1bm5XN1g3RjNVQlZsMy1tNlEiLCJuYW1lIjoiTWFobW91ZCBNb3JhdmVqIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0pLYjlLMjFnWlBGSVVCTXlYSkFSVVA1ckV2TFRQcnNsb0hGQVAzb3FkQj1zOTYtYyIsImdpdmVuX25hbWUiOiJNYWhtb3VkIiwiZmFtaWx5X25hbWUiOiJNb3JhdmVqIiwibG9jYWxlIjoiZW4iLCJpYXQiOjE2OTg5NTk5MDEsImV4cCI6MTY5ODk2MzUwMX0.FINpUhQJqKdcwNTAX6y6zvaLwYvYmd8iHxmwpkbD9MSKAKlKsvesmN77ZlLYaoMMx8MfiwMrJpKe1pEjW08U21ZmOAUvicZHXTNd8PqpkkFBq10hDw0892SXyiB4Y6AmJc0DubPQqgbL4m6asniqS6Uxz9VHM-BqygEaeLdvup5SqsGZOhGp8XsfvPvlrKWymLkQOZNmrtvN6RA6AW7wCf_WLPEgVMFxT2jdc9pbOoT1osS5pCOcGMBvdcTSMoMDgRq6xO17AXB9Qbc91L-5dB0ly9jx6_AnxksMDboJ3lLZCIj-cEQQCAWPi-xDLVmWqnqxeqQZB_PIs3gU2hettQ";
+
     const client = new ApolloClient({
       ssrMode: true,
       cache: new InMemoryCache(),
       link: createHttpLink({
         uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET", // from Apollo's Voyage tutorial series (https://www.apollographql.com/tutorials/voyage-part1/)
-        headers: Object.fromEntries(request.headers),
+        headers: {
+          ...Object.fromEntries(request.headers),
+          Authorization: `Bearer ${token}`,
+        },
         credentials: request.credentials ?? "include", // or "same-origin" if your backend server is the same domain
       }),
     });
@@ -149,7 +155,7 @@ function handleBrowserRequest(
         responseHeaders.set("Content-Type", "text/html");
 
         resolve(
-          new Response(body, {
+          new Response(createReadableStreamFromReadable(body), {
             headers: responseHeaders,
             status: responseStatusCode,
           }),
