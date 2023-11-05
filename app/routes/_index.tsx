@@ -1,6 +1,9 @@
-import { Button } from "@material-tailwind/react";
-import type { MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { Form, Link, useLoaderData } from "@remix-run/react";
+import { useEffect } from "react";
+import type { User } from "~/models/user";
+
+import { authenticator } from "~/services/auth.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,8 +12,26 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  let user = await authenticator.isAuthenticated(request);
+  return { user };
+}
+
+function useUser() {
+  const data = useLoaderData<{ user?: User }>();
+  return data.user;
+}
+
 export default function Index() {
-  const user = null; // useOptionalUser();
+  const user = useUser();
+
+  useEffect(() => {
+    //TODO: it is a temporary solution, we need to remove token at logout and also store token at login.
+    console.log("user", user);
+    if (user) sessionStorage.setItem("token", user.jwt_token);
+    else sessionStorage.removeItem("token");
+  });
+
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
@@ -36,33 +57,44 @@ export default function Index() {
               </p>
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                 {user ? (
-                  <Link
-                    to="/notes"
-                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
-                  >
-                    {/* View Notes for {user.email} */}
-                  </Link>
+                  <>
+                    <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
+                      Welcome {user.name}!
+                    </p>
+                    <div>
+                      <Link
+                        to="/managers"
+                        className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
+                      >
+                        Managers
+                      </Link>
+                      <Link
+                        to="/logout"
+                        className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
+                      >
+                        Sign out
+                      </Link>
+                    </div>
+                  </>
                 ) : (
-                  <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
+                  <div className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
                     <Link
-                      to="/join"
+                      to="/login"
                       className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
                     >
-                      Sign up
+                      Log in
                     </Link>
-
-                    <Link to="/managers">
-                      <Button size="lg" fullWidth>
-                        Managers
-                      </Button>
-                    </Link>
-
-                    <Link to="/login">
-                      <Button>Log in</Button>
-                    </Link>
+                    <Form action="/auth/google" method="post">
+                      <button>
+                        <img
+                          src="/images/btn_google_signin_light_normal_web.png"
+                          alt="login with google"
+                        />
+                      </button>
+                    </Form>
                   </div>
                 )}
-              </div>
+              </div>{" "}
             </div>
           </div>
         </div>
