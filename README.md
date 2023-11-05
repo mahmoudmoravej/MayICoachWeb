@@ -61,4 +61,4 @@ cp -R ../my-old-remix-app/app app
   - https://www.apollographql.com/blog/apollo-client/how-to-use-apollo-client-with-remix/
 - Authentication:
   - Remix Auth: https://github.com/sergiodxa/remix-auth
-  - Google Auth: https://github.com/pbteja1998/remix-auth-google
+  - Google Auth Strategy: https://github.com/pbteja1998/remix-auth-google
