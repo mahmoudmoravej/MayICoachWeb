@@ -62,3 +62,7 @@ cp -R ../my-old-remix-app/app app
 - Authentication:
   - Remix Auth: https://github.com/sergiodxa/remix-auth
   - Google Auth Strategy: https://github.com/pbteja1998/remix-auth-google
+
+# TODOs
+
+Chech the todos here: https://github.com/mahmoudmoravej/testui/issues/2

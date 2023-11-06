@@ -27,7 +27,7 @@ export default function Index() {
 
   useEffect(() => {
     //TODO: it is a temporary solution, we need to remove token at logout and also store token at login.
-    console.log("user", user);
+
     if (user) sessionStorage.setItem("token", user.jwt_token);
     else sessionStorage.removeItem("token");
   });

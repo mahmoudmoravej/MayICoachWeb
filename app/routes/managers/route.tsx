@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, UserPlusIcon, HomeIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -16,6 +16,7 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
+import { useNavigate } from "@remix-run/react";
 import { useManagersQuery } from "~/@types/graphql";
 
 const TABS = [
@@ -37,6 +38,8 @@ const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
 export default function Managers() {
   const { data, loading, error } = useManagersQuery();
+  const navigate = useNavigate();
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (data?.managers?.nodes == null) return <p>no data</p>;
@@ -64,6 +67,16 @@ export default function Managers() {
             </Button>
             <Button className="flex items-center gap-3" size="sm">
               <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+            </Button>
+
+            <Button
+              className="flex items-center gap-3"
+              size="sm"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              <HomeIcon strokeWidth={2} className="h-4 w-4" /> Home
             </Button>
           </div>
         </div>
@@ -117,7 +130,11 @@ export default function Managers() {
                 <tr key={id}>
                   <td className={classes}>
                     <div className="flex items-center gap-3">
-                      <Avatar src={"TODO"} alt={name} size="sm" />
+                      <Avatar
+                        src="https://i.pravatar.cc/48"
+                        alt={name}
+                        size="sm"
+                      />
                       <div className="flex flex-col">
                         <Typography
                           variant="small"

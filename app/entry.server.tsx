@@ -4,7 +4,7 @@
  * For more information, see https://remix.run/file-conventions/entry.server
  */
 
-import { PassThrough, Transform } from "node:stream";
+import { PassThrough } from "node:stream";
 
 import type { AppLoadContext, EntryContext } from "@remix-run/node";
 import { createReadableStreamFromReadable } from "@remix-run/node";
@@ -20,6 +20,7 @@ import {
 } from "@apollo/client";
 import { getDataFromTree } from "@apollo/client/react/ssr";
 import { authenticator } from "./services/auth.server";
+import type { ReactElement } from "react";
 
 const ABORT_DELAY = 5_000;
 
@@ -63,11 +64,12 @@ function handleBotRequest(
         onAllReady() {
           shellRendered = true;
           const body = new PassThrough();
+          const stream = createReadableStreamFromReadable(body);
 
           responseHeaders.set("Content-Type", "text/html");
 
           resolve(
-            new Response(createReadableStreamFromReadable(body), {
+            new Response(stream, {
               headers: responseHeaders,
               status: responseStatusCode,
             }),
@@ -101,82 +103,92 @@ function handleBrowserRequest(
   remixContext: EntryContext,
 ) {
   return new Promise(async (resolve, reject) => {
-    let user = await authenticator.isAuthenticated(request);
-
-    const client = new ApolloClient({
-      ssrMode: true,
-      cache: new InMemoryCache(),
-      link: createHttpLink({
-        uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET", // from Apollo's Voyage tutorial series (https://www.apollographql.com/tutorials/voyage-part1/)
-        headers: {
-          ...Object.fromEntries(request.headers),
-          Authorization: `Bearer ${user?.jwt_token ?? "ERROR TOKEN!"}`,
-        },
-        credentials: request.credentials ?? "include", // or "same-origin" if your backend server is the same domain
-      }),
-    });
-
     let shellRendered = false;
 
-    const App = (
-      <ApolloProvider client={client}>
+    const { pipe, abort } = renderToPipeableStream(
+      await wrapRemixServerWithApollo(
         <RemixServer
           context={remixContext}
           url={request.url}
           abortDelay={ABORT_DELAY}
-        />
-      </ApolloProvider>
+        />,
+        request,
+      ),
+      {
+        onShellReady() {
+          shellRendered = true;
+          const body = new PassThrough();
+          const stream = createReadableStreamFromReadable(body);
+
+          responseHeaders.set("Content-Type", "text/html");
+
+          resolve(
+            new Response(stream, {
+              headers: responseHeaders,
+              status: responseStatusCode,
+            }),
+          );
+
+          pipe(body);
+        },
+        onShellError(error: unknown) {
+          reject(error);
+        },
+        onError(error: unknown) {
+          responseStatusCode = 500;
+          // Log streaming rendering errors from inside the shell.  Don't log
+          // errors encountered during initial shell rendering since they'll
+          // reject and get logged in handleDocumentRequest.
+          if (shellRendered) {
+            console.error(error);
+          }
+        },
+      },
     );
-
-    await getDataFromTree(App);
-
-    const { pipe, abort } = renderToPipeableStream(App, {
-      onShellReady() {
-        shellRendered = true;
-        const body = new PassThrough();
-
-        var state = new Transform({
-          transform(chunk, encoding, callback) {
-            callback(null, chunk);
-          },
-          flush(callback) {
-            // Extract the entirety of the Apollo Client cache's current state
-            const initialState = client.extract();
-
-            this.push(
-              `<script>window.__APOLLO_STATE__=${JSON.stringify(
-                initialState,
-              ).replace(/</g, "\\u003c")}</script>`,
-            );
-            callback();
-          },
-        });
-
-        responseHeaders.set("Content-Type", "text/html");
-
-        resolve(
-          new Response(createReadableStreamFromReadable(body), {
-            headers: responseHeaders,
-            status: responseStatusCode,
-          }),
-        );
-
-        pipe(body);
-      },
-      onShellError(error: unknown) {
-        reject(error);
-      },
-      onError(error: unknown) {
-        responseStatusCode = 500;
-        // Log streaming rendering errors from inside the shell.  Don't log
-        // errors encountered during initial shell rendering since they'll
-        // reject and get logged in handleDocumentRequest.
-        if (shellRendered) {
-          console.error(error);
-        }
-      },
-    });
 
     setTimeout(abort, ABORT_DELAY);
   });
+}
+async function wrapRemixServerWithApollo(
+  remixServer: ReactElement,
+  request: Request,
+) {
+  const client = await getApolloClient(request);
+
+  const app = <ApolloProvider client={client}>{remixServer}</ApolloProvider>;
+
+  await getDataFromTree(app);
+  const initialState = client.extract();
+
+  const appWithData = (
+    <>
+      {app}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.__APOLLO_STATE__=${JSON.stringify(
+            initialState,
+          ).replace(/</g, "\\u003c")}`, // The replace call escapes the < character to prevent cross-site scripting attacks that are possible via the presence of </script> in a string literal
+        }}
+      />
+    </>
+  );
+  return appWithData;
+}
+
+async function getApolloClient(request: Request) {
+  let user = await authenticator.isAuthenticated(request);
+
+  const client = new ApolloClient({
+    ssrMode: true,
+    cache: new InMemoryCache(),
+    link: createHttpLink({
+      uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET",
+      headers: {
+        ...Object.fromEntries(request.headers),
+        Authorization: `Bearer ${user?.jwt_token ?? "ERROR TOKEN!"}`,
+      },
+      credentials: request.credentials ?? "include", // or "same-origin" if your backend server is the same domain
+    }),
+  });
+  return client;
 }
