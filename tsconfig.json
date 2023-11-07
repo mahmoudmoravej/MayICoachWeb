@@ -1,5 +1,6 @@
 {
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
+
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "isolatedModules": true,
@@ -16,7 +17,7 @@
       "~/*": ["./app/*"]
     },
     "typeRoots": ["node_modules/@types", "app/@types"],
-
+    "skipLibCheck": true, //becuase we have types in app/@types, we cannot exlude the node_modules folder. having this skip "*.d.ts" files.
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
   }

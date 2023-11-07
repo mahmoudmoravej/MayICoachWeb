@@ -55,6 +55,12 @@ rm -rf app
 cp -R ../my-old-remix-app/app app
 ```
 
+## Generate GraphQL types
+
+run `yarn graphql`
+if it fails, run `yarn graphql --verbose`
+Note: GraphQL is introspective. This means you can query a GraphQL schema for details about itself.
+
 ## Helps / Docs
 
 - GraphQL Integration
