@@ -11,7 +11,7 @@ const config: CodegenConfig = {
   documents: ["app/**/*.graphql"],
   generates: {
     "./app/@types/graphql.ts": {
-      // preset: "client",
+      // preset: "client", we don't need gql version
       plugins: [
         "typescript",
         "typescript-operations",
