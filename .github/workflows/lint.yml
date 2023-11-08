@@ -1,4 +1,4 @@
-name: Typescript Type Check
+name: Lint
 
 on: [push]
 
@@ -10,5 +10,5 @@ jobs:
       - name: Setup Repo
         uses: ./.github/actions/setup-repo
 
-      - name: Run tsc
-        run: yarn tsc
+      - name: Run linting
+        run: yarn lint
