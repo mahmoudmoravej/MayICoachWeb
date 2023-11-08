@@ -1,0 +1,13 @@
+name: "Setup Action"
+description: "Setup env for running actions"
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: "20.5.1"
+
+    - name: Install Dependencies
+      run: yarn install
+      shell: bash
