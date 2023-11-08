@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Setup Repo
-        uses: ./.github/actions/setup-repo
+        uses: ./github/actions/setup
 
       - name: Run tsc
         run: yarn tsc
