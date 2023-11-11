@@ -16,7 +16,9 @@
     "paths": {
       "~/*": ["./app/*"]
     },
-    "typeRoots": ["node_modules/@types", "app/@types"],
+    "typeRoots": ["node_modules/@types", "app/@types", "./node_modules"],
+    "types": ["vitest/globals"],
+
     "skipLibCheck": true, //becuase we have types in app/@types, we cannot exlude the node_modules folder. having this skip "*.d.ts" files.
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
