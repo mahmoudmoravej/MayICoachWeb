@@ -1,0 +1,16 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Repo
+        uses: ./.github/actions/setup
+
+      - name: Run tests
+        run: yarn test
