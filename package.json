@@ -8,7 +8,8 @@
     "typecheck": "tsc",
     "graphql": "graphql-codegen --config graphql.codegen.ts",
     "lint": "eslint .",
-    "test": "vitest"
+    "test": "vitest",
+    "pr": "gh pr create -w"
   },
   "dependencies": {
     "@apollo/client": "^3.8.1",
@@ -19,8 +20,8 @@
     "@remix-run/node": "2.2.0",
     "@remix-run/react": "2.2.0",
     "@remix-run/serve": "2.2.0",
-    "graphql": "^16.7.1",
-    "graphql-config": "^5.0.2",
+    "graphql": "^16.8.1",
+    "graphql-config": "^5.0.3",
     "graphql-tag": "^2.12.6",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
