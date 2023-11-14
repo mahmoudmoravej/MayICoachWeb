@@ -57,8 +57,12 @@ cp -R ../my-old-remix-app/app app
 
 ## Generate GraphQL types
 
-run `yarn graphql`
+run `yarn graphql` .
+
+- Note: You need to have the API server mentioned in process.env.GRAPHQL_SCHEMA_URL run.
+
 if it fails, run `yarn graphql --verbose`
+configurations are in: graphql.codegen.ts
 Note: GraphQL is introspective. This means you can query a GraphQL schema for details about itself.
 
 ## Helps / Docs
