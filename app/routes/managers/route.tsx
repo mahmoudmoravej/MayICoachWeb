@@ -1,3 +1,4 @@
+import { useManagersQuery } from "@app-types/graphql";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PencilIcon, UserPlusIcon, HomeIcon } from "@heroicons/react/24/solid";
 import {
@@ -17,7 +18,6 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 import { useNavigate } from "@remix-run/react";
-import { useManagersQuery } from "~/@types/graphql";
 
 const TABS = [
   {

@@ -10,7 +10,7 @@ const config: CodegenConfig = {
   schema: url,
   documents: ["app/**/*.graphql"],
   generates: {
-    "./app/@types/graphql.ts": {
+    "./app/@types/graphql/schema.ts": {
       // preset: "client", we don't need gql version
       plugins: [
         "typescript",
