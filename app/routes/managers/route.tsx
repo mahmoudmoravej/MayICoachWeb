@@ -17,7 +17,9 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
+import { LoaderFunction, redirect } from "@remix-run/node";
 import { useNavigate } from "@remix-run/react";
+import { authenticator } from "~/services/auth.server";
 
 const TABS = [
   {
@@ -35,6 +37,13 @@ const TABS = [
 ];
 
 const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+
+export let loader: LoaderFunction = async ({ request }) => {
+  //we should completely change the following appraoch
+  let isAllowed = await authenticator.isAuthenticated(request);
+  if (!isAllowed) return redirect("/login");
+  else return {};
+};
 
 export default function Managers() {
   const { data, loading, error } = useManagersQuery();
