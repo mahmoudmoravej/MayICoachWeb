@@ -1,0 +1,8 @@
+mutation createManager($name: String!, $id: Int!) {
+  managerCreate(input: { managerInput: { Name: $name, Id: $id } }) {
+    manager {
+      Name
+      Id
+    }
+  }
+}

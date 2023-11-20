@@ -1,0 +1,8 @@
+mutation updateManager($id: ID!, $name: String!, $newId: Int!) {
+  managerUpdate(input: { id: $id, managerInput: { Name: $name, Id: $newId } }) {
+    manager {
+      Name
+      Id
+    }
+  }
+}

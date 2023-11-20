@@ -18,7 +18,7 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 import { LoaderFunction, redirect } from "@remix-run/node";
-import { useNavigate } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
 
 const TABS = [
@@ -75,7 +75,8 @@ export default function Managers() {
               view all
             </Button>
             <Button className="flex items-center gap-3" size="sm">
-              <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+              <UserPlusIcon strokeWidth={2} className="h-4 w-4" />
+              <Link to="/managers/new">Add member</Link>
             </Button>
 
             <Button
@@ -200,11 +201,13 @@ export default function Managers() {
                     </Typography>
                   </td>
                   <td className={classes}>
-                    <Tooltip content="Edit User">
-                      <IconButton variant="text">
-                        <PencilIcon className="h-4 w-4" />
-                      </IconButton>
-                    </Tooltip>
+                    <Link to={`/managers/${id}`}>
+                      <Tooltip content="Edit User">
+                        <IconButton variant="text">
+                          <PencilIcon className="h-4 w-4" />
+                        </IconButton>
+                      </Tooltip>
+                    </Link>
                   </td>
                 </tr>
               );
