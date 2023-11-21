@@ -149,10 +149,19 @@ export enum PerformanceCategory {
 
 export type Query = {
   __typename?: 'Query';
+  /** Returns a manager */
+  manager: Manager;
   /** Returns a list of managers */
   managers: ManagerConnection;
+  /** Returns a report */
+  report: Report;
   /** Returns a list of reports */
   reports: ReportConnection;
+};
+
+
+export type QueryManagerArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -162,6 +171,11 @@ export type QueryManagersArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Order>>;
+};
+
+
+export type QueryReportArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -239,12 +253,110 @@ export type ReportUpdatePayload = {
   report: Report;
 };
 
+export type FindManagerQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type FindManagerQuery = { __typename?: 'Query', manager: { __typename?: 'Manager', Name: string, Id: number } };
+
+export type UpdateManagerMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
+  newId: Scalars['Int']['input'];
+}>;
+
+
+export type UpdateManagerMutation = { __typename?: 'Mutation', managerUpdate?: { __typename?: 'ManagerUpdatePayload', manager: { __typename?: 'Manager', Name: string, Id: number } } | null };
+
 export type ManagersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ManagersQuery = { __typename?: 'Query', managers: { __typename?: 'ManagerConnection', nodes?: Array<{ __typename?: 'Manager', id: number, name: string, reports: { __typename?: 'ReportConnection', nodes?: Array<{ __typename?: 'Report', id: number, name: string } | null> | null } } | null> | null } };
 
+export type CreateManagerMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
+}>;
 
+
+export type CreateManagerMutation = { __typename?: 'Mutation', managerCreate?: { __typename?: 'ManagerCreatePayload', manager: { __typename?: 'Manager', Name: string, Id: number } } | null };
+
+
+export const FindManagerDocument = gql`
+    query findManager($id: ID!) {
+  manager(id: $id) {
+    Name
+    Id
+  }
+}
+    `;
+
+/**
+ * __useFindManagerQuery__
+ *
+ * To run a query within a React component, call `useFindManagerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindManagerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindManagerQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFindManagerQuery(baseOptions: Apollo.QueryHookOptions<FindManagerQuery, FindManagerQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindManagerQuery, FindManagerQueryVariables>(FindManagerDocument, options);
+      }
+export function useFindManagerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindManagerQuery, FindManagerQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindManagerQuery, FindManagerQueryVariables>(FindManagerDocument, options);
+        }
+export type FindManagerQueryHookResult = ReturnType<typeof useFindManagerQuery>;
+export type FindManagerLazyQueryHookResult = ReturnType<typeof useFindManagerLazyQuery>;
+export type FindManagerQueryResult = Apollo.QueryResult<FindManagerQuery, FindManagerQueryVariables>;
+export const UpdateManagerDocument = gql`
+    mutation updateManager($id: ID!, $name: String!, $newId: Int!) {
+  managerUpdate(input: {id: $id, managerInput: {Name: $name, Id: $newId}}) {
+    manager {
+      Name
+      Id
+    }
+  }
+}
+    `;
+export type UpdateManagerMutationFn = Apollo.MutationFunction<UpdateManagerMutation, UpdateManagerMutationVariables>;
+
+/**
+ * __useUpdateManagerMutation__
+ *
+ * To run a mutation, you first call `useUpdateManagerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateManagerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateManagerMutation, { data, loading, error }] = useUpdateManagerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      newId: // value for 'newId'
+ *   },
+ * });
+ */
+export function useUpdateManagerMutation(baseOptions?: Apollo.MutationHookOptions<UpdateManagerMutation, UpdateManagerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateManagerMutation, UpdateManagerMutationVariables>(UpdateManagerDocument, options);
+      }
+export type UpdateManagerMutationHookResult = ReturnType<typeof useUpdateManagerMutation>;
+export type UpdateManagerMutationResult = Apollo.MutationResult<UpdateManagerMutation>;
+export type UpdateManagerMutationOptions = Apollo.BaseMutationOptions<UpdateManagerMutation, UpdateManagerMutationVariables>;
 export const ManagersDocument = gql`
     query managers {
   managers(first: 10, orderBy: {field: "name", direction: "ASC"}) {
@@ -288,3 +400,40 @@ export function useManagersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<M
 export type ManagersQueryHookResult = ReturnType<typeof useManagersQuery>;
 export type ManagersLazyQueryHookResult = ReturnType<typeof useManagersLazyQuery>;
 export type ManagersQueryResult = Apollo.QueryResult<ManagersQuery, ManagersQueryVariables>;
+export const CreateManagerDocument = gql`
+    mutation createManager($name: String!, $id: Int!) {
+  managerCreate(input: {managerInput: {Name: $name, Id: $id}}) {
+    manager {
+      Name
+      Id
+    }
+  }
+}
+    `;
+export type CreateManagerMutationFn = Apollo.MutationFunction<CreateManagerMutation, CreateManagerMutationVariables>;
+
+/**
+ * __useCreateManagerMutation__
+ *
+ * To run a mutation, you first call `useCreateManagerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateManagerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createManagerMutation, { data, loading, error }] = useCreateManagerMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCreateManagerMutation(baseOptions?: Apollo.MutationHookOptions<CreateManagerMutation, CreateManagerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateManagerMutation, CreateManagerMutationVariables>(CreateManagerDocument, options);
+      }
+export type CreateManagerMutationHookResult = ReturnType<typeof useCreateManagerMutation>;
+export type CreateManagerMutationResult = Apollo.MutationResult<CreateManagerMutation>;
+export type CreateManagerMutationOptions = Apollo.BaseMutationOptions<CreateManagerMutation, CreateManagerMutationVariables>;

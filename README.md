@@ -60,6 +60,9 @@ cp -R ../my-old-remix-app/app app
 run `yarn graphql` .
 
 - Note: You need to have the API server mentioned in process.env.GRAPHQL_SCHEMA_URL run.
+- The configuration of generator comes from: https://the-guild.dev/graphql/codegen
+- It reads all the \*.graphql files in your repo and generates hook for them.
+- GraphQL.config is for linting graphql files.
 
 if it fails, run `yarn graphql --verbose`
 configurations are in: graphql.codegen.ts

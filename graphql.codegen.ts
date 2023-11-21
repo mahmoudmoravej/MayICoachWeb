@@ -8,7 +8,7 @@ const url = process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET";
 
 const config: CodegenConfig = {
   schema: url,
-  documents: ["app/**/*.graphql"],
+  documents: ["app/**/*.graphql", "app/**/*.gql"], //try to find these files and generate the following based on them
   generates: {
     "./app/@types/graphql/schema.ts": {
       // preset: "client", we don't need gql version
@@ -17,6 +17,9 @@ const config: CodegenConfig = {
         "typescript-operations",
         "typescript-react-apollo",
       ],
+      config: {
+        withHooks: true,
+      },
     },
   },
 };
