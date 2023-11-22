@@ -31,6 +31,7 @@ export default function ManagerEdit() {
         name: manager.Name,
         newId: manager.Id,
       },
+
       onCompleted: (data) => {
         setManager(data.managerUpdate?.manager);
       },
