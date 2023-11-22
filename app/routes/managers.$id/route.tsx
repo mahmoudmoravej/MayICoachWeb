@@ -10,6 +10,7 @@ export default function ManagerEdit() {
   const { id } = useParams();
   const { data, loading, error } = useFindManagerQuery({
     variables: { id: id ?? "0" },
+    fetchPolicy: "network-only",
   });
   const [manager, setManager] = useState(data?.manager);
   const [updateMethod] = useUpdateManagerMutation();
@@ -30,11 +31,9 @@ export default function ManagerEdit() {
         name: manager.Name,
         newId: manager.Id,
       },
-    }).then((res) => {
-      if (res.data?.managerUpdate?.manager) {
-        setManager(res.data.managerUpdate.manager);
-        nav("/managers");
-      }
+      onCompleted: (data) => {
+        setManager(data.managerUpdate?.manager);
+      },
     });
   };
 
@@ -79,6 +78,15 @@ export default function ManagerEdit() {
 
         <Button className="mt-6" fullWidth onClick={onSubmit}>
           Save
+        </Button>
+        <Button
+          className="mt-6"
+          fullWidth
+          onClick={() => {
+            nav("/managers");
+          }}
+        >
+          Goto Managers
         </Button>
       </Form>
     </Card>

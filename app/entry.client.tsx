@@ -33,6 +33,12 @@ startTransition(() => {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
+    defaultOptions: {
+      query: {
+        fetchPolicy: "network-only",
+      },
+    },
+    ssrForceFetchDelay: 1000, // we need this to help ssr with network-only works as expected. so we don;'t see extra queries on the client side.
   });
 
   hydrateRoot(
