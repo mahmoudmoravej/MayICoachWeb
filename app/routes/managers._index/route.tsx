@@ -46,7 +46,9 @@ export let loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Managers() {
-  const { data, loading, error } = useManagersQuery();
+  const { data, loading, error } = useManagersQuery({
+    fetchPolicy: "network-only",
+  });
   const navigate = useNavigate();
 
   if (loading) return <p>Loading...</p>;
