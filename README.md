@@ -76,6 +76,14 @@ Note: GraphQL is introspective. This means you can query a GraphQL schema for de
   - Remix Auth: https://github.com/sergiodxa/remix-auth
   - Google Auth Strategy: https://github.com/pbteja1998/remix-auth-google
 
+# Icons:
+
+- HeroIcons React: https://github.com/tailwindlabs/heroicons#react
+
+# Dashboard:
+
+- https://github.com/creativetimofficial/material-tailwind-dashboard-react/blob/main/src/layouts/dashboard.jsx
+
 # TODOs
 
 Check todos here: https://github.com/mahmoudmoravej/testui/issues/2
