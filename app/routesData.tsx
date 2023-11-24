@@ -55,7 +55,7 @@ export const routes: RouteData[] = [
       {
         icon: <ServerStackIcon {...icon} />,
         name: "sign in",
-        path: "/sign-in",
+        path: "/login",
       },
       {
         icon: <RectangleStackIcon {...icon} />,
