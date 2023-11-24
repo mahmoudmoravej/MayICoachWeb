@@ -80,9 +80,17 @@ Note: GraphQL is introspective. This means you can query a GraphQL schema for de
 
 - HeroIcons React: https://github.com/tailwindlabs/heroicons#react
 
-# Dashboard:
+# Layouting and Dashboard:
 
-- https://github.com/creativetimofficial/material-tailwind-dashboard-react/blob/main/src/layouts/dashboard.jsx
+Mostly comes from creative-tim. (https://www.creative-tim.com/product/material-tailwind-dashboard-react#)
+Main page:
+
+- https://github.com/creativetimofficial/material-tailwind-kit-react
+
+  Dashboard:
+
+- https://github.com/creativetimofficial/material-tailwind-dashboard-react
+- How to have multiple layout: https://github.com/remix-run/remix/discussions/7296
 
 # TODOs
 
