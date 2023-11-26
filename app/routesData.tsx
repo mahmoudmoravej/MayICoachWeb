@@ -3,8 +3,6 @@ import {
   UserCircleIcon,
   TableCellsIcon,
   InformationCircleIcon,
-  ServerStackIcon,
-  RectangleStackIcon,
 } from "@heroicons/react/24/solid";
 
 const icon = {
