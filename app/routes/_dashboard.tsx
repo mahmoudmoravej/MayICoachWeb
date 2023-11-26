@@ -1,13 +1,35 @@
-import { Outlet } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { IconButton } from "@material-tailwind/react";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 
 import { Sidenav, DashboardNavbar, Footer } from "~/widgets/layout";
 import routes from "~/routesData";
+import { authenticator } from "~/services/auth.server";
+import { LoaderFunctionArgs } from "@remix-run/node";
+import { useEffect } from "react";
+import { User } from "~/models/user";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  let user = await authenticator.isAuthenticated(request);
+  return { user };
+}
+
+function useUser() {
+  const data = useLoaderData<{ user?: User }>();
+  return data.user;
+}
 
 export default function Dashboard() {
   //TODO: change the followings to get value from context
   const sidenavType = routes == null ? "dark" : "white"; // this fake comparison is to avoid TS error only.
+  const user = useUser();
+
+  useEffect(() => {
+    //TODO: it is a temporary solution, we need to remove token at logout and also store token at login.
+
+    if (user) sessionStorage.setItem("token", user.jwt_token);
+    else sessionStorage.removeItem("token");
+  });
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">

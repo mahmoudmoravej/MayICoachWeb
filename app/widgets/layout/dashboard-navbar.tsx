@@ -77,14 +77,14 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
-          <Link to="/login">
+          <Link to="/logout">
             <Button
               variant="text"
               color="blue-gray"
               className="hidden items-center gap-1 px-4 normal-case xl:flex"
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              Sign In
+              Sign out
             </Button>
             <IconButton
               variant="text"

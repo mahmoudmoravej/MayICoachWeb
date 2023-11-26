@@ -28,39 +28,24 @@ export const routes: RouteData[] = [
     pages: [
       {
         icon: <HomeIcon {...icon} />,
-        name: "dashboard",
-        path: "/home",
+        name: "Home",
+        path: "/",
       },
       {
         icon: <UserCircleIcon {...icon} />,
-        name: "profile",
-        path: "/profile",
+        name: "Managers",
+        path: "/managers",
+      },
+
+      {
+        icon: <InformationCircleIcon {...icon} />,
+        name: "My team",
+        path: "/managers/team",
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
-      },
-      {
-        icon: <InformationCircleIcon {...icon} />,
-        name: "notifications",
-        path: "/notifications",
-      },
-    ],
-  },
-  {
-    title: "auth pages",
-    layout: "auth",
-    pages: [
-      {
-        icon: <ServerStackIcon {...icon} />,
-        name: "sign in",
-        path: "/login",
-      },
-      {
-        icon: <RectangleStackIcon {...icon} />,
-        name: "sign up",
-        path: "/sign-up",
+        name: "Rules",
+        path: "/rules",
       },
     ],
   },

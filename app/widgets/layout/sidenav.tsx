@@ -5,6 +5,7 @@ import { Button, IconButton, Typography } from "@material-tailwind/react";
 
 import { RouteData } from "~/routesData";
 import { useNavigate } from "@remix-run/react";
+import { useEffect, useState } from "react";
 
 export function Sidenav({
   brandImg,
@@ -16,17 +17,24 @@ export function Sidenav({
   routes: RouteData[];
 }) {
   const nav = useNavigate();
+  const [openSidenav, setOpenNav] = useState(false);
 
   //TODO: change the followings to get value from context
   const sidenavType = nav == null ? "dark" : "white"; // this fake comparison is to avoid TS error only.
-  const openSidenav = true;
-  const sidenavColor = "gray";
+  const sidenavColor = "blue-gray";
 
   const sidenavTypes = {
     dark: "bg-gradient-to-br from-gray-800 to-gray-900",
     white: "bg-white shadow-sm",
     transparent: "bg-transparent",
   };
+
+  useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => window.innerWidth >= 960 && setOpenNav(false),
+    );
+  }, []);
 
   return (
     <aside
@@ -72,7 +80,7 @@ export function Sidenav({
             )}
             {pages.map(({ icon, name, path }) => (
               <li key={name}>
-                <NavLink to={`/${layout}${path}`}>
+                <NavLink to={path}>
                   {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}
@@ -107,7 +115,7 @@ export function Sidenav({
 
 Sidenav.defaultProps = {
   brandImg: "/img/logo-ct.png",
-  brandName: "Material Tailwind React",
+  brandName: "mAy I Coach",
 };
 
 Sidenav.propTypes = {
