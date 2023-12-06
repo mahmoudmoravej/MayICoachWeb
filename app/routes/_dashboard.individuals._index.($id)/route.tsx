@@ -1,11 +1,6 @@
 import { useIndividualsQuery } from "@app-types/graphql";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import {
-  PencilIcon,
-  UserPlusIcon,
-  HomeIcon,
-  MagnifyingGlassCircleIcon,
-} from "@heroicons/react/24/solid";
+import { PencilIcon, UserPlusIcon, HomeIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
