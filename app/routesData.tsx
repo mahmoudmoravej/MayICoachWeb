@@ -34,15 +34,14 @@ export const routes: RouteData[] = [
         path: "/",
       },
       {
-        icon: <UserCircleIcon {...icon} />,
-        name: "Managers",
-        path: "/managers",
-      },
-
-      {
         icon: <InformationCircleIcon {...icon} />,
         name: "My team",
-        path: "/managers/team",
+        path: "/individuals/myteam",
+      },
+      {
+        icon: <UserCircleIcon {...icon} />,
+        name: "Organization",
+        path: "/individuals",
       },
       {
         icon: <TableCellsIcon {...icon} />,
@@ -203,8 +202,8 @@ export const siteRoutes: siteRouteType[] = [
     path: "/",
   },
   {
-    name: "profile",
-    path: "/",
+    name: "dashboard",
+    path: "/individuals",
   },
   {
     name: "Sign In",

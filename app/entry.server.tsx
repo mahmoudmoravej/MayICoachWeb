@@ -12,15 +12,11 @@ import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
-import {
-  ApolloProvider,
-  ApolloClient,
-  InMemoryCache,
-  createHttpLink,
-} from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import { getDataFromTree } from "@apollo/client/react/ssr";
 import { authenticator } from "./services/auth.server";
 import type { ReactElement } from "react";
+import * as utils from "./utils";
 
 const ABORT_DELAY = 5_000;
 
@@ -178,17 +174,5 @@ async function wrapRemixServerWithApollo(
 async function getApolloClient(request: Request) {
   let user = await authenticator.isAuthenticated(request);
 
-  const client = new ApolloClient({
-    ssrMode: true,
-    cache: new InMemoryCache(),
-    link: createHttpLink({
-      uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET",
-      headers: {
-        ...Object.fromEntries(request.headers),
-        Authorization: `Bearer ${user?.jwt_token ?? "ERROR TOKEN!"}`,
-      },
-      credentials: request.credentials ?? "include", // or "same-origin" if your backend server is the same domain
-    }),
-  });
-  return client;
+  return utils.getApolloClient(request, user?.jwt_token);
 }
