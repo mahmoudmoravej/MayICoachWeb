@@ -9,4 +9,12 @@ module.exports = {
   // dev: {
   //   port: 4000,
   // },
+  // routes(defineRoutes) {
+  //   return defineRoutes((route) => {
+  //     route(
+  //       "/individuals",
+  //       "routes/_dashboard.individuals._index.$id/route.tsx",
+  //     );
+  //   });
+  // },
 };

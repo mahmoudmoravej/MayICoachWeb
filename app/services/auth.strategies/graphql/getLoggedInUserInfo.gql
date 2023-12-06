@@ -1,0 +1,9 @@
+query getLoggedInUserInfo {
+  myInfo {
+    UserId
+    Individual {
+      id
+      isManager
+    }
+  }
+}

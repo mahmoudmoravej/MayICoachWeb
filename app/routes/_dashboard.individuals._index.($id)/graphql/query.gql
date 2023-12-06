@@ -1,0 +1,11 @@
+query individuals($managerId: ID) {
+  individuals(managerId: $managerId) {
+    nodes {
+      id
+      fullname
+      jobTitle
+      jobLevelId
+      isManager
+    }
+  }
+}

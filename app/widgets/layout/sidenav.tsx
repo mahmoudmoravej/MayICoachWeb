@@ -80,7 +80,7 @@ export function Sidenav({
             )}
             {pages.map(({ icon, name, path }) => (
               <li key={name}>
-                <NavLink to={path}>
+                <NavLink to={path} end>
                   {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}

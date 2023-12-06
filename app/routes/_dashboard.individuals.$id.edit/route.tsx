@@ -84,7 +84,7 @@ export default function ManagerEdit() {
           className="mt-6"
           fullWidth
           onClick={() => {
-            nav("/managers");
+            nav("/individuals");
           }}
         >
           Goto Managers
