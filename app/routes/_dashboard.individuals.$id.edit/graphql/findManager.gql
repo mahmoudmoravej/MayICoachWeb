@@ -1,6 +1,0 @@
-query findManager($id: ID!) {
-  manager(id: $id) {
-    Name
-    Id
-  }
-}

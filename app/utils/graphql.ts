@@ -15,3 +15,11 @@ export function getApolloClient(request: Request, token: string | undefined) {
   });
   return client;
 }
+
+export function getPureObject<T extends { __typename?: any }>(
+  object: T | null | undefined,
+): Omit<T, "__typename"> | null | undefined {
+  if (!object) return object;
+  const { __typename, ...pureObject } = object;
+  return pureObject;
+}

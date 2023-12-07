@@ -1,0 +1,12 @@
+query findIndividual($id: ID!) {
+  individual(id: $id) {
+    id
+    fullname
+    handleGithub
+    handleGoogle
+    jobTitle
+    jobLevelId
+    userId
+    managerId
+  }
+}
