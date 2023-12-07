@@ -1,0 +1,11 @@
+fragment IndividualFragment on Individual {
+  id
+  fullname
+  handleGithub
+  handleGoogle
+  jobTitle
+  jobLevelId
+  userId
+  managerId
+  isManager
+}

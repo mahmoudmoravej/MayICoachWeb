@@ -16,24 +16,28 @@ import {
   Avatar,
   IconButton,
   Tooltip,
+  Spinner,
 } from "@material-tailwind/react";
 import { LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate, useParams } from "@remix-run/react";
+import { useState } from "react";
 import { User } from "~/models/user";
 import { authenticator } from "~/services/auth.server";
 
-const TABS = [
+type FilterType = "all" | "managers" | "ICs";
+
+const TABS: { label: string; value: FilterType }[] = [
   {
     label: "All",
     value: "all",
   },
   {
-    label: "Monitored",
-    value: "monitored",
+    label: "Managers",
+    value: "managers",
   },
   {
-    label: "Unmonitored",
-    value: "unmonitored",
+    label: "ICs",
+    value: "ICs",
   },
 ];
 
@@ -54,6 +58,7 @@ function useUser() {
 export default function Individuals() {
   let { id: managerId } = useParams();
   const user = useUser();
+  const [filter, setFilter] = useState<FilterType>("all");
 
   let pageTitle = "People";
   let pageSubTitle = "";
@@ -67,14 +72,15 @@ export default function Individuals() {
       managerId: managerId ?? null,
       fetchManagerDetails: managerId != null,
       fetchManagerId: managerId ?? "NotUsed",
+      isManager: filter == "managers" ? true : filter == "ICs" ? false : null,
     },
     fetchPolicy: "network-only",
   });
   const navigate = useNavigate();
 
-  if (loading) return <p>Loading...</p>;
   if (error) return <p>{JSON.stringify(error)}</p>;
-  if (data?.individuals?.nodes == null) return <p>no data</p>;
+  if (loading || data?.individuals?.nodes == null)
+    return <Spinner className="w-full" />;
 
   if (data.managerInfo != null) {
     pageTitle = `${data.managerInfo.fullname ?? ""}'s team`;
@@ -126,10 +132,10 @@ export default function Individuals() {
           </div>
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <Tabs value="all" className="w-full md:w-max">
+          <Tabs value={filter} className="w-full md:w-max">
             <TabsHeader>
               {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
+                <Tab key={value} value={value} onClick={() => setFilter(value)}>
                   &nbsp;&nbsp;{label}&nbsp;&nbsp;
                 </Tab>
               ))}
