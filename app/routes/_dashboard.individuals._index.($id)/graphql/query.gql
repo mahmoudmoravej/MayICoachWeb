@@ -2,8 +2,9 @@ query individuals(
   $managerId: ID
   $fetchManagerId: ID!
   $fetchManagerDetails: Boolean = false
+  $isManager: Boolean
 ) {
-  individuals(managerId: $managerId) {
+  individuals(managerId: $managerId, isManager: $isManager, isActive: true) {
     nodes {
       id
       fullname

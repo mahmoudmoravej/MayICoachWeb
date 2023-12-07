@@ -1,13 +1,7 @@
 mutation UpdateIndividual($input: IndividualUpdateInput!) {
   individualUpdate(input: $input) {
     individual {
-      fullname
-      id
-      jobTitle
-      jobLevelId
-      handleGithub
-      handleGoogle
-      userId
+      ...IndividualFragment
     }
   }
 }

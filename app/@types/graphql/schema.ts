@@ -313,6 +313,8 @@ export type QueryIndividualsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  isManager?: InputMaybe<Scalars['Boolean']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   managerId?: InputMaybe<Scalars['ID']['input']>;
   orderBy?: InputMaybe<Array<Order>>;
@@ -423,19 +425,22 @@ export type FindIndividualQueryVariables = Exact<{
 }>;
 
 
-export type FindIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null } };
+export type FindIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean }, managers: { __typename?: 'IndividualConnection', nodes?: Array<{ __typename?: 'Individual', id: number, fullname?: string | null } | null> | null } };
+
+export type IndividualFragmentFragment = { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean };
 
 export type UpdateIndividualMutationVariables = Exact<{
   input: IndividualUpdateInput;
 }>;
 
 
-export type UpdateIndividualMutation = { __typename?: 'Mutation', individualUpdate?: { __typename?: 'IndividualUpdatePayload', individual: { __typename?: 'Individual', fullname?: string | null, id: number, jobTitle?: string | null, jobLevelId?: string | null, handleGithub?: string | null, handleGoogle?: string | null, userId?: number | null } } | null };
+export type UpdateIndividualMutation = { __typename?: 'Mutation', individualUpdate?: { __typename?: 'IndividualUpdatePayload', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean } } | null };
 
 export type IndividualsQueryVariables = Exact<{
   managerId?: InputMaybe<Scalars['ID']['input']>;
   fetchManagerId: Scalars['ID']['input'];
   fetchManagerDetails?: InputMaybe<Scalars['Boolean']['input']>;
+  isManager?: InputMaybe<Scalars['Boolean']['input']>;
 }>;
 
 
@@ -454,21 +459,32 @@ export type GetLoggedInUserInfoQueryVariables = Exact<{ [key: string]: never; }>
 
 export type GetLoggedInUserInfoQuery = { __typename?: 'Query', myInfo: { __typename?: 'UserInfo', UserId: number, Individual?: { __typename?: 'Individual', id: number, isManager: boolean } | null } };
 
-
+export const IndividualFragmentFragmentDoc = gql`
+    fragment IndividualFragment on Individual {
+  id
+  fullname
+  handleGithub
+  handleGoogle
+  jobTitle
+  jobLevelId
+  userId
+  managerId
+  isManager
+}
+    `;
 export const FindIndividualDocument = gql`
     query findIndividual($id: ID!) {
   individual(id: $id) {
-    id
-    fullname
-    handleGithub
-    handleGoogle
-    jobTitle
-    jobLevelId
-    userId
-    managerId
+    ...IndividualFragment
+  }
+  managers: individuals(isManager: true) {
+    nodes {
+      id
+      fullname
+    }
   }
 }
-    `;
+    ${IndividualFragmentFragmentDoc}`;
 
 /**
  * __useFindIndividualQuery__
@@ -501,17 +517,11 @@ export const UpdateIndividualDocument = gql`
     mutation UpdateIndividual($input: IndividualUpdateInput!) {
   individualUpdate(input: $input) {
     individual {
-      fullname
-      id
-      jobTitle
-      jobLevelId
-      handleGithub
-      handleGoogle
-      userId
+      ...IndividualFragment
     }
   }
 }
-    `;
+    ${IndividualFragmentFragmentDoc}`;
 export type UpdateIndividualMutationFn = Apollo.MutationFunction<UpdateIndividualMutation, UpdateIndividualMutationVariables>;
 
 /**
@@ -539,8 +549,8 @@ export type UpdateIndividualMutationHookResult = ReturnType<typeof useUpdateIndi
 export type UpdateIndividualMutationResult = Apollo.MutationResult<UpdateIndividualMutation>;
 export type UpdateIndividualMutationOptions = Apollo.BaseMutationOptions<UpdateIndividualMutation, UpdateIndividualMutationVariables>;
 export const IndividualsDocument = gql`
-    query individuals($managerId: ID, $fetchManagerId: ID!, $fetchManagerDetails: Boolean = false) {
-  individuals(managerId: $managerId) {
+    query individuals($managerId: ID, $fetchManagerId: ID!, $fetchManagerDetails: Boolean = false, $isManager: Boolean) {
+  individuals(managerId: $managerId, isManager: $isManager, isActive: true) {
     nodes {
       id
       fullname
@@ -572,6 +582,7 @@ export const IndividualsDocument = gql`
  *      managerId: // value for 'managerId'
  *      fetchManagerId: // value for 'fetchManagerId'
  *      fetchManagerDetails: // value for 'fetchManagerDetails'
+ *      isManager: // value for 'isManager'
  *   },
  * });
  */

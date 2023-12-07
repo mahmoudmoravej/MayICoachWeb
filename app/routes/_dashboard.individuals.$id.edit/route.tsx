@@ -1,6 +1,14 @@
 import { Form, useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+  Switch,
+  Select,
+  Option,
+} from "@material-tailwind/react";
 import {
   useFindIndividualQuery,
   useUpdateIndividualMutation,
@@ -27,6 +35,12 @@ export default function IndividualEdit() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (!individual) return <p>No data</p>;
+  const managers = data?.managers.nodes
+    ?.filter((m) => m?.id.toString() != id)
+    .map((m) => ({
+      id: m?.id.toString(),
+      fullname: m?.fullname,
+    }));
 
   var onSubmit = function () {
     const { id: _, ...input } = { ...individual };
@@ -56,21 +70,6 @@ export default function IndividualEdit() {
       <Form className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-96">
         <div className="mb-1 flex flex-col gap-6">
           <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Id
-          </Typography>
-          <Input
-            size="lg"
-            placeholder="name@mail.com"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            crossOrigin={undefined}
-            value={individual.id?.toString()}
-            readOnly
-          />
-
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
             Fullname
           </Typography>
           <Input
@@ -99,6 +98,42 @@ export default function IndividualEdit() {
             value={individual.jobTitle ?? ""}
             onChange={({ target }) => {
               setIndividual({ ...individual, jobTitle: target.value });
+            }}
+          />
+
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Reports to
+          </Typography>
+          <Select
+            size="lg"
+            label=""
+            value={individual.managerId?.toString()}
+            onChange={(selectedValue) => {
+              setIndividual({
+                ...individual,
+                managerId: parseInt(selectedValue!),
+              });
+            }}
+          >
+            {managers?.map(({ id, fullname }) => (
+              <Option key={id} value={id?.toString()}>
+                {fullname}
+              </Option>
+            ))}
+          </Select>
+
+          <Switch
+            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+            label={
+              <Typography variant="h6" color="blue-gray">
+                Manager?
+              </Typography>
+            }
+            color="green"
+            crossOrigin={undefined}
+            checked={individual.isManager ?? false}
+            onChange={({ target }) => {
+              setIndividual({ ...individual, isManager: target.checked });
             }}
           />
 
@@ -153,6 +188,7 @@ function getInputValues(
         jobTitle?: string | null;
         jobLevelId?: string | null;
         managerId?: number | null;
+        isManager?: boolean | null;
         // userId?: string | null;
       }
     | undefined,
@@ -165,6 +201,7 @@ function getInputValues(
     jobTitle: individual?.jobTitle,
     jobLevelId: individual?.jobLevelId,
     managerId: individual?.managerId,
+    isManager: individual?.isManager,
     // userId: individual?.userId,
   };
 }
