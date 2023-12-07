@@ -55,7 +55,9 @@ export default function Individuals() {
   let { id: managerId } = useParams();
   const user = useUser();
 
-  console.log("user?.individual_id", user);
+  let pageTitle = "People";
+  let pageSubTitle = "";
+
   if (managerId == "myteam" && user?.individual_id != null) {
     managerId = user?.individual_id.toString();
   }
@@ -63,6 +65,8 @@ export default function Individuals() {
   const { data, loading, error } = useIndividualsQuery({
     variables: {
       managerId: managerId ?? null,
+      fetchManagerDetails: managerId != null,
+      fetchManagerId: managerId ?? "NotUsed",
     },
     fetchPolicy: "network-only",
   });
@@ -71,6 +75,11 @@ export default function Individuals() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (data?.individuals?.nodes == null) return <p>no data</p>;
+
+  if (data.managerInfo != null) {
+    pageTitle = `${data.managerInfo.fullname ?? ""}'s team`;
+    pageSubTitle = data.managerInfo.jobTitle ?? "";
+  }
 
   const individuals = data.individuals.nodes.map((node) =>
     node == null
@@ -90,10 +99,10 @@ export default function Individuals() {
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              People
+              {pageTitle}
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-              See information about all people
+              {pageSubTitle}
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">

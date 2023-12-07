@@ -434,10 +434,12 @@ export type UpdateIndividualMutation = { __typename?: 'Mutation', individualUpda
 
 export type IndividualsQueryVariables = Exact<{
   managerId?: InputMaybe<Scalars['ID']['input']>;
+  fetchManagerId: Scalars['ID']['input'];
+  fetchManagerDetails?: InputMaybe<Scalars['Boolean']['input']>;
 }>;
 
 
-export type IndividualsQuery = { __typename?: 'Query', individuals: { __typename?: 'IndividualConnection', nodes?: Array<{ __typename?: 'Individual', id: number, fullname?: string | null, jobTitle?: string | null, jobLevelId?: string | null, isManager: boolean } | null> | null } };
+export type IndividualsQuery = { __typename?: 'Query', individuals: { __typename?: 'IndividualConnection', nodes?: Array<{ __typename?: 'Individual', id: number, fullname?: string | null, jobTitle?: string | null, jobLevelId?: string | null, isManager: boolean } | null> | null }, managerInfo: { __typename?: 'Individual', id: number, fullname?: string | null, jobTitle?: string | null } };
 
 export type CreateManagerMutationVariables = Exact<{
   name: Scalars['String']['input'];
@@ -537,7 +539,7 @@ export type UpdateIndividualMutationHookResult = ReturnType<typeof useUpdateIndi
 export type UpdateIndividualMutationResult = Apollo.MutationResult<UpdateIndividualMutation>;
 export type UpdateIndividualMutationOptions = Apollo.BaseMutationOptions<UpdateIndividualMutation, UpdateIndividualMutationVariables>;
 export const IndividualsDocument = gql`
-    query individuals($managerId: ID) {
+    query individuals($managerId: ID, $fetchManagerId: ID!, $fetchManagerDetails: Boolean = false) {
   individuals(managerId: $managerId) {
     nodes {
       id
@@ -546,6 +548,11 @@ export const IndividualsDocument = gql`
       jobLevelId
       isManager
     }
+  }
+  managerInfo: individual(id: $fetchManagerId) @include(if: $fetchManagerDetails) {
+    id
+    fullname
+    jobTitle
   }
 }
     `;
@@ -563,10 +570,12 @@ export const IndividualsDocument = gql`
  * const { data, loading, error } = useIndividualsQuery({
  *   variables: {
  *      managerId: // value for 'managerId'
+ *      fetchManagerId: // value for 'fetchManagerId'
+ *      fetchManagerDetails: // value for 'fetchManagerDetails'
  *   },
  * });
  */
-export function useIndividualsQuery(baseOptions?: Apollo.QueryHookOptions<IndividualsQuery, IndividualsQueryVariables>) {
+export function useIndividualsQuery(baseOptions: Apollo.QueryHookOptions<IndividualsQuery, IndividualsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<IndividualsQuery, IndividualsQueryVariables>(IndividualsDocument, options);
       }

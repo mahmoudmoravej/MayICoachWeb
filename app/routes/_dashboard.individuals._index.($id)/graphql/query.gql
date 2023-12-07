@@ -1,4 +1,8 @@
-query individuals($managerId: ID) {
+query individuals(
+  $managerId: ID
+  $fetchManagerId: ID!
+  $fetchManagerDetails: Boolean = false
+) {
   individuals(managerId: $managerId) {
     nodes {
       id
@@ -7,5 +11,11 @@ query individuals($managerId: ID) {
       jobLevelId
       isManager
     }
+  }
+  managerInfo: individual(id: $fetchManagerId)
+    @include(if: $fetchManagerDetails) {
+    id
+    fullname
+    jobTitle
   }
 }
