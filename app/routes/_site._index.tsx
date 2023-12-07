@@ -25,6 +25,11 @@ export function Home() {
         <div className="max-w-8xl container relative mx-auto">
           <div className="flex flex-wrap items-center">
             <div className="ml-auto mr-auto w-full px-4 text-center lg:w-8/12">
+              <img
+                alt="may I coach"
+                src="/images/mayIcoach384.png"
+                className="mx-auto h-96 w-96"
+              />
               <Typography
                 variant="h1"
                 color="white"
