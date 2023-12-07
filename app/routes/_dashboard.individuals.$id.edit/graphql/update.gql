@@ -1,8 +1,13 @@
-mutation updateManager($id: ID!, $name: String!, $newId: Int!) {
-  managerUpdate(input: { id: $id, managerInput: { Name: $name, Id: $newId } }) {
-    manager {
-      Name
-      Id
+mutation UpdateIndividual($input: IndividualUpdateInput!) {
+  individualUpdate(input: $input) {
+    individual {
+      fullname
+      id
+      jobTitle
+      jobLevelId
+      handleGithub
+      handleGoogle
+      userId
     }
   }
 }

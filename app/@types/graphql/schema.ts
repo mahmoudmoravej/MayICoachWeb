@@ -418,21 +418,19 @@ export type UserInfo = {
   UserId: Scalars['Int']['output'];
 };
 
-export type FindManagerQueryVariables = Exact<{
+export type FindIndividualQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type FindManagerQuery = { __typename?: 'Query', manager: { __typename?: 'Manager', Name: string, Id: number } };
+export type FindIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null } };
 
-export type UpdateManagerMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  name: Scalars['String']['input'];
-  newId: Scalars['Int']['input'];
+export type UpdateIndividualMutationVariables = Exact<{
+  input: IndividualUpdateInput;
 }>;
 
 
-export type UpdateManagerMutation = { __typename?: 'Mutation', managerUpdate?: { __typename?: 'ManagerUpdatePayload', manager: { __typename?: 'Manager', Name: string, Id: number } } | null };
+export type UpdateIndividualMutation = { __typename?: 'Mutation', individualUpdate?: { __typename?: 'IndividualUpdatePayload', individual: { __typename?: 'Individual', fullname?: string | null, id: number, jobTitle?: string | null, jobLevelId?: string | null, handleGithub?: string | null, handleGoogle?: string | null, userId?: number | null } } | null };
 
 export type IndividualsQueryVariables = Exact<{
   managerId?: InputMaybe<Scalars['ID']['input']>;
@@ -455,80 +453,89 @@ export type GetLoggedInUserInfoQueryVariables = Exact<{ [key: string]: never; }>
 export type GetLoggedInUserInfoQuery = { __typename?: 'Query', myInfo: { __typename?: 'UserInfo', UserId: number, Individual?: { __typename?: 'Individual', id: number, isManager: boolean } | null } };
 
 
-export const FindManagerDocument = gql`
-    query findManager($id: ID!) {
-  manager(id: $id) {
-    Name
-    Id
+export const FindIndividualDocument = gql`
+    query findIndividual($id: ID!) {
+  individual(id: $id) {
+    id
+    fullname
+    handleGithub
+    handleGoogle
+    jobTitle
+    jobLevelId
+    userId
+    managerId
   }
 }
     `;
 
 /**
- * __useFindManagerQuery__
+ * __useFindIndividualQuery__
  *
- * To run a query within a React component, call `useFindManagerQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindManagerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFindIndividualQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindIndividualQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFindManagerQuery({
+ * const { data, loading, error } = useFindIndividualQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useFindManagerQuery(baseOptions: Apollo.QueryHookOptions<FindManagerQuery, FindManagerQueryVariables>) {
+export function useFindIndividualQuery(baseOptions: Apollo.QueryHookOptions<FindIndividualQuery, FindIndividualQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindManagerQuery, FindManagerQueryVariables>(FindManagerDocument, options);
+        return Apollo.useQuery<FindIndividualQuery, FindIndividualQueryVariables>(FindIndividualDocument, options);
       }
-export function useFindManagerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindManagerQuery, FindManagerQueryVariables>) {
+export function useFindIndividualLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindIndividualQuery, FindIndividualQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindManagerQuery, FindManagerQueryVariables>(FindManagerDocument, options);
+          return Apollo.useLazyQuery<FindIndividualQuery, FindIndividualQueryVariables>(FindIndividualDocument, options);
         }
-export type FindManagerQueryHookResult = ReturnType<typeof useFindManagerQuery>;
-export type FindManagerLazyQueryHookResult = ReturnType<typeof useFindManagerLazyQuery>;
-export type FindManagerQueryResult = Apollo.QueryResult<FindManagerQuery, FindManagerQueryVariables>;
-export const UpdateManagerDocument = gql`
-    mutation updateManager($id: ID!, $name: String!, $newId: Int!) {
-  managerUpdate(input: {id: $id, managerInput: {Name: $name, Id: $newId}}) {
-    manager {
-      Name
-      Id
+export type FindIndividualQueryHookResult = ReturnType<typeof useFindIndividualQuery>;
+export type FindIndividualLazyQueryHookResult = ReturnType<typeof useFindIndividualLazyQuery>;
+export type FindIndividualQueryResult = Apollo.QueryResult<FindIndividualQuery, FindIndividualQueryVariables>;
+export const UpdateIndividualDocument = gql`
+    mutation UpdateIndividual($input: IndividualUpdateInput!) {
+  individualUpdate(input: $input) {
+    individual {
+      fullname
+      id
+      jobTitle
+      jobLevelId
+      handleGithub
+      handleGoogle
+      userId
     }
   }
 }
     `;
-export type UpdateManagerMutationFn = Apollo.MutationFunction<UpdateManagerMutation, UpdateManagerMutationVariables>;
+export type UpdateIndividualMutationFn = Apollo.MutationFunction<UpdateIndividualMutation, UpdateIndividualMutationVariables>;
 
 /**
- * __useUpdateManagerMutation__
+ * __useUpdateIndividualMutation__
  *
- * To run a mutation, you first call `useUpdateManagerMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateManagerMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateIndividualMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateIndividualMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateManagerMutation, { data, loading, error }] = useUpdateManagerMutation({
+ * const [updateIndividualMutation, { data, loading, error }] = useUpdateIndividualMutation({
  *   variables: {
- *      id: // value for 'id'
- *      name: // value for 'name'
- *      newId: // value for 'newId'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useUpdateManagerMutation(baseOptions?: Apollo.MutationHookOptions<UpdateManagerMutation, UpdateManagerMutationVariables>) {
+export function useUpdateIndividualMutation(baseOptions?: Apollo.MutationHookOptions<UpdateIndividualMutation, UpdateIndividualMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateManagerMutation, UpdateManagerMutationVariables>(UpdateManagerDocument, options);
+        return Apollo.useMutation<UpdateIndividualMutation, UpdateIndividualMutationVariables>(UpdateIndividualDocument, options);
       }
-export type UpdateManagerMutationHookResult = ReturnType<typeof useUpdateManagerMutation>;
-export type UpdateManagerMutationResult = Apollo.MutationResult<UpdateManagerMutation>;
-export type UpdateManagerMutationOptions = Apollo.BaseMutationOptions<UpdateManagerMutation, UpdateManagerMutationVariables>;
+export type UpdateIndividualMutationHookResult = ReturnType<typeof useUpdateIndividualMutation>;
+export type UpdateIndividualMutationResult = Apollo.MutationResult<UpdateIndividualMutation>;
+export type UpdateIndividualMutationOptions = Apollo.BaseMutationOptions<UpdateIndividualMutation, UpdateIndividualMutationVariables>;
 export const IndividualsDocument = gql`
     query individuals($managerId: ID) {
   individuals(managerId: $managerId) {
