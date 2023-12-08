@@ -1,0 +1,7 @@
+mutation createIndividual($input: IndividualCreateInput!) {
+  individualCreate(input: $input) {
+    individual {
+      ...IndividualFragment
+    }
+  }
+}
