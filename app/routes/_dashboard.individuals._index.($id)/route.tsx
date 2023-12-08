@@ -117,7 +117,15 @@ export default function Individuals() {
             </Button>
             <Button className="flex items-center gap-3" size="sm">
               <UserPlusIcon strokeWidth={2} className="h-4 w-4" />
-              <Link to="/individuals/new">Add member</Link>
+              <Link
+                to={
+                  managerId
+                    ? `/individuals/${managerId}/new`
+                    : `/individuals/new`
+                }
+              >
+                Add member
+              </Link>
             </Button>
 
             <Button

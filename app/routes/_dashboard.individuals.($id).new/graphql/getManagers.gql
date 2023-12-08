@@ -1,0 +1,8 @@
+query getManagers {
+  managers: individuals(isManager: true) {
+    nodes {
+      id
+      fullname
+    }
+  }
+}
