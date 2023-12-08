@@ -1,6 +1,7 @@
 import { useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Card, Typography } from "@material-tailwind/react";
+
 import {
   useFindIndividualQuery,
   useUpdateIndividualMutation,
@@ -40,6 +41,7 @@ export default function IndividualEdit() {
 
   const managers = data.managers.nodes
     .filter((m) => m?.id.toString() != id)
+
     .map((m) => ({
       id: m?.id.toString(),
       fullname: m?.fullname,

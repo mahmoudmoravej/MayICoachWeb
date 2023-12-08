@@ -48,6 +48,11 @@ export function Sidenav({
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
           >
+            <img
+              alt="may I coach"
+              src="/images/mayIcoach100.png"
+              className="mx-auto inline-block h-12 w-12 "
+            />
             {brandName}
           </Typography>
         </Link>
