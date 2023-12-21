@@ -1,0 +1,5 @@
+query findActivity($id: ID!) {
+  activity(id: $id) {
+    ...ActivityFragment
+  }
+}

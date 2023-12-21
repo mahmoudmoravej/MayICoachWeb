@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 
 import {
+  FindIndividualQuery,
+  UpdateIndividualMutation,
   useFindIndividualQuery,
   useUpdateIndividualMutation,
 } from "@app-types/graphql";
@@ -27,12 +29,12 @@ export default function IndividualEdit() {
   });
 
   const [individual, setIndividual] = useState<IndividualEditFormData>(
-    getPureObject(data?.individual),
+    getEditData(data),
   );
   const [updateMethod] = useUpdateIndividualMutation();
 
   useEffect(() => {
-    setIndividual(getPureObject(data?.individual));
+    setIndividual(getEditData(data));
   }, [data]);
 
   if (loading) return <p>Loading...</p>;
@@ -61,7 +63,7 @@ export default function IndividualEdit() {
       },
 
       onCompleted: (data) => {
-        setIndividual(data.individualUpdate?.individual);
+        setIndividual(getEditData(data.individualUpdate));
         alert("Saved!");
       },
     });
@@ -73,6 +75,7 @@ export default function IndividualEdit() {
         Modifying {individual.fullname}
       </Typography>
       <IndividualForm
+        id={id}
         data={individual}
         updateData={setIndividual}
         managers={managers}
@@ -80,4 +83,18 @@ export default function IndividualEdit() {
       />
     </Card>
   );
+}
+
+function getEditData(
+  data:
+    | FindIndividualQuery
+    | UpdateIndividualMutation["individualUpdate"]
+    | null
+    | undefined,
+): IndividualEditFormData | null {
+  if (!data) {
+    return null;
+  }
+
+  return getPureObject(data?.individual);
 }
