@@ -150,7 +150,7 @@ export function IndividualForm<T extends IndividualFormData>({
               </Typography>
             </CardBody>
             <CardFooter className="pt-0">
-              <Link to={`/individuals/${individual.id}/activities`}>
+              <Link to={`/individuals/${id}/activities`}>
                 <Button
                   size="sm"
                   variant="text"
