@@ -1,0 +1,7 @@
+fragment ActivityFragment on Activity {
+  id
+  title
+  prompt
+  result
+  isAnalyzed
+}

@@ -1,0 +1,16 @@
+query individualActivities($individualId: ID!, $isAnalyzed: Boolean) {
+  activities(
+    individualId: $individualId
+    isAnalyzed: $isAnalyzed
+    orderBy: [{ field: "date", direction: "desc" }]
+  ) {
+    nodes {
+      id
+      title
+      isAnalyzed
+      date
+      channelId
+      channelActivityUrl
+    }
+  }
+}

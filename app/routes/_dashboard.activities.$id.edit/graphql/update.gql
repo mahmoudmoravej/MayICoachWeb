@@ -1,0 +1,7 @@
+mutation UpdateActivity($input: ActivityUpdateInput!) {
+  activityUpdate(input: $input) {
+    activity {
+      ...ActivityFragment
+    }
+  }
+}
