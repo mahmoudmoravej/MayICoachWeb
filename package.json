@@ -9,7 +9,7 @@
     "graphql": "graphql-codegen --config graphql.codegen.ts",
     "lint": "eslint .",
     "test": "vitest",
-    "pr": "gh pr create -w"
+    "pr": "sh scripts/pr.sh"
   },
   "dependencies": {
     "@apollo/client": "^3.8.1",
