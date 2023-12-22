@@ -1,0 +1,7 @@
+mutation AnalyzeActivity($input: AnalyzeActivityInput!) {
+  analyzeActivity(input: $input) {
+    activity {
+      ...ActivityFragment
+    }
+  }
+}
