@@ -19,9 +19,8 @@ import {
   TabsHeader,
 } from "@material-tailwind/react";
 import { LoaderFunction, redirect } from "@remix-run/node";
-import { Link, useLoaderData, useParams } from "@remix-run/react";
+import { Link, useParams } from "@remix-run/react";
 import { useState } from "react";
-import { User } from "~/models/user";
 import { authenticator } from "~/services/auth.server";
 import { ImportModal } from "./components/ImportModal";
 
