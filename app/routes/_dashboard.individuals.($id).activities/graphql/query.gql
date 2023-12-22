@@ -1,4 +1,7 @@
 query individualActivities($individualId: ID!, $isAnalyzed: Boolean) {
+  individual(id: $individualId) {
+    fullname
+  }
   activities(
     individualId: $individualId
     isAnalyzed: $isAnalyzed

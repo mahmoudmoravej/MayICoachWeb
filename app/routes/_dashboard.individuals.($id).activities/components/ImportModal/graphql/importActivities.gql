@@ -1,0 +1,13 @@
+mutation importActivities($individualId: Int!) {
+  importActivities(input: { individualId: $individualId }) {
+    totalCount
+    activities {
+      id
+      title
+      isAnalyzed
+      date
+      channelId
+      channelActivityUrl
+    }
+  }
+}
