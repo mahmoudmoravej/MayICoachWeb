@@ -7,6 +7,8 @@ import {
   BriefcaseIcon,
   ChartBarIcon,
   PlayIcon,
+  SignalIcon,
+  IdentificationIcon,
 } from "@heroicons/react/24/solid";
 
 const icon = {
@@ -14,7 +16,7 @@ const icon = {
 };
 
 export type RouteData = {
-  layout: string;
+  layout?: string;
   title?: string;
   pages: {
     icon: JSX.Element;
@@ -25,8 +27,6 @@ export type RouteData = {
 
 export const routes: RouteData[] = [
   {
-    layout: "dashboard",
-
     pages: [
       {
         icon: <HomeIcon {...icon} />,
@@ -47,6 +47,21 @@ export const routes: RouteData[] = [
         icon: <TableCellsIcon {...icon} />,
         name: "Rules",
         path: "/rules",
+      },
+    ],
+  },
+  {
+    title: "My profile",
+    pages: [
+      {
+        icon: <IdentificationIcon {...icon} />,
+        name: "My settings",
+        path: "/individuals/#{myId}/edit",
+      },
+      {
+        icon: <SignalIcon {...icon} />,
+        name: "My activities",
+        path: "/individuals/#{myId}/activities",
       },
     ],
   },
