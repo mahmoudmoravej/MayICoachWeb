@@ -561,6 +561,13 @@ export type UserInfo = {
 
 export type ActivityFragmentFragment = { __typename?: 'Activity', id: number, title?: string | null, prompt?: string | null, result?: string | null, isAnalyzed: boolean };
 
+export type AnalyzeActivityMutationVariables = Exact<{
+  input: AnalyzeActivityInput;
+}>;
+
+
+export type AnalyzeActivityMutation = { __typename?: 'Mutation', analyzeActivity?: { __typename?: 'AnalyzeActivityPayload', activity: { __typename?: 'Activity', id: number, title?: string | null, prompt?: string | null, result?: string | null, isAnalyzed: boolean } } | null };
+
 export type FindActivityQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -648,6 +655,41 @@ export const IndividualFragmentFragmentDoc = gql`
   isManager
 }
     `;
+export const AnalyzeActivityDocument = gql`
+    mutation AnalyzeActivity($input: AnalyzeActivityInput!) {
+  analyzeActivity(input: $input) {
+    activity {
+      ...ActivityFragment
+    }
+  }
+}
+    ${ActivityFragmentFragmentDoc}`;
+export type AnalyzeActivityMutationFn = Apollo.MutationFunction<AnalyzeActivityMutation, AnalyzeActivityMutationVariables>;
+
+/**
+ * __useAnalyzeActivityMutation__
+ *
+ * To run a mutation, you first call `useAnalyzeActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAnalyzeActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [analyzeActivityMutation, { data, loading, error }] = useAnalyzeActivityMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAnalyzeActivityMutation(baseOptions?: Apollo.MutationHookOptions<AnalyzeActivityMutation, AnalyzeActivityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AnalyzeActivityMutation, AnalyzeActivityMutationVariables>(AnalyzeActivityDocument, options);
+      }
+export type AnalyzeActivityMutationHookResult = ReturnType<typeof useAnalyzeActivityMutation>;
+export type AnalyzeActivityMutationResult = Apollo.MutationResult<AnalyzeActivityMutation>;
+export type AnalyzeActivityMutationOptions = Apollo.BaseMutationOptions<AnalyzeActivityMutation, AnalyzeActivityMutationVariables>;
 export const FindActivityDocument = gql`
     query findActivity($id: ID!) {
   activity(id: $id) {

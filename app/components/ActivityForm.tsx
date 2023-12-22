@@ -1,11 +1,5 @@
 import { Form } from "@remix-run/react";
-import {
-  Button,
-  Typography,
-  Textarea,
-  IconButton,
-  Tooltip,
-} from "@material-tailwind/react";
+import { Button, Typography, Textarea } from "@material-tailwind/react";
 import { BoltIcon } from "@heroicons/react/24/solid";
 
 import { ActivityUpdate } from "@app-types/graphql";
@@ -16,40 +10,33 @@ export interface ActivityFormProps<T extends ActivityFormData> {
   data: T;
   updateData: (data: T) => void;
   onSubmit: () => void;
+  onAnalyzeAndSave: () => void;
 }
 
 export function ActivityForm<T extends ActivityFormData>({
   data: activity,
   updateData,
   onSubmit,
+  onAnalyzeAndSave,
 }: ActivityFormProps<T>) {
   return (
     <Form>
       <div className="mb-1 flex flex-row gap-6">
-        <div className="flex w-1/2 flex-row items-end gap-2 ">
-          <div className="flex-1">
-            <Typography variant="h6" color="blue-gray">
-              Prompt
-            </Typography>
-            <Textarea
-              size="lg"
-              className=" h-48 !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              value={activity.prompt ?? ""}
-              onChange={({ target }) => {
-                updateData({ ...activity, prompt: target.value });
-              }}
-            />
-          </div>
-          <div>
-            <Tooltip content="Analyze activity with AI">
-              <IconButton variant="text" className="rounded-full">
-                <BoltIcon className="h-4 w-4" />
-              </IconButton>
-            </Tooltip>
-          </div>
+        <div className="w-1/2">
+          <Typography variant="h6" color="blue-gray">
+            Prompt
+          </Typography>
+          <Textarea
+            size="lg"
+            className=" h-48 !border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            value={activity.prompt ?? ""}
+            onChange={({ target }) => {
+              updateData({ ...activity, prompt: target.value });
+            }}
+          />
         </div>
         <div className="w-1/2">
           <Typography variant="h6" color="blue-gray">
@@ -70,6 +57,14 @@ export function ActivityForm<T extends ActivityFormData>({
       </div>
       <Button className="mt-6" fullWidth onClick={onSubmit}>
         Save
+      </Button>
+      <Button
+        className="mt-6 flex items-center justify-center"
+        fullWidth
+        onClick={onAnalyzeAndSave}
+      >
+        <BoltIcon strokeWidth={2} className="h-4 w-4" />
+        Analyze with AI & Save!
       </Button>
     </Form>
   );
