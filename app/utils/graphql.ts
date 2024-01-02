@@ -23,3 +23,7 @@ export function getPureObject<T extends { __typename?: any }>(
   const { __typename, ...pureObject } = object;
   return pureObject;
 }
+
+export function noNull<T>(value: T | null): value is NonNullable<T> {
+  return value !== null;
+}

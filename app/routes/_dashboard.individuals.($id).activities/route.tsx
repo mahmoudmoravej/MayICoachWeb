@@ -22,7 +22,8 @@ import { LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useParams } from "@remix-run/react";
 import { useState } from "react";
 import { authenticator } from "~/services/auth.server";
-import { ImportModal } from "./components/ImportModal";
+import { AnalyzeButton, ImportModal } from "./components";
+import { noNull } from "~/utils";
 
 type FilterType = "all" | "analyzed" | "not-analyzed";
 const TABS: { label: string; value: FilterType }[] = [
@@ -39,7 +40,7 @@ const TABS: { label: string; value: FilterType }[] = [
     value: "not-analyzed",
   },
 ];
-const TABLE_HEAD = ["Activity", "Analyzed?", "Date", "Url"];
+const TABLE_HEAD = ["Activity", "Analyzed?", "Date", ""];
 
 export let loader: LoaderFunction = async ({ request }) => {
   //we should completely change the following appraoch
@@ -69,17 +70,13 @@ export default function Activities() {
 
   const pageTitle = `${data?.individual.fullname ?? ""}'s activities`;
 
-  const activities = data.activities.nodes.map((node) =>
-    node == null
-      ? {}
-      : {
-          id: node.id,
-          title: node.title ?? "Pull Request",
-          url: node.channelActivityUrl,
-          date: new Date(node.date),
-          isAnalyzed: node.isAnalyzed,
-        },
-  );
+  const activities = data.activities.nodes.filter(noNull).map((node) => ({
+    id: node.id,
+    title: node.title ?? "Pull Request",
+    url: node.channelActivityUrl,
+    date: new Date(node.date),
+    isAnalyzed: node.isAnalyzed,
+  }));
 
   const handleImportModalClose = (imported: boolean) => {
     setImportDialogOpen(false);
@@ -238,6 +235,10 @@ export default function Activities() {
                           </IconButton>
                         </Tooltip>
                       </Link>
+                      <AnalyzeButton
+                        activityId={id?.toString()}
+                        isAnalyzed={isAnalyzed}
+                      />
                     </td>
                   </tr>
                 );
