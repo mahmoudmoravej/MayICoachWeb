@@ -1,0 +1,7 @@
+fragment CycleFragment on Cycle {
+  id
+  title
+  description
+  from
+  to
+}

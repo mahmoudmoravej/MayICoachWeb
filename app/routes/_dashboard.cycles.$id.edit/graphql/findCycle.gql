@@ -1,0 +1,5 @@
+query findCycle($id: ID!) {
+  cycle(id: $id) {
+    ...CycleFragment
+  }
+}

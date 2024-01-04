@@ -1,0 +1,7 @@
+mutation UpdateCycle($input: CycleUpdateInput!) {
+  cycleUpdate(input: $input) {
+    cycle {
+      ...CycleFragment
+    }
+  }
+}

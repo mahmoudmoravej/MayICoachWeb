@@ -14,8 +14,7 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import { LoaderFunction, redirect } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
-import { User } from "~/models/user";
+import { Link } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
 import { noNull } from "~/utils";
 
@@ -27,11 +26,6 @@ export let loader: LoaderFunction = async ({ request }) => {
   if (!user) return redirect("/login");
   else return { user };
 };
-
-function useUser() {
-  const data = useLoaderData<{ user?: User }>();
-  return data.user;
-}
 
 export default function Cycles() {
   let pageTitle = "Cycles";
