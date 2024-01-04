@@ -782,7 +782,7 @@ export type IndividualActivitiesQueryVariables = Exact<{
 }>;
 
 
-export type IndividualActivitiesQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', fullname?: string | null }, activities: { __typename?: 'ActivityConnection', nodes?: Array<{ __typename?: 'Activity', id: number, title?: string | null, isAnalyzed: boolean, date: any, channelId: number, channelActivityUrl?: string | null } | null> | null } };
+export type IndividualActivitiesQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', fullname?: string | null }, activities: { __typename?: 'ActivityConnection', nodes?: Array<{ __typename?: 'Activity', id: number, title?: string | null, isAnalyzed: boolean, date: any, channelId: number, channelActivityUrl?: string | null, cycle?: { __typename?: 'Cycle', id: number, title: string } | null } | null> | null } };
 
 export type CreateIndividualMutationVariables = Exact<{
   input: IndividualCreateInput;
@@ -1261,6 +1261,10 @@ export const IndividualActivitiesDocument = gql`
       date
       channelId
       channelActivityUrl
+      cycle {
+        id
+        title
+      }
     }
   }
 }
