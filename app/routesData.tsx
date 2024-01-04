@@ -48,6 +48,11 @@ export const routes: RouteData[] = [
         name: "Rules",
         path: "/rules",
       },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "Cycles",
+        path: "/cycles",
+      },
     ],
   },
   {

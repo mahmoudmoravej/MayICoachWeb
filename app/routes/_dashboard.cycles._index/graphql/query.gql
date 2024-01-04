@@ -1,0 +1,10 @@
+query cycles {
+  cycles {
+    nodes {
+      id
+      title
+      from
+      to
+    }
+  }
+}
