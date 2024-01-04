@@ -1,0 +1,7 @@
+mutation createCycle($input: CycleCreateInput!) {
+  cycleCreate(input: $input) {
+    cycle {
+      ...CycleFragment
+    }
+  }
+}
