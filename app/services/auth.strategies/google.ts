@@ -40,7 +40,10 @@ export let googleStrategy = new GoogleStrategy(
       } as User;
     } catch (error: any) {
       const msg =
-        "Error fetching loggined in user info through API: " + error.message;
+        "Error fetching loggined in user info through API: " +
+        error.message +
+        +`URL:${process.env.GRAPHQL_SCHEMA_URL}` +
+        JSON.stringify(error);
       console.error(msg);
       throw new AuthorizationError(msg);
     }

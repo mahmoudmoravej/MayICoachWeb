@@ -26,6 +26,10 @@ yarn start
 
 Now you'll need to pick a host to deploy it to.
 
+### Deploy in Vercel
+
+- Url: https://vercel.com/mahmoudmoravejs-projects/may-i-coach-web
+
 ### DIY
 
 If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
