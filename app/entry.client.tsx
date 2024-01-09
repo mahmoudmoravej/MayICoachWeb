@@ -12,7 +12,7 @@ import { hydrateRoot } from "react-dom/client";
 
 const process = {
   env: {
-    GRAPHQL_SCHEMA_URL: "http://localhost:3000/graphql",
+    GRAPHQL_SCHEMA_URL: sessionStorage.getItem("graphql_url"),
   },
 };
 
