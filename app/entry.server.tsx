@@ -19,7 +19,7 @@ import type { ReactElement } from "react";
 import * as utils from "./utils";
 
 const ABORT_DELAY = 5_000;
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //TODO: remove this line. It is dangerous. We have it because there is an issue with the SSL certificate chain of render.com in production
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //TODO: remove this line. It is dangerous. We have it because there is an issue with the SSL certificate chain of render.com in production
 // var sslRootCAs = require("ssl-root-cas/latest");
 // sslRootCAs.inject();
 
