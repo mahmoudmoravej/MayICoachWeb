@@ -4,13 +4,11 @@ export function getApolloClient(request: Request, token: string | undefined) {
   const linkSettings = {
     uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET",
     headers: {
-      // ...Object.fromEntries(request.headers),
+      // ...Object.fromEntries(request.headers), it is not a good way. It will cause in deployment on render.com.
       Authorization: `Bearer ${token ?? "ERROR TOKEN!"}`,
     },
     credentials: "include", // or "same-origin" if your backend server is the same domain
   };
-
-  console.log("linkSettings", linkSettings);
 
   const client = new ApolloClient({
     ssrMode: true,
