@@ -28,7 +28,15 @@ Now you'll need to pick a host to deploy it to.
 
 ### Deploy in Vercel
 
+Note: Deployment happens automatically right after PR merged to main branch.
+
 - Url: https://vercel.com/mahmoudmoravejs-projects/may-i-coach-web
+
+### Deploy in Render.com
+
+Note: Deployment happens automatically right after PR merged to main branch.
+
+- Url: https://dashboard.render.com/web/srv-cmeanpf109ks73c3cpf0
 
 ### DIY
 
