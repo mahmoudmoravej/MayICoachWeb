@@ -1,0 +1,5 @@
+mutation AssignActivities($input: AssignMissedCycleActivitiesInput!) {
+  assignMissedCycleActivities(input: $input) {
+    totalCount
+  }
+}
