@@ -741,6 +741,13 @@ export type CreateCycleMutationVariables = Exact<{
 
 export type CreateCycleMutation = { __typename?: 'Mutation', cycleCreate?: { __typename?: 'CycleCreatePayload', cycle: { __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } } | null };
 
+export type AssignActivitiesMutationVariables = Exact<{
+  input: AssignMissedCycleActivitiesInput;
+}>;
+
+
+export type AssignActivitiesMutation = { __typename?: 'Mutation', assignMissedCycleActivities?: { __typename?: 'AssignMissedCycleActivitiesPayload', totalCount: number } | null };
+
 export type CyclesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1052,6 +1059,39 @@ export function useCreateCycleMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateCycleMutationHookResult = ReturnType<typeof useCreateCycleMutation>;
 export type CreateCycleMutationResult = Apollo.MutationResult<CreateCycleMutation>;
 export type CreateCycleMutationOptions = Apollo.BaseMutationOptions<CreateCycleMutation, CreateCycleMutationVariables>;
+export const AssignActivitiesDocument = gql`
+    mutation AssignActivities($input: AssignMissedCycleActivitiesInput!) {
+  assignMissedCycleActivities(input: $input) {
+    totalCount
+  }
+}
+    `;
+export type AssignActivitiesMutationFn = Apollo.MutationFunction<AssignActivitiesMutation, AssignActivitiesMutationVariables>;
+
+/**
+ * __useAssignActivitiesMutation__
+ *
+ * To run a mutation, you first call `useAssignActivitiesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssignActivitiesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assignActivitiesMutation, { data, loading, error }] = useAssignActivitiesMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAssignActivitiesMutation(baseOptions?: Apollo.MutationHookOptions<AssignActivitiesMutation, AssignActivitiesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AssignActivitiesMutation, AssignActivitiesMutationVariables>(AssignActivitiesDocument, options);
+      }
+export type AssignActivitiesMutationHookResult = ReturnType<typeof useAssignActivitiesMutation>;
+export type AssignActivitiesMutationResult = Apollo.MutationResult<AssignActivitiesMutation>;
+export type AssignActivitiesMutationOptions = Apollo.BaseMutationOptions<AssignActivitiesMutation, AssignActivitiesMutationVariables>;
 export const CyclesDocument = gql`
     query cycles {
   cycles {

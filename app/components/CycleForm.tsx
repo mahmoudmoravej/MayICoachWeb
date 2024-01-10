@@ -11,6 +11,7 @@ import {
 
 import { CycleUpdate } from "@app-types/graphql";
 import DatePickerInput from "./DatePickerInput";
+import { AssignMissedActivitiesButton } from "./AssignMissedActivitiesButton";
 
 export type CycleFormData = CycleUpdate;
 
@@ -91,28 +92,33 @@ export function CycleForm<T extends CycleFormData>({
       </div>
       <div className="w-1/2">
         {id && (
-          <Card className="mt-6 w-96">
-            <CardBody>
-              <Typography variant="h5" color="blue-gray" className="mb-2">
-                User Activities
-              </Typography>
-              <Typography>
-                you can see all user activities through channls like Github,
-                Meetings, Slack, etc.
-              </Typography>
-            </CardBody>
-            <CardFooter className="pt-0">
-              <Link to={`/cycles/${id}/activities`}>
-                <Button
-                  size="sm"
-                  variant="text"
-                  className="flex items-center gap-2"
-                >
-                  Show Activities
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
+          <>
+            <Card className="mt-6 w-96">
+              <CardBody>
+                <Typography variant="h5" color="blue-gray" className="mb-2">
+                  Cycle's Activities
+                </Typography>
+                <Typography>
+                  you can see or update all user' activities for this cycle.
+                </Typography>
+              </CardBody>
+              <CardFooter className="pt-0">
+                <Link to={`/cycles/${id}/activities`}>
+                  <Button
+                    size="sm"
+                    variant="text"
+                    className="flex items-center gap-2"
+                  >
+                    Show Activities
+                  </Button>
+                </Link>
+                <AssignMissedActivitiesButton
+                  cycleId={Number.parseInt(id)}
+                  mode="button"
+                />
+              </CardFooter>
+            </Card>
+          </>
         )}
       </div>
     </div>

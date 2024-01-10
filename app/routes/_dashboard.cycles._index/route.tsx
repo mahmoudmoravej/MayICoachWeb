@@ -1,6 +1,6 @@
 import { useCyclesQuery } from "@app-types/graphql";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { UserPlusIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -9,14 +9,13 @@ import {
   Button,
   CardBody,
   CardFooter,
-  IconButton,
-  Tooltip,
   Spinner,
 } from "@material-tailwind/react";
 import { LoaderFunction, redirect } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
 import { noNull } from "~/utils";
+import { AssignMissedActivitiesButton } from "~/components/AssignMissedActivitiesButton";
 
 const TABLE_HEAD = ["Title", "From", "To", ""];
 
@@ -107,13 +106,12 @@ export default function Cycles() {
                   <td className={classes}>
                     <div className="flex items-center gap-3">
                       <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
+                        <Link
+                          to={`/cycles/${id}/edit`}
+                          className="flex items-center gap-1 hover:underline"
                         >
                           {title}
-                        </Typography>
+                        </Link>
                       </div>
                     </div>
                   </td>
@@ -149,13 +147,7 @@ export default function Cycles() {
                   </td>
 
                   <td className={classes}>
-                    <Link to={`/cycles/${id}/edit`}>
-                      <Tooltip content="Edit User">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
-                    </Link>
+                    <AssignMissedActivitiesButton cycleId={id} />
                   </td>
                 </tr>
               );
