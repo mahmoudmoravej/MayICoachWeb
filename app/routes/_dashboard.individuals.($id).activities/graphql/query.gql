@@ -1,10 +1,21 @@
-query individualActivities($individualId: ID!, $isAnalyzed: Boolean) {
+query individualActivities(
+  $individualId: ID!
+  $isAnalyzed: Boolean
+  $cycleId: ID
+) {
   individual(id: $individualId) {
     fullname
+  }
+  cycles(orderBy: [{ field: "from", direction: "desc" }]) {
+    nodes {
+      id
+      title
+    }
   }
   activities(
     individualId: $individualId
     isAnalyzed: $isAnalyzed
+    cycleId: $cycleId
     orderBy: [{ field: "date", direction: "desc" }]
   ) {
     nodes {

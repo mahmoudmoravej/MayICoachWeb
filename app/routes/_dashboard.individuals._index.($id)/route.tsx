@@ -1,6 +1,11 @@
 import { useIndividualsQuery } from "@app-types/graphql";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon, HomeIcon } from "@heroicons/react/24/solid";
+import {
+  PencilIcon,
+  UserPlusIcon,
+  HomeIcon,
+  SignalIcon,
+} from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -257,9 +262,16 @@ export default function Individuals() {
 
                     <td className={classes}>
                       <Link to={`/individuals/${id}/edit`}>
-                        <Tooltip content="Edit User">
+                        <Tooltip content="Edit user">
                           <IconButton variant="text">
                             <PencilIcon className="h-4 w-4" />
+                          </IconButton>
+                        </Tooltip>
+                      </Link>
+                      <Link to={`/individuals/${id}/activities`}>
+                        <Tooltip content="Show activities">
+                          <IconButton variant="text">
+                            <SignalIcon className="h-4 w-4" />
                           </IconButton>
                         </Tooltip>
                       </Link>
