@@ -1,4 +1,4 @@
-import { Form, Link } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import {
   Input,
   Button,
@@ -99,19 +99,13 @@ export function CycleForm<T extends CycleFormData>({
                   Cycle's Activities
                 </Typography>
                 <Typography>
-                  you can see or update all user' activities for this cycle.
+                  If you have changed the dates of this cycle or it is a new
+                  cycle, you may assign missed activities by clicking the button
+                  below. Note that if activities are already assigned, they will
+                  not be updated.
                 </Typography>
               </CardBody>
               <CardFooter className="pt-0">
-                <Link to={`/cycles/${id}/activities`}>
-                  <Button
-                    size="sm"
-                    variant="text"
-                    className="flex items-center gap-2"
-                  >
-                    Show Activities
-                  </Button>
-                </Link>
                 <AssignMissedActivitiesButton
                   cycleId={Number.parseInt(id)}
                   mode="button"

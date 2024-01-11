@@ -553,6 +553,7 @@ export type Query = {
 export type QueryActivitiesArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
+  cycleId?: InputMaybe<Scalars['ID']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   individualId?: InputMaybe<Scalars['ID']['input']>;
   isAnalyzed?: InputMaybe<Scalars['Boolean']['input']>;
@@ -576,6 +577,7 @@ export type QueryCyclesArgs = {
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<Order>>;
 };
 
 
@@ -695,6 +697,13 @@ export type UserInfo = {
   UserId: Scalars['Int']['output'];
 };
 
+export type AssignActivitiesMutationVariables = Exact<{
+  input: AssignMissedCycleActivitiesInput;
+}>;
+
+
+export type AssignActivitiesMutation = { __typename?: 'Mutation', assignMissedCycleActivities?: { __typename?: 'AssignMissedCycleActivitiesPayload', totalCount: number } | null };
+
 export type ActivityFragmentFragment = { __typename?: 'Activity', id: number, title?: string | null, prompt?: string | null, result?: string | null, isAnalyzed: boolean };
 
 export type AnalyzeActivityMutationVariables = Exact<{
@@ -741,13 +750,6 @@ export type CreateCycleMutationVariables = Exact<{
 
 export type CreateCycleMutation = { __typename?: 'Mutation', cycleCreate?: { __typename?: 'CycleCreatePayload', cycle: { __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } } | null };
 
-export type AssignActivitiesMutationVariables = Exact<{
-  input: AssignMissedCycleActivitiesInput;
-}>;
-
-
-export type AssignActivitiesMutation = { __typename?: 'Mutation', assignMissedCycleActivities?: { __typename?: 'AssignMissedCycleActivitiesPayload', totalCount: number } | null };
-
 export type CyclesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -786,10 +788,11 @@ export type ImportActivitiesMutation = { __typename?: 'Mutation', importActiviti
 export type IndividualActivitiesQueryVariables = Exact<{
   individualId: Scalars['ID']['input'];
   isAnalyzed?: InputMaybe<Scalars['Boolean']['input']>;
+  cycleId?: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
-export type IndividualActivitiesQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', fullname?: string | null }, activities: { __typename?: 'ActivityConnection', nodes?: Array<{ __typename?: 'Activity', id: number, title?: string | null, isAnalyzed: boolean, date: any, channelId: number, channelActivityUrl?: string | null, cycle?: { __typename?: 'Cycle', id: number, title: string } | null } | null> | null } };
+export type IndividualActivitiesQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', fullname?: string | null }, cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string } | null> | null }, activities: { __typename?: 'ActivityConnection', nodes?: Array<{ __typename?: 'Activity', id: number, title?: string | null, isAnalyzed: boolean, date: any, channelId: number, channelActivityUrl?: string | null, cycle?: { __typename?: 'Cycle', id: number, title: string } | null } | null> | null } };
 
 export type CreateIndividualMutationVariables = Exact<{
   input: IndividualCreateInput;
@@ -849,6 +852,39 @@ export const IndividualFragmentFragmentDoc = gql`
   isManager
 }
     `;
+export const AssignActivitiesDocument = gql`
+    mutation AssignActivities($input: AssignMissedCycleActivitiesInput!) {
+  assignMissedCycleActivities(input: $input) {
+    totalCount
+  }
+}
+    `;
+export type AssignActivitiesMutationFn = Apollo.MutationFunction<AssignActivitiesMutation, AssignActivitiesMutationVariables>;
+
+/**
+ * __useAssignActivitiesMutation__
+ *
+ * To run a mutation, you first call `useAssignActivitiesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssignActivitiesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assignActivitiesMutation, { data, loading, error }] = useAssignActivitiesMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAssignActivitiesMutation(baseOptions?: Apollo.MutationHookOptions<AssignActivitiesMutation, AssignActivitiesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AssignActivitiesMutation, AssignActivitiesMutationVariables>(AssignActivitiesDocument, options);
+      }
+export type AssignActivitiesMutationHookResult = ReturnType<typeof useAssignActivitiesMutation>;
+export type AssignActivitiesMutationResult = Apollo.MutationResult<AssignActivitiesMutation>;
+export type AssignActivitiesMutationOptions = Apollo.BaseMutationOptions<AssignActivitiesMutation, AssignActivitiesMutationVariables>;
 export const AnalyzeActivityDocument = gql`
     mutation AnalyzeActivity($input: AnalyzeActivityInput!) {
   analyzeActivity(input: $input) {
@@ -1059,39 +1095,6 @@ export function useCreateCycleMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateCycleMutationHookResult = ReturnType<typeof useCreateCycleMutation>;
 export type CreateCycleMutationResult = Apollo.MutationResult<CreateCycleMutation>;
 export type CreateCycleMutationOptions = Apollo.BaseMutationOptions<CreateCycleMutation, CreateCycleMutationVariables>;
-export const AssignActivitiesDocument = gql`
-    mutation AssignActivities($input: AssignMissedCycleActivitiesInput!) {
-  assignMissedCycleActivities(input: $input) {
-    totalCount
-  }
-}
-    `;
-export type AssignActivitiesMutationFn = Apollo.MutationFunction<AssignActivitiesMutation, AssignActivitiesMutationVariables>;
-
-/**
- * __useAssignActivitiesMutation__
- *
- * To run a mutation, you first call `useAssignActivitiesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAssignActivitiesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [assignActivitiesMutation, { data, loading, error }] = useAssignActivitiesMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useAssignActivitiesMutation(baseOptions?: Apollo.MutationHookOptions<AssignActivitiesMutation, AssignActivitiesMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AssignActivitiesMutation, AssignActivitiesMutationVariables>(AssignActivitiesDocument, options);
-      }
-export type AssignActivitiesMutationHookResult = ReturnType<typeof useAssignActivitiesMutation>;
-export type AssignActivitiesMutationResult = Apollo.MutationResult<AssignActivitiesMutation>;
-export type AssignActivitiesMutationOptions = Apollo.BaseMutationOptions<AssignActivitiesMutation, AssignActivitiesMutationVariables>;
 export const CyclesDocument = gql`
     query cycles {
   cycles {
@@ -1285,13 +1288,20 @@ export type ImportActivitiesMutationHookResult = ReturnType<typeof useImportActi
 export type ImportActivitiesMutationResult = Apollo.MutationResult<ImportActivitiesMutation>;
 export type ImportActivitiesMutationOptions = Apollo.BaseMutationOptions<ImportActivitiesMutation, ImportActivitiesMutationVariables>;
 export const IndividualActivitiesDocument = gql`
-    query individualActivities($individualId: ID!, $isAnalyzed: Boolean) {
+    query individualActivities($individualId: ID!, $isAnalyzed: Boolean, $cycleId: ID) {
   individual(id: $individualId) {
     fullname
+  }
+  cycles(orderBy: [{field: "from", direction: "desc"}]) {
+    nodes {
+      id
+      title
+    }
   }
   activities(
     individualId: $individualId
     isAnalyzed: $isAnalyzed
+    cycleId: $cycleId
     orderBy: [{field: "date", direction: "desc"}]
   ) {
     nodes {
@@ -1324,6 +1334,7 @@ export const IndividualActivitiesDocument = gql`
  *   variables: {
  *      individualId: // value for 'individualId'
  *      isAnalyzed: // value for 'isAnalyzed'
+ *      cycleId: // value for 'cycleId'
  *   },
  * });
  */

@@ -17,9 +17,11 @@ import {
   Tab,
   Tabs,
   TabsHeader,
+  Select,
+  Option,
 } from "@material-tailwind/react";
 import { LoaderFunction, redirect } from "@remix-run/node";
-import { Link, useParams } from "@remix-run/react";
+import { Link, useParams, useLocation, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { authenticator } from "~/services/auth.server";
 import { AnalyzeButton, ImportModal } from "./components";
@@ -56,10 +58,18 @@ export default function Activities() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [importDialogOpen, setImportDialogOpen] = useState(false);
 
+  const { search } = useLocation();
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(search);
+  const [selectedCycle, setSelectedCycle] = useState<number>(
+    Number(queryParams.get("cycleid") ?? 0),
+  );
+
   const { data, loading, error, refetch } = useIndividualActivitiesQuery({
     variables: {
       individualId: individualId,
       isAnalyzed: filter == "all" ? undefined : filter === "analyzed",
+      cycleId: selectedCycle === 0 ? undefined : selectedCycle?.toString(),
     },
     fetchPolicy: "network-only",
   });
@@ -79,6 +89,13 @@ export default function Activities() {
     cycle: node.cycle?.title ?? "-",
   }));
 
+  const cycles = data.cycles?.nodes?.filter(noNull).map((node) => ({
+    id: node.id,
+    title: node.title,
+  }));
+
+  cycles?.unshift({ id: 0, title: "All Cycles" });
+
   const handleImportModalClose = (imported: boolean) => {
     setImportDialogOpen(false);
     if (imported) {
@@ -93,6 +110,18 @@ export default function Activities() {
       handleClose={handleImportModalClose}
     />
   );
+
+  const handle_cycle_change = (value: string | undefined) => {
+    value = value ?? "0";
+    setSelectedCycle(parseInt(value));
+
+    if (value == "0") queryParams.delete("cycleid");
+    else queryParams.set("cycleid", value);
+
+    navigate({
+      search: queryParams.toString(),
+    });
+  };
 
   return (
     <>
@@ -138,6 +167,18 @@ export default function Activities() {
           </div>
         </CardHeader>
         <CardBody className="overflow-scroll px-0">
+          <Select
+            size="lg"
+            variant="static"
+            value={selectedCycle.toString()}
+            onChange={handle_cycle_change}
+          >
+            {cycles?.map(({ id, title }) => (
+              <Option key={id} value={id?.toString()}>
+                {title}
+              </Option>
+            ))}
+          </Select>
           <table className="mt-4 w-full min-w-max table-auto text-left">
             <thead>
               <tr>

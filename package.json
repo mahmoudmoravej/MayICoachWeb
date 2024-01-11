@@ -15,7 +15,7 @@
     "@apollo/client": "^3.8.1",
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@heroicons/react": "^2.0.18",
-    "@material-tailwind/react": "^2.1.4",
+    "@material-tailwind/react": "^2.1.8",
     "@remix-run/css-bundle": "2.2.0",
     "@remix-run/node": "2.2.0",
     "@remix-run/react": "2.2.0",
