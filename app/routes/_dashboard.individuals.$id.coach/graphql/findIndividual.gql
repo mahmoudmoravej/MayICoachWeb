@@ -1,0 +1,10 @@
+query coachIndividual($id: ID!) {
+  individual(id: $id) {
+    ...IndividualFragment
+    activeCycles {
+      nodes {
+        ...CycleFragment
+      }
+    }
+  }
+}

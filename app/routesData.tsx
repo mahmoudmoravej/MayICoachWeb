@@ -9,6 +9,7 @@ import {
   PlayIcon,
   SignalIcon,
   IdentificationIcon,
+  LightBulbIcon,
 } from "@heroicons/react/24/solid";
 
 const icon = {
@@ -59,14 +60,19 @@ export const routes: RouteData[] = [
     title: "My profile",
     pages: [
       {
-        icon: <IdentificationIcon {...icon} />,
-        name: "My settings",
-        path: "/individuals/#{myId}/edit",
+        icon: <LightBulbIcon {...icon} />,
+        name: "Coach me!",
+        path: "/individuals/#{myId}/coach",
       },
       {
         icon: <SignalIcon {...icon} />,
         name: "My activities",
         path: "/individuals/#{myId}/activities",
+      },
+      {
+        icon: <IdentificationIcon {...icon} />,
+        name: "My settings",
+        path: "/individuals/#{myId}/edit",
       },
     ],
   },

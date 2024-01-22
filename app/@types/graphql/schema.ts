@@ -206,6 +206,7 @@ export type ImportActivitiesPayload = {
 
 export type Individual = {
   __typename?: 'Individual';
+  activeCycles?: Maybe<CycleConnection>;
   activities: ActivityConnection;
   fullname?: Maybe<Scalars['String']['output']>;
   handleGithub?: Maybe<Scalars['String']['output']>;
@@ -220,6 +221,14 @@ export type Individual = {
   organizationId: Scalars['Int']['output'];
   reports: IndividualConnection;
   userId?: Maybe<Scalars['Int']['output']>;
+};
+
+
+export type IndividualActiveCyclesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -755,6 +764,13 @@ export type CyclesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CyclesQuery = { __typename?: 'Query', cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, from: any, to: any } | null> | null } };
 
+export type CoachIndividualQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type CoachIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean, activeCycles?: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null } | null } };
+
 export type FindIndividualQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -1134,6 +1150,47 @@ export function useCyclesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Cyc
 export type CyclesQueryHookResult = ReturnType<typeof useCyclesQuery>;
 export type CyclesLazyQueryHookResult = ReturnType<typeof useCyclesLazyQuery>;
 export type CyclesQueryResult = Apollo.QueryResult<CyclesQuery, CyclesQueryVariables>;
+export const CoachIndividualDocument = gql`
+    query coachIndividual($id: ID!) {
+  individual(id: $id) {
+    ...IndividualFragment
+    activeCycles {
+      nodes {
+        ...CycleFragment
+      }
+    }
+  }
+}
+    ${IndividualFragmentFragmentDoc}
+${CycleFragmentFragmentDoc}`;
+
+/**
+ * __useCoachIndividualQuery__
+ *
+ * To run a query within a React component, call `useCoachIndividualQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCoachIndividualQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCoachIndividualQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCoachIndividualQuery(baseOptions: Apollo.QueryHookOptions<CoachIndividualQuery, CoachIndividualQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CoachIndividualQuery, CoachIndividualQueryVariables>(CoachIndividualDocument, options);
+      }
+export function useCoachIndividualLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CoachIndividualQuery, CoachIndividualQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CoachIndividualQuery, CoachIndividualQueryVariables>(CoachIndividualDocument, options);
+        }
+export type CoachIndividualQueryHookResult = ReturnType<typeof useCoachIndividualQuery>;
+export type CoachIndividualLazyQueryHookResult = ReturnType<typeof useCoachIndividualLazyQuery>;
+export type CoachIndividualQueryResult = Apollo.QueryResult<CoachIndividualQuery, CoachIndividualQueryVariables>;
 export const FindIndividualDocument = gql`
     query findIndividual($id: ID!) {
   individual(id: $id) {
