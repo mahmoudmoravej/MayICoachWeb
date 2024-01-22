@@ -62,7 +62,7 @@ export const routes: RouteData[] = [
       {
         icon: <LightBulbIcon {...icon} />,
         name: "Coach me!",
-        path: "/individuals/#{myId}/cycles",
+        path: "/individuals/#{myId}/coach",
       },
       {
         icon: <SignalIcon {...icon} />,
