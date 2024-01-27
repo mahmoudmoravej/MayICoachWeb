@@ -29,6 +29,7 @@ export type Activity = {
   cycleId?: Maybe<Scalars['Int']['output']>;
   date: Scalars['ISO8601DateTime']['output'];
   id: Scalars['Int']['output'];
+  individual?: Maybe<Individual>;
   individualId: Scalars['Int']['output'];
   isAnalyzed: Scalars['Boolean']['output'];
   prompt?: Maybe<Scalars['String']['output']>;
@@ -75,6 +76,47 @@ export type ActivityUpdatePayload = {
   activity: Activity;
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars['String']['output']>;
+};
+
+export type Advice = {
+  __typename?: 'Advice';
+  activityPrompt?: Maybe<Scalars['String']['output']>;
+  activitySummary?: Maybe<Scalars['String']['output']>;
+  aiEngine: AiEngine;
+  aiEngineId: Scalars['Int']['output'];
+  cycle?: Maybe<Cycle>;
+  cycleId: Scalars['Int']['output'];
+  datetime: Scalars['ISO8601DateTime']['output'];
+  id: Scalars['Int']['output'];
+  individual?: Maybe<Individual>;
+  individualId: Scalars['Int']['output'];
+  isActivityAnalyzed: Scalars['Boolean']['output'];
+  isAnalyzed: Scalars['Boolean']['output'];
+  isOutlookAnalyzed: Scalars['Boolean']['output'];
+  outlookPrompt?: Maybe<Scalars['String']['output']>;
+  outlookSummary?: Maybe<Scalars['String']['output']>;
+  prompt?: Maybe<Scalars['String']['output']>;
+  result?: Maybe<Scalars['String']['output']>;
+};
+
+/** The connection type for Advice. */
+export type AdviceConnection = {
+  __typename?: 'AdviceConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<AdviceEdge>>>;
+  /** A list of nodes. */
+  nodes?: Maybe<Array<Maybe<Advice>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type AdviceEdge = {
+  __typename?: 'AdviceEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Advice>;
 };
 
 export type AiEngine = {
@@ -538,6 +580,10 @@ export type Query = {
   activities: ActivityConnection;
   /** Returns an activity */
   activity: Activity;
+  /** Returns an advice */
+  advice: Advice;
+  /** Returns a list of advice */
+  adviceList: AdviceConnection;
   /** Returns a cycle */
   cycle: Cycle;
   /** Returns a list of cycles */
@@ -573,6 +619,22 @@ export type QueryActivitiesArgs = {
 
 export type QueryActivityArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryAdviceArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryAdviceListArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  cycleId?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  individualId?: InputMaybe<Scalars['ID']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<Order>>;
 };
 
 
@@ -769,7 +831,7 @@ export type CoachIndividualQueryVariables = Exact<{
 }>;
 
 
-export type CoachIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean, activeCycles?: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null } | null } };
+export type CoachIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean, activeCycles?: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null } | null }, adviceList: { __typename?: 'AdviceConnection', nodes?: Array<{ __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isOutlookAnalyzed: boolean, result?: string | null, outlookSummary?: string | null, activitySummary?: string | null, datetime: any } | null> | null } };
 
 export type FindIndividualQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1158,6 +1220,19 @@ export const CoachIndividualDocument = gql`
       nodes {
         ...CycleFragment
       }
+    }
+  }
+  adviceList(individualId: $id) {
+    nodes {
+      cycleId
+      id
+      isAnalyzed
+      isActivityAnalyzed
+      isOutlookAnalyzed
+      result
+      outlookSummary
+      activitySummary
+      datetime
     }
   }
 }
