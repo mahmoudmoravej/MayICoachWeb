@@ -1,4 +1,4 @@
-import { useAssignActivitiesMutation } from "@app-types/graphql";
+import { useGenerateCycleAdviceMutation } from "@app-types/graphql";
 import { LightBulbIcon } from "@heroicons/react/24/outline";
 import { Spinner, Button } from "@material-tailwind/react";
 
@@ -16,7 +16,7 @@ export function GenerateCycleSummaryButton({
   onSaving,
 }: GenerateCycleSummaryButtonProps) {
   const [isSaving, setIsSaving] = useState(false);
-  const [assignMissedActivitiesMethod] = useAssignActivitiesMutation();
+  const [generateCycleAdviceMethod] = useGenerateCycleAdviceMutation();
 
   const changeIsSaving = (isSaving: boolean) => {
     setIsSaving(isSaving);
@@ -25,11 +25,10 @@ export function GenerateCycleSummaryButton({
 
   var onGenerateCycleSummary = function () {
     changeIsSaving(true);
-    assignMissedActivitiesMethod({
+    generateCycleAdviceMethod({
       variables: {
-        input: {
-          cycleId: cycleId,
-        },
+        cycleId: cycleId,
+        individualId: individualId,
       },
       onError: (error) => {
         changeIsSaving(false);
@@ -37,11 +36,7 @@ export function GenerateCycleSummaryButton({
       },
       onCompleted: (data) => {
         changeIsSaving(false);
-        alert(
-          !data.assignMissedCycleActivities?.totalCount
-            ? "No missed activities. It is updated already!"
-            : `Successfully assigned ${data.assignMissedCycleActivities?.totalCount} activities!`,
-        );
+        alert("Advice Is ready!");
       },
     });
   };

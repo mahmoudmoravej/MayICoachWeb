@@ -9,15 +9,7 @@ query coachIndividual($id: ID!) {
   }
   adviceList(individualId: $id) {
     nodes {
-      cycleId
-      id
-      isAnalyzed
-      isActivityAnalyzed
-      isOutlookAnalyzed
-      result
-      outlookSummary
-      activitySummary
-      datetime
+      ...AdviceFragment
     }
   }
 }

@@ -1,5 +1,9 @@
-mutation AssignActivities($input: AssignMissedCycleActivitiesInput!) {
-  assignMissedCycleActivities(input: $input) {
-    totalCount
+mutation GenerateCycleAdvice($individualId: Int!, $cycleId: Int!) {
+  generateCycleAdvice(
+    input: { individualId: $individualId, cycleId: $cycleId }
+  ) {
+    advice {
+      ...AdviceFragment
+    }
   }
 }

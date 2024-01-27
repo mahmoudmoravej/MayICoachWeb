@@ -1,0 +1,11 @@
+fragment AdviceFragment on Advice {
+  cycleId
+  id
+  isAnalyzed
+  isActivityAnalyzed
+  isOutlookAnalyzed
+  result
+  outlookSummary
+  activitySummary
+  datetime
+}
