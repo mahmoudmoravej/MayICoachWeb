@@ -1,0 +1,23 @@
+query coachIndividual($id: ID!) {
+  individual(id: $id) {
+    ...IndividualFragment
+    activeCycles {
+      nodes {
+        ...CycleFragment
+      }
+    }
+  }
+  adviceList(individualId: $id) {
+    nodes {
+      cycleId
+      id
+      isAnalyzed
+      isActivityAnalyzed
+      isOutlookAnalyzed
+      result
+      outlookSummary
+      activitySummary
+      datetime
+    }
+  }
+}
