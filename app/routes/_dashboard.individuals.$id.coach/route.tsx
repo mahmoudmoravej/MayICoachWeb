@@ -1,4 +1,4 @@
-import { useParams } from "@remix-run/react";
+import { Link, useParams } from "@remix-run/react";
 import {
   Accordion,
   AccordionBody,
@@ -9,8 +9,11 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-import { useCoachIndividualQuery } from "@app-types/graphql";
-import { useState } from "react";
+import {
+  AdviceFragmentFragment,
+  useCoachIndividualQuery,
+} from "@app-types/graphql";
+import { useEffect, useState } from "react";
 import { noNull } from "~/utils";
 
 import { GenerateCycleSummaryButton } from "./components/GenerateCycleSummaryButton";
@@ -21,6 +24,9 @@ export default function IndividualCoach() {
   if (id == null) throw new Error("id is null");
   const [open, setOpen] = useState(0);
   const [isOnGneratingAdvice, setIsOnGneratingAdvice] = useState(false);
+  const [adviceList, setAdviceList] = useState<AdviceFragmentFragment[] | null>(
+    null,
+  );
 
   const { data, loading, error } = useCoachIndividualQuery({
     variables: { id: id },
@@ -29,26 +35,42 @@ export default function IndividualCoach() {
 
   const individual = data?.individual;
 
+  useEffect(() => {
+    if (data?.adviceList?.nodes)
+      setAdviceList(data?.adviceList?.nodes?.filter(noNull).map((o) => o));
+  }, [data?.adviceList?.nodes]);
+
   if (loading) return <Spinner className="w-full" />;
 
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (!individual || !data || !data.adviceList?.nodes) return <p>No data</p>;
 
-  const adviceList = data?.adviceList?.nodes?.filter(noNull).map((o) => o);
-
-  const findAdviceForCycke = (cycleId: number) =>
-    adviceList.find((o) => o.cycleId === cycleId);
+  const findAdviceForCycle = (cycleId: number) =>
+    adviceList?.find((o) => o.cycleId === cycleId);
 
   const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
   const activeCycles = individual.activeCycles?.nodes
     ?.filter(noNull)
     .map((activeCycle) => ({
       ...activeCycle,
-      advice: findAdviceForCycke(activeCycle.id),
+      advice: findAdviceForCycle(activeCycle.id),
     }));
 
-  const handleIsOnGenerateCycleSummary = (isSaving: boolean) => {
+  const handleIsOnGenerateCycleSummary = (
+    isSaving: boolean,
+    generatedAvice: AdviceFragmentFragment | null,
+  ) => {
     setIsOnGneratingAdvice(isSaving);
+    if (generatedAvice && adviceList) {
+      const oldAdvice = adviceList.find(
+        (o) => o.cycleId === generatedAvice.cycleId,
+      );
+
+      setAdviceList([
+        ...adviceList.filter((o) => o !== oldAdvice),
+        generatedAvice,
+      ]);
+    }
   };
 
   const cyclesMarkup = activeCycles?.map((cycle, idx) => (
@@ -58,24 +80,27 @@ export default function IndividualCoach() {
       </AccordionHeader>
       <AccordionBody>
         <Card className="mb-5 mt-5 flex flex-row  space-x-4 text-base font-normal">
-          <CardBody>
+          <CardBody className="w-full">
             {cycle.advice
-              ? `The following has been analyzed at "${cycle.advice.datetime.toLocaleString(
+              ? `Analyzed at ${new Date(cycle.advice.analyzedAt).toLocaleString(
                   "en-CA",
                   {
                     year: "numeric",
                     month: "numeric",
                     day: "numeric",
-                    hour: "2-digit",
+                    hour: "numeric",
                     minute: "numeric",
-                    hour12: false,
                   },
-                )}", need a refresh?`
+                )}, need a refresh?`
               : "This cycle has not been analyzed yet. Click the button below to analyze and get advice for this cycle."}
+            <br />
 
             <GenerateCycleSummaryButton
               cycleId={cycle.id}
               individualId={parseInt(id)}
+              title={
+                cycle.advice?.isAnalyzed ? "Refresh..." : "Analyze and coach..."
+              }
               onSaving={handleIsOnGenerateCycleSummary}
             />
           </CardBody>
@@ -84,7 +109,12 @@ export default function IndividualCoach() {
           <Card className="flex-1">
             <CardBody>
               <Typography variant="h6" color="gray" className="mb-4 uppercase">
-                Activities Summary
+                <Link
+                  to={`/individuals/${id}/activities?cycleid=${cycle.id}`}
+                  className="flex items-center gap-1 hover:underline"
+                >
+                  Activities Summary
+                </Link>
               </Typography>
 
               <Typography color="gray" className="mb-8 font-normal">
@@ -93,7 +123,7 @@ export default function IndividualCoach() {
                 ) : cycle.advice?.activitySummary ? (
                   cycle.advice.activitySummary
                 ) : (
-                  "[No summary generated yet]"
+                  "-"
                 )}
               </Typography>
             </CardBody>
@@ -110,7 +140,7 @@ export default function IndividualCoach() {
                 ) : cycle.advice?.outlookSummary ? (
                   cycle.advice.outlookSummary
                 ) : (
-                  "[No summary generated yet]"
+                  "-"
                 )}
               </Typography>
             </CardBody>
@@ -127,7 +157,7 @@ export default function IndividualCoach() {
                 ) : cycle.advice?.result ? (
                   cycle.advice.result
                 ) : (
-                  "[Nothing generated yet]"
+                  "-"
                 )}
               </Typography>
             </CardBody>
