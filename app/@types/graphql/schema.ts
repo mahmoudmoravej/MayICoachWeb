@@ -84,9 +84,9 @@ export type Advice = {
   activitySummary?: Maybe<Scalars['String']['output']>;
   aiEngine: AiEngine;
   aiEngineId: Scalars['Int']['output'];
+  analyzedAt: Scalars['ISO8601DateTime']['output'];
   cycle?: Maybe<Cycle>;
   cycleId: Scalars['Int']['output'];
-  datetime: Scalars['ISO8601DateTime']['output'];
   id: Scalars['Int']['output'];
   individual?: Maybe<Individual>;
   individualId: Scalars['Int']['output'];
@@ -855,16 +855,16 @@ export type GenerateCycleAdviceMutationVariables = Exact<{
 }>;
 
 
-export type GenerateCycleAdviceMutation = { __typename?: 'Mutation', generateCycleAdvice?: { __typename?: 'GenerateCycleAdvicePayload', advice: { __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isOutlookAnalyzed: boolean, result?: string | null, outlookSummary?: string | null, activitySummary?: string | null, datetime: any } } | null };
+export type GenerateCycleAdviceMutation = { __typename?: 'Mutation', generateCycleAdvice?: { __typename?: 'GenerateCycleAdvicePayload', advice: { __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isOutlookAnalyzed: boolean, result?: string | null, outlookSummary?: string | null, activitySummary?: string | null, analyzedAt: any } } | null };
 
-export type AdviceFragmentFragment = { __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isOutlookAnalyzed: boolean, result?: string | null, outlookSummary?: string | null, activitySummary?: string | null, datetime: any };
+export type AdviceFragmentFragment = { __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isOutlookAnalyzed: boolean, result?: string | null, outlookSummary?: string | null, activitySummary?: string | null, analyzedAt: any };
 
 export type CoachIndividualQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type CoachIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean, activeCycles?: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null } | null }, adviceList: { __typename?: 'AdviceConnection', nodes?: Array<{ __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isOutlookAnalyzed: boolean, result?: string | null, outlookSummary?: string | null, activitySummary?: string | null, datetime: any } | null> | null } };
+export type CoachIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean, activeCycles?: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null } | null }, adviceList: { __typename?: 'AdviceConnection', nodes?: Array<{ __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isOutlookAnalyzed: boolean, result?: string | null, outlookSummary?: string | null, activitySummary?: string | null, analyzedAt: any } | null> | null } };
 
 export type FindIndividualQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -960,7 +960,7 @@ export const AdviceFragmentFragmentDoc = gql`
   result
   outlookSummary
   activitySummary
-  datetime
+  analyzedAt
 }
     `;
 export const IndividualFragmentFragmentDoc = gql`

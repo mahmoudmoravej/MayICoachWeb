@@ -1,4 +1,7 @@
-import { useGenerateCycleAdviceMutation } from "@app-types/graphql";
+import {
+  AdviceFragmentFragment,
+  useGenerateCycleAdviceMutation,
+} from "@app-types/graphql";
 import { LightBulbIcon } from "@heroicons/react/24/outline";
 import { Spinner, Button } from "@material-tailwind/react";
 
@@ -7,20 +10,28 @@ import { useState } from "react";
 interface GenerateCycleSummaryButtonProps {
   cycleId: number;
   individualId: number;
-  onSaving?: (isSaving: boolean) => void;
+  title: string;
+  onSaving?: (
+    isSaving: boolean,
+    savedAdvice: AdviceFragmentFragment | null,
+  ) => void;
 }
 
 export function GenerateCycleSummaryButton({
   cycleId,
   individualId,
+  title,
   onSaving,
 }: GenerateCycleSummaryButtonProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [generateCycleAdviceMethod] = useGenerateCycleAdviceMutation();
 
-  const changeIsSaving = (isSaving: boolean) => {
+  const changeIsSaving = (
+    isSaving: boolean,
+    generatedAdvice: AdviceFragmentFragment | null = null,
+  ) => {
     setIsSaving(isSaving);
-    onSaving?.(isSaving);
+    onSaving?.(isSaving, generatedAdvice);
   };
 
   var onGenerateCycleSummary = function () {
@@ -35,7 +46,7 @@ export function GenerateCycleSummaryButton({
         alert(error.message);
       },
       onCompleted: (data) => {
-        changeIsSaving(false);
+        changeIsSaving(false, data.generateCycleAdvice?.advice);
         alert("Advice Is ready!");
       },
     });
@@ -44,8 +55,8 @@ export function GenerateCycleSummaryButton({
   return (
     <Button
       size="sm"
-      variant="text"
-      className="flex items-center gap-2"
+      variant="gradient"
+      className="float-right flex items-center gap-2"
       onClick={onGenerateCycleSummary}
     >
       {isSaving ? (
@@ -53,7 +64,7 @@ export function GenerateCycleSummaryButton({
       ) : (
         <>
           <LightBulbIcon className="h-5 w-5 text-inherit" />
-          Analyze and coach...
+          {title}
         </>
       )}
     </Button>

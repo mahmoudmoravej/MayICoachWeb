@@ -7,5 +7,5 @@ fragment AdviceFragment on Advice {
   result
   outlookSummary
   activitySummary
-  datetime
+  analyzedAt
 }
