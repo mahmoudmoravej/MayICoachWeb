@@ -6,6 +6,7 @@ import {
   Card,
   CardBody,
   Spinner,
+  Tooltip,
   Typography,
 } from "@material-tailwind/react";
 
@@ -109,12 +110,23 @@ export default function IndividualCoach() {
           <Card className="flex-1">
             <CardBody>
               <Typography variant="h6" color="gray" className="mb-4 uppercase">
-                <Link
-                  to={`/individuals/${id}/activities?cycleid=${cycle.id}`}
-                  className="flex items-center gap-1 hover:underline"
+                <Tooltip
+                  content={
+                    "This summary is based on " +
+                    cycle.advice?.analyzedActivitiesTotal.toString() +
+                    " analyzed activities out of " +
+                    cycle.advice?.activitiesTotal.toString() +
+                    " total. Click to see more details..."
+                  }
                 >
-                  Activities Summary
-                </Link>
+                  <Link
+                    to={`/individuals/${id}/activities?cycleid=${cycle.id}`}
+                    className="flex items-center gap-1 hover:underline"
+                  >
+                    Activities Summary ({cycle.advice?.analyzedActivitiesTotal}/
+                    {cycle.advice?.activitiesTotal})
+                  </Link>
+                </Tooltip>
               </Typography>
 
               <Typography color="gray" className="mb-8 font-normal">
@@ -131,14 +143,27 @@ export default function IndividualCoach() {
           <Card className="flex-1">
             <CardBody>
               <Typography variant="h6" color="gray" className="mb-4 uppercase">
-                Expectations
+                <Tooltip
+                  content={
+                    "This summary is based on " +
+                    cycle.advice?.visionsTotal.toString() +
+                    " analyzed visions. Click to see more details..."
+                  }
+                >
+                  <Link
+                    to={`/individuals/${id}/visions?cycleid=${cycle.id}`}
+                    className="flex items-center gap-1 hover:underline"
+                  >
+                    Expectations ({cycle.advice?.visionsTotal})
+                  </Link>
+                </Tooltip>
               </Typography>
 
               <Typography color="gray" className="mb-8 font-normal">
                 {isOnGneratingAdvice ? (
                   <DefaultSkeleton />
-                ) : cycle.advice?.outlookSummary ? (
-                  cycle.advice.outlookSummary
+                ) : cycle.advice?.visionSummary ? (
+                  cycle.advice.visionSummary
                 ) : (
                   "-"
                 )}

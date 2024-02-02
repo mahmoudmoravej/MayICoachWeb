@@ -3,9 +3,12 @@ fragment AdviceFragment on Advice {
   id
   isAnalyzed
   isActivityAnalyzed
-  isOutlookAnalyzed
+  isVisionAnalyzed
   result
-  outlookSummary
+  visionSummary
   activitySummary
   analyzedAt
+  activitiesTotal
+  analyzedActivitiesTotal
+  visionsTotal
 }

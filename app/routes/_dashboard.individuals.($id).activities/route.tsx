@@ -147,6 +147,17 @@ export default function Activities() {
                 />
                 Import recent activities...
               </Button>
+              <Button
+                className="flex items-center gap-3"
+                size="sm"
+                variant="outlined"
+              >
+                <ArrowDownOnSquareStackIcon
+                  strokeWidth={2}
+                  className="h-4 w-4"
+                />
+                Analyze remained activities...
+              </Button>
             </div>
           </div>
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
