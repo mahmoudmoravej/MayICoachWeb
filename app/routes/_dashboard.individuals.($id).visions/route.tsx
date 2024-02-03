@@ -1,4 +1,4 @@
-import { useIndividualActivitiesQuery } from "@app-types/graphql";
+import { useIndividualVisionsQuery } from "@app-types/graphql";
 import {
   ArrowTopRightOnSquareIcon,
   ArrowDownOnSquareStackIcon,
@@ -42,7 +42,14 @@ const TABS: { label: string; value: FilterType }[] = [
     value: "not-analyzed",
   },
 ];
-const TABLE_HEAD = ["Activity", "Analyzed?", "Date", "Cycle", ""];
+const TABLE_HEAD = [
+  "Title",
+  "Content?",
+  "Date",
+  "Cycle",
+  "Valid From",
+  "Valid To",
+];
 
 export let loader: LoaderFunction = async ({ request }) => {
   //we should completely change the following appraoch
@@ -51,7 +58,7 @@ export let loader: LoaderFunction = async ({ request }) => {
   return null;
 };
 
-export default function Activities() {
+export default function Visions() {
   let { id: individualId } = useParams();
   if (individualId == null) throw new Error("id is null");
 
@@ -65,27 +72,28 @@ export default function Activities() {
     Number(queryParams.get("cycleid") ?? 0),
   );
 
-  const { data, loading, error, refetch } = useIndividualActivitiesQuery({
+  const { data, loading, error, refetch } = useIndividualVisionsQuery({
     variables: {
       individualId: individualId,
-      isAnalyzed: filter == "all" ? undefined : filter === "analyzed",
       cycleId: selectedCycle === 0 ? undefined : selectedCycle?.toString(),
     },
     fetchPolicy: "network-only",
   });
 
   if (error) return <p>{JSON.stringify(error)}</p>;
-  if (loading || data?.activities?.nodes == null)
+  if (loading || data?.visions?.nodes == null)
     return <Spinner className="w-full" />;
 
-  const pageTitle = `${data?.individual.fullname ?? ""}'s activities`;
+  const pageTitle = `${data?.individual.fullname ?? ""}'s visions`;
 
-  const activities = data.activities.nodes.filter(noNull).map((node) => ({
+  const visions = data.visions.nodes.filter(noNull).map((node) => ({
     id: node.id,
-    title: node.title ?? "Pull Request",
-    url: node.channelActivityUrl,
+    title: node.description ?? "-",
+    url: node.documentUrl,
     date: new Date(node.date),
-    isAnalyzed: node.isAnalyzed,
+    valid_from: new Date(node.validFrom),
+    valid_to: new Date(node.validTo),
+    hasContent: node.hasContent,
     cycle: node.cycle?.title ?? "-",
   }));
 
@@ -145,7 +153,7 @@ export default function Activities() {
                   strokeWidth={2}
                   className="h-4 w-4"
                 />
-                Import recent activities...
+                Import recent visions...
               </Button>
               <Button
                 className="flex items-center gap-3"
@@ -156,7 +164,7 @@ export default function Activities() {
                   strokeWidth={2}
                   className="h-4 w-4"
                 />
-                Analyze remained activities...
+                Analyze remained visions...
               </Button>
             </div>
           </div>
@@ -210,9 +218,9 @@ export default function Activities() {
               </tr>
             </thead>
             <tbody>
-              {activities.map(
-                ({ title, id, url, isAnalyzed, date, cycle }, index) => {
-                  const isLast = index === activities.length - 1;
+              {visions.map(
+                ({ title, id, url, hasContent, date, cycle }, index) => {
+                  const isLast = index === visions.length - 1;
                   const classes = isLast
                     ? "p-4"
                     : "p-4 border-b border-blue-gray-50";
@@ -233,7 +241,7 @@ export default function Activities() {
                           </svg>
                           <div className="flex flex-col">
                             <Link
-                              to={`/activities/${id}/edit`}
+                              to={`/visions/${id}/edit`}
                               className="flex items-center gap-1 hover:underline"
                             >
                               <Typography
@@ -257,8 +265,8 @@ export default function Activities() {
                           <Chip
                             variant="ghost"
                             size="sm"
-                            value={isAnalyzed ? "Yes" : "No"}
-                            color={isAnalyzed ? "green" : "blue-gray"}
+                            value={hasContent ? "Yes" : "No"}
+                            color={hasContent ? "green" : "blue-gray"}
                           />
                         </div>
                       </td>
@@ -302,7 +310,7 @@ export default function Activities() {
                         </Link>
                         <AnalyzeButton
                           activityId={id?.toString()}
-                          isAnalyzed={isAnalyzed}
+                          isAnalyzed={hasContent}
                         />
                       </td>
                     </tr>
