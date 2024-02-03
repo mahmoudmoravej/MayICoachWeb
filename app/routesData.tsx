@@ -10,6 +10,7 @@ import {
   SignalIcon,
   IdentificationIcon,
   LightBulbIcon,
+  DocumentChartBarIcon,
 } from "@heroicons/react/24/solid";
 
 const icon = {
@@ -68,6 +69,11 @@ export const routes: RouteData[] = [
         icon: <SignalIcon {...icon} />,
         name: "My activities",
         path: "/individuals/#{myId}/activities",
+      },
+      {
+        icon: <DocumentChartBarIcon {...icon} />,
+        name: "My Visions",
+        path: "/individuals/#{myId}/visions",
       },
       {
         icon: <IdentificationIcon {...icon} />,

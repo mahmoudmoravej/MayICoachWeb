@@ -1,0 +1,32 @@
+query individualVisions($individualId: ID!, $cycleId: ID) {
+  individual(id: $individualId) {
+    fullname
+  }
+  cycles(orderBy: [{ field: "from", direction: "desc" }]) {
+    nodes {
+      id
+      title
+    }
+  }
+  visions(
+    individualId: $individualId
+    cycleId: $cycleId
+    orderBy: [{ field: "date", direction: "desc" }]
+  ) {
+    nodes {
+      id
+      visionTypeId
+      documentId
+      documentUrl
+      hasContent
+      date
+      validFrom
+      validTo
+      description
+      cycleId
+      cycle {
+        title
+      }
+    }
+  }
+}

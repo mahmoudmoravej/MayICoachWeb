@@ -925,6 +925,14 @@ export type GetManagersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetManagersQuery = { __typename?: 'Query', managers: { __typename?: 'IndividualConnection', nodes?: Array<{ __typename?: 'Individual', id: number, fullname?: string | null } | null> | null } };
 
+export type IndividualVisionsQueryVariables = Exact<{
+  individualId: Scalars['ID']['input'];
+  cycleId?: InputMaybe<Scalars['ID']['input']>;
+}>;
+
+
+export type IndividualVisionsQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', fullname?: string | null }, cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string } | null> | null }, visions: { __typename?: 'VisionConnection', nodes?: Array<{ __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, documentUrl?: string | null, hasContent: boolean, date: any, validFrom?: any | null, validTo?: any | null, description: string, cycleId?: number | null, cycle?: { __typename?: 'Cycle', title: string } | null } | null> | null } };
+
 export type IndividualsQueryVariables = Exact<{
   managerId?: InputMaybe<Scalars['ID']['input']>;
   fetchManagerId: Scalars['ID']['input'];
@@ -1639,6 +1647,69 @@ export function useGetManagersLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetManagersQueryHookResult = ReturnType<typeof useGetManagersQuery>;
 export type GetManagersLazyQueryHookResult = ReturnType<typeof useGetManagersLazyQuery>;
 export type GetManagersQueryResult = Apollo.QueryResult<GetManagersQuery, GetManagersQueryVariables>;
+export const IndividualVisionsDocument = gql`
+    query individualVisions($individualId: ID!, $cycleId: ID) {
+  individual(id: $individualId) {
+    fullname
+  }
+  cycles(orderBy: [{field: "from", direction: "desc"}]) {
+    nodes {
+      id
+      title
+    }
+  }
+  visions(
+    individualId: $individualId
+    cycleId: $cycleId
+    orderBy: [{field: "date", direction: "desc"}]
+  ) {
+    nodes {
+      id
+      visionTypeId
+      documentId
+      documentUrl
+      hasContent
+      date
+      validFrom
+      validTo
+      description
+      cycleId
+      cycle {
+        title
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useIndividualVisionsQuery__
+ *
+ * To run a query within a React component, call `useIndividualVisionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIndividualVisionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIndividualVisionsQuery({
+ *   variables: {
+ *      individualId: // value for 'individualId'
+ *      cycleId: // value for 'cycleId'
+ *   },
+ * });
+ */
+export function useIndividualVisionsQuery(baseOptions: Apollo.QueryHookOptions<IndividualVisionsQuery, IndividualVisionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IndividualVisionsQuery, IndividualVisionsQueryVariables>(IndividualVisionsDocument, options);
+      }
+export function useIndividualVisionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IndividualVisionsQuery, IndividualVisionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IndividualVisionsQuery, IndividualVisionsQueryVariables>(IndividualVisionsDocument, options);
+        }
+export type IndividualVisionsQueryHookResult = ReturnType<typeof useIndividualVisionsQuery>;
+export type IndividualVisionsLazyQueryHookResult = ReturnType<typeof useIndividualVisionsLazyQuery>;
+export type IndividualVisionsQueryResult = Apollo.QueryResult<IndividualVisionsQuery, IndividualVisionsQueryVariables>;
 export const IndividualsDocument = gql`
     query individuals($managerId: ID, $fetchManagerId: ID!, $fetchManagerDetails: Boolean = false, $isManager: Boolean) {
   individuals(managerId: $managerId, isManager: $isManager, isActive: true) {
