@@ -765,7 +765,7 @@ export type Vision = {
   content?: Maybe<Scalars['String']['output']>;
   cycle?: Maybe<Cycle>;
   cycleId?: Maybe<Scalars['Int']['output']>;
-  date: Scalars['ISO8601DateTime']['output'];
+  date?: Maybe<Scalars['ISO8601DateTime']['output']>;
   description: Scalars['String']['output'];
   documentId?: Maybe<Scalars['String']['output']>;
   documentUrl?: Maybe<Scalars['String']['output']>;
@@ -776,6 +776,7 @@ export type Vision = {
   organizationId?: Maybe<Scalars['Int']['output']>;
   validFrom?: Maybe<Scalars['ISO8601DateTime']['output']>;
   validTo?: Maybe<Scalars['ISO8601DateTime']['output']>;
+  visionType: VisionType;
   visionTypeId: Scalars['Int']['output'];
 };
 
@@ -797,6 +798,12 @@ export type VisionEdge = {
   cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node?: Maybe<Vision>;
+};
+
+export type VisionType = {
+  __typename?: 'VisionType';
+  id: Scalars['Int']['output'];
+  title?: Maybe<Scalars['String']['output']>;
 };
 
 export type AssignActivitiesMutationVariables = Exact<{
@@ -931,7 +938,7 @@ export type IndividualVisionsQueryVariables = Exact<{
 }>;
 
 
-export type IndividualVisionsQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', fullname?: string | null }, cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string } | null> | null }, visions: { __typename?: 'VisionConnection', nodes?: Array<{ __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, documentUrl?: string | null, hasContent: boolean, date: any, validFrom?: any | null, validTo?: any | null, description: string, cycleId?: number | null, cycle?: { __typename?: 'Cycle', title: string } | null } | null> | null } };
+export type IndividualVisionsQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', fullname?: string | null }, cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string } | null> | null }, visions: { __typename?: 'VisionConnection', nodes?: Array<{ __typename?: 'Vision', id: number, documentId?: string | null, documentUrl?: string | null, hasContent: boolean, date?: any | null, validFrom?: any | null, validTo?: any | null, description: string, cycleId?: number | null, individualId?: number | null, visionType: { __typename?: 'VisionType', id: number, title?: string | null }, cycle?: { __typename?: 'Cycle', title: string, from: any, to: any } | null } | null> | null } };
 
 export type IndividualsQueryVariables = Exact<{
   managerId?: InputMaybe<Scalars['ID']['input']>;
@@ -1665,7 +1672,10 @@ export const IndividualVisionsDocument = gql`
   ) {
     nodes {
       id
-      visionTypeId
+      visionType {
+        id
+        title
+      }
       documentId
       documentUrl
       hasContent
@@ -1674,8 +1684,11 @@ export const IndividualVisionsDocument = gql`
       validTo
       description
       cycleId
+      individualId
       cycle {
         title
+        from
+        to
       }
     }
   }

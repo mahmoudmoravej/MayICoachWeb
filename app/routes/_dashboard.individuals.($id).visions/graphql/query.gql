@@ -15,7 +15,10 @@ query individualVisions($individualId: ID!, $cycleId: ID) {
   ) {
     nodes {
       id
-      visionTypeId
+      visionType {
+        id
+        title
+      }
       documentId
       documentUrl
       hasContent
@@ -24,8 +27,11 @@ query individualVisions($individualId: ID!, $cycleId: ID) {
       validTo
       description
       cycleId
+      individualId
       cycle {
         title
+        from
+        to
       }
     }
   }

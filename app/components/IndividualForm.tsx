@@ -139,28 +139,53 @@ export function IndividualForm<T extends IndividualFormData>({
       </div>
       <div className="w-1/2">
         {id && (
-          <Card className="mt-6 w-96">
-            <CardBody>
-              <Typography variant="h5" color="blue-gray" className="mb-2">
-                User Activities
-              </Typography>
-              <Typography>
-                you can see all user activities through channls like Github,
-                Meetings, Slack, etc.
-              </Typography>
-            </CardBody>
-            <CardFooter className="pt-0">
-              <Link to={`/individuals/${id}/activities`}>
-                <Button
-                  size="sm"
-                  variant="text"
-                  className="flex items-center gap-2"
-                >
-                  Show Activities
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
+          <>
+            <Card className="mt-6 w-96">
+              <CardBody>
+                <Typography variant="h5" color="blue-gray" className="mb-2">
+                  User Visions
+                </Typography>
+                <Typography>
+                  you can see all user's visions, like organizational assigned
+                  or personal intended outcomes, job level description, next job
+                  level description, goals, etc.
+                </Typography>
+              </CardBody>
+              <CardFooter className="pt-0">
+                <Link to={`/individuals/${id}/visions`}>
+                  <Button
+                    size="sm"
+                    variant="text"
+                    className="flex items-center gap-2"
+                  >
+                    Show Visions
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+            <Card className="mt-6 w-96">
+              <CardBody>
+                <Typography variant="h5" color="blue-gray" className="mb-2">
+                  User Activities
+                </Typography>
+                <Typography>
+                  you can see all user activities through channls like Github,
+                  Meetings, Slack, etc.
+                </Typography>
+              </CardBody>
+              <CardFooter className="pt-0">
+                <Link to={`/individuals/${id}/activities`}>
+                  <Button
+                    size="sm"
+                    variant="text"
+                    className="flex items-center gap-2"
+                  >
+                    Show Activities
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+          </>
         )}
       </div>
     </div>
