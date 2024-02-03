@@ -1,7 +1,7 @@
 import { useIndividualVisionsQuery } from "@app-types/graphql";
 import {
   ArrowTopRightOnSquareIcon,
-  ArrowDownOnSquareStackIcon,
+  DocumentChartBarIcon,
 } from "@heroicons/react/24/solid";
 import {
   Card,
@@ -27,28 +27,27 @@ import { authenticator } from "~/services/auth.server";
 import { AnalyzeButton, ImportModal } from "./components";
 import { noNull } from "~/utils";
 
-type FilterType = "all" | "analyzed" | "not-analyzed";
+type FilterType = "all" | "personal" | "organizational";
 const TABS: { label: string; value: FilterType }[] = [
   {
     label: "All",
     value: "all",
   },
   {
-    label: "Analyzed",
-    value: "analyzed",
+    label: "Personal",
+    value: "personal",
   },
   {
-    label: "Raw",
-    value: "not-analyzed",
+    label: "Organizational Assigned",
+    value: "organizational",
   },
 ];
 const TABLE_HEAD = [
   "Title",
-  "Content?",
-  "Date",
-  "Cycle",
-  "Valid From",
-  "Valid To",
+  "Personal?",
+  "Period",
+  "Content Loaded?",
+  "Content Url",
 ];
 
 export let loader: LoaderFunction = async ({ request }) => {
@@ -89,12 +88,14 @@ export default function Visions() {
   const visions = data.visions.nodes.filter(noNull).map((node) => ({
     id: node.id,
     title: node.description ?? "-",
+    visionType: node.visionType?.title ?? "-",
     url: node.documentUrl,
     date: new Date(node.date),
-    valid_from: new Date(node.validFrom),
-    valid_to: new Date(node.validTo),
+    valid_from: new Date(node.cycle ? node.cycle.from : node.validFrom),
+    valid_to: new Date(node.cycle ? node.cycle.from : node.validTo),
     hasContent: node.hasContent,
-    cycle: node.cycle?.title ?? "-",
+    cycleTitle: node.cycle?.title ?? "-",
+    isPersonal: node.individualId != null ? true : false,
   }));
 
   const cycles = data.cycles?.nodes?.filter(noNull).map((node) => ({
@@ -143,28 +144,11 @@ export default function Visions() {
               </Typography>
             </div>
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-              <Button
-                className="flex items-center gap-3"
-                size="sm"
-                variant="outlined"
-                onClick={() => setImportDialogOpen(true)}
-              >
-                <ArrowDownOnSquareStackIcon
-                  strokeWidth={2}
-                  className="h-4 w-4"
-                />
-                Import recent visions...
-              </Button>
-              <Button
-                className="flex items-center gap-3"
-                size="sm"
-                variant="outlined"
-              >
-                <ArrowDownOnSquareStackIcon
-                  strokeWidth={2}
-                  className="h-4 w-4"
-                />
-                Analyze remained visions...
+              <Button className="flex items-center gap-3" size="sm">
+                <DocumentChartBarIcon strokeWidth={2} className="h-4 w-4" />
+                <Link to={"individuals/" + individualId + "/visions/new"}>
+                  Add Vision
+                </Link>
               </Button>
             </div>
           </div>
@@ -219,7 +203,20 @@ export default function Visions() {
             </thead>
             <tbody>
               {visions.map(
-                ({ title, id, url, hasContent, date, cycle }, index) => {
+                (
+                  {
+                    title,
+                    visionType,
+                    id,
+                    url,
+                    hasContent,
+                    valid_from,
+                    valid_to,
+                    cycleTitle,
+                    isPersonal,
+                  },
+                  index,
+                ) => {
                   const isLast = index === visions.length - 1;
                   const classes = isLast
                     ? "p-4"
@@ -255,9 +252,40 @@ export default function Visions() {
                               variant="small"
                               className="font-normal italic"
                             >
-                              Pull Request Contribution
+                              {visionType}
                             </Typography>
                           </div>
+                        </div>
+                      </td>
+                      <td className={classes}>
+                        <div className="w-max">
+                          <Chip
+                            variant="ghost"
+                            size="sm"
+                            value={isPersonal ? "Personal" : "Organizational"}
+                            color={isPersonal ? "blue" : "gray"}
+                          />
+                        </div>
+                      </td>
+                      <td className={classes}>
+                        <div className="flex flex-col">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {valid_from.toLocaleString("en-CA", {
+                              year: "numeric",
+                              month: "numeric",
+                              day: "numeric",
+                            }) + " - "}
+                            {valid_to.toLocaleString("en-CA", {
+                              year: "numeric",
+                              month: "numeric",
+                              day: "numeric",
+                            })}
+                            {cycleTitle ? "(" + cycleTitle + ")" : ""}
+                          </Typography>
                         </div>
                       </td>
                       <td className={classes}>
@@ -270,36 +298,6 @@ export default function Visions() {
                           />
                         </div>
                       </td>
-                      <td className={classes}>
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {date?.toLocaleString("en-CA", {
-                              year: "numeric",
-                              month: "numeric",
-                              day: "numeric",
-                              hour: "2-digit",
-                              minute: "numeric",
-                              hour12: false,
-                            })}
-                          </Typography>
-                        </div>
-                      </td>
-                      <td className={classes}>
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {cycle}
-                          </Typography>
-                        </div>
-                      </td>
-
                       <td className={classes}>
                         <Link to={url!} target="_blank" rel="noreferrer">
                           <Tooltip content="Show PR">
