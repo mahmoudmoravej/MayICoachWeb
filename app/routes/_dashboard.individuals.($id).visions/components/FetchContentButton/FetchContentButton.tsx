@@ -3,13 +3,7 @@ import { BoltIcon } from "@heroicons/react/24/solid";
 import { Tooltip, IconButton, Spinner } from "@material-tailwind/react";
 import { useState } from "react";
 
-export function AnalyzeButton({
-  activityId,
-  isAnalyzed,
-}: {
-  activityId: string;
-  isAnalyzed: boolean;
-}) {
+export function FetchContentButton({ visionId }: { visionId: string }) {
   const [isSaving, setIsSaving] = useState(false);
   const [analyzeActivityMethod] = useAnalyzeActivityWithMinimumResultMutation();
 
@@ -18,7 +12,7 @@ export function AnalyzeButton({
     analyzeActivityMethod({
       variables: {
         input: {
-          id: activityId,
+          id: visionId,
         },
       },
       onError: (error) => {
@@ -31,10 +25,8 @@ export function AnalyzeButton({
     });
   };
 
-  return isAnalyzed ? (
-    ""
-  ) : (
-    <Tooltip content="Analyze with AI & Save!">
+  return (
+    <Tooltip content="Fetch content!">
       <IconButton variant="text" onClick={onAnalyzeAndSave}>
         {isSaving ? (
           <Spinner className="h-4 w-4" />
