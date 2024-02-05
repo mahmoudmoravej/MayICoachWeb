@@ -681,10 +681,11 @@ export type QueryVisionsArgs = {
   before?: InputMaybe<Scalars['String']['input']>;
   cycleId?: InputMaybe<Scalars['ID']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  hasContent?: InputMaybe<Scalars['Boolean']['input']>;
   individualId?: InputMaybe<Scalars['ID']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  level?: InputMaybe<VisionFilterLevel>;
   orderBy?: InputMaybe<Array<Order>>;
+  organizationOnly?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type Report = {
@@ -766,7 +767,7 @@ export type Vision = {
   cycle?: Maybe<Cycle>;
   cycleId?: Maybe<Scalars['Int']['output']>;
   date?: Maybe<Scalars['ISO8601DateTime']['output']>;
-  description: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
   documentId?: Maybe<Scalars['String']['output']>;
   documentUrl?: Maybe<Scalars['String']['output']>;
   hasContent: Scalars['Boolean']['output'];
@@ -799,6 +800,12 @@ export type VisionEdge = {
   /** The item at the end of the edge. */
   node?: Maybe<Vision>;
 };
+
+export enum VisionFilterLevel {
+  All = 'All',
+  OrganizationalOnly = 'OrganizationalOnly',
+  PersonalOnly = 'PersonalOnly'
+}
 
 export type VisionType = {
   __typename?: 'VisionType';
@@ -932,13 +939,16 @@ export type GetManagersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetManagersQuery = { __typename?: 'Query', managers: { __typename?: 'IndividualConnection', nodes?: Array<{ __typename?: 'Individual', id: number, fullname?: string | null } | null> | null } };
 
-export type IndividualVisionsQueryVariables = Exact<{
-  individualId: Scalars['ID']['input'];
+export type VisionsQueryVariables = Exact<{
+  individualId?: InputMaybe<Scalars['ID']['input']>;
   cycleId?: InputMaybe<Scalars['ID']['input']>;
+  fetchIndividualId: Scalars['ID']['input'];
+  fetchIndividualDetails?: InputMaybe<Scalars['Boolean']['input']>;
+  level?: InputMaybe<VisionFilterLevel>;
 }>;
 
 
-export type IndividualVisionsQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', fullname?: string | null }, cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string } | null> | null }, visions: { __typename?: 'VisionConnection', nodes?: Array<{ __typename?: 'Vision', id: number, documentId?: string | null, documentUrl?: string | null, hasContent: boolean, date?: any | null, validFrom?: any | null, validTo?: any | null, description: string, cycleId?: number | null, individualId?: number | null, visionType: { __typename?: 'VisionType', id: number, title?: string | null }, cycle?: { __typename?: 'Cycle', title: string, from: any, to: any } | null } | null> | null } };
+export type VisionsQuery = { __typename?: 'Query', individual?: { __typename?: 'Individual', fullname?: string | null }, cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string } | null> | null }, visions: { __typename?: 'VisionConnection', nodes?: Array<{ __typename?: 'Vision', id: number, documentId?: string | null, documentUrl?: string | null, hasContent: boolean, date?: any | null, validFrom?: any | null, validTo?: any | null, description?: string | null, cycleId?: number | null, individualId?: number | null, organizationId?: number | null, visionType: { __typename?: 'VisionType', id: number, title?: string | null }, cycle?: { __typename?: 'Cycle', title: string, from: any, to: any } | null } | null> | null } };
 
 export type IndividualsQueryVariables = Exact<{
   managerId?: InputMaybe<Scalars['ID']['input']>;
@@ -1654,9 +1664,9 @@ export function useGetManagersLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetManagersQueryHookResult = ReturnType<typeof useGetManagersQuery>;
 export type GetManagersLazyQueryHookResult = ReturnType<typeof useGetManagersLazyQuery>;
 export type GetManagersQueryResult = Apollo.QueryResult<GetManagersQuery, GetManagersQueryVariables>;
-export const IndividualVisionsDocument = gql`
-    query individualVisions($individualId: ID!, $cycleId: ID) {
-  individual(id: $individualId) {
+export const VisionsDocument = gql`
+    query visions($individualId: ID, $cycleId: ID, $fetchIndividualId: ID!, $fetchIndividualDetails: Boolean = false, $level: VisionFilterLevel) {
+  individual(id: $fetchIndividualId) @include(if: $fetchIndividualDetails) {
     fullname
   }
   cycles(orderBy: [{field: "from", direction: "desc"}]) {
@@ -1668,6 +1678,7 @@ export const IndividualVisionsDocument = gql`
   visions(
     individualId: $individualId
     cycleId: $cycleId
+    level: $level
     orderBy: [{field: "date", direction: "desc"}]
   ) {
     nodes {
@@ -1685,6 +1696,7 @@ export const IndividualVisionsDocument = gql`
       description
       cycleId
       individualId
+      organizationId
       cycle {
         title
         from
@@ -1696,33 +1708,36 @@ export const IndividualVisionsDocument = gql`
     `;
 
 /**
- * __useIndividualVisionsQuery__
+ * __useVisionsQuery__
  *
- * To run a query within a React component, call `useIndividualVisionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useIndividualVisionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useVisionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVisionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useIndividualVisionsQuery({
+ * const { data, loading, error } = useVisionsQuery({
  *   variables: {
  *      individualId: // value for 'individualId'
  *      cycleId: // value for 'cycleId'
+ *      fetchIndividualId: // value for 'fetchIndividualId'
+ *      fetchIndividualDetails: // value for 'fetchIndividualDetails'
+ *      level: // value for 'level'
  *   },
  * });
  */
-export function useIndividualVisionsQuery(baseOptions: Apollo.QueryHookOptions<IndividualVisionsQuery, IndividualVisionsQueryVariables>) {
+export function useVisionsQuery(baseOptions: Apollo.QueryHookOptions<VisionsQuery, VisionsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<IndividualVisionsQuery, IndividualVisionsQueryVariables>(IndividualVisionsDocument, options);
+        return Apollo.useQuery<VisionsQuery, VisionsQueryVariables>(VisionsDocument, options);
       }
-export function useIndividualVisionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IndividualVisionsQuery, IndividualVisionsQueryVariables>) {
+export function useVisionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<VisionsQuery, VisionsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<IndividualVisionsQuery, IndividualVisionsQueryVariables>(IndividualVisionsDocument, options);
+          return Apollo.useLazyQuery<VisionsQuery, VisionsQueryVariables>(VisionsDocument, options);
         }
-export type IndividualVisionsQueryHookResult = ReturnType<typeof useIndividualVisionsQuery>;
-export type IndividualVisionsLazyQueryHookResult = ReturnType<typeof useIndividualVisionsLazyQuery>;
-export type IndividualVisionsQueryResult = Apollo.QueryResult<IndividualVisionsQuery, IndividualVisionsQueryVariables>;
+export type VisionsQueryHookResult = ReturnType<typeof useVisionsQuery>;
+export type VisionsLazyQueryHookResult = ReturnType<typeof useVisionsLazyQuery>;
+export type VisionsQueryResult = Apollo.QueryResult<VisionsQuery, VisionsQueryVariables>;
 export const IndividualsDocument = gql`
     query individuals($managerId: ID, $fetchManagerId: ID!, $fetchManagerDetails: Boolean = false, $isManager: Boolean) {
   individuals(managerId: $managerId, isManager: $isManager, isActive: true) {

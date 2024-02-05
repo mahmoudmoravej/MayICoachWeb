@@ -36,19 +36,29 @@ export const routes: RouteData[] = [
         path: "/",
       },
       {
+        icon: <LightBulbIcon {...icon} />,
+        name: "Coach me!",
+        path: "/individuals/#{myId}/coach",
+      },
+    ],
+  },
+  {
+    title: "Organization",
+    pages: [
+      {
         icon: <InformationCircleIcon {...icon} />,
         name: "My team",
         path: "/individuals/myteam",
       },
       {
         icon: <UserCircleIcon {...icon} />,
-        name: "Organization",
+        name: "People",
         path: "/individuals",
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "Rules",
-        path: "/rules",
+        name: "Visions",
+        path: "/visions",
       },
       {
         icon: <TableCellsIcon {...icon} />,
@@ -60,11 +70,6 @@ export const routes: RouteData[] = [
   {
     title: "My profile",
     pages: [
-      {
-        icon: <LightBulbIcon {...icon} />,
-        name: "Coach me!",
-        path: "/individuals/#{myId}/coach",
-      },
       {
         icon: <SignalIcon {...icon} />,
         name: "My activities",
