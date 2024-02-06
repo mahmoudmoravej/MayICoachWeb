@@ -18,7 +18,7 @@ query visions(
     individualId: $individualId
     cycleId: $cycleId
     level: $level
-    orderBy: [{ field: "date", direction: "desc" }]
+    orderBy: [{ field: "validFrom", direction: "desc" }]
   ) {
     nodes {
       id

@@ -1,0 +1,15 @@
+fragment VisionFragment on Vision {
+  id
+  visionTypeId
+  visionType {
+    title
+  }
+  documentId
+  documentUrl
+  content
+  cycleId
+  individualId
+  validFrom
+  validTo
+  isOrganizational
+}

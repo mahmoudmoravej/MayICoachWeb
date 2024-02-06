@@ -1,8 +1,0 @@
-mutation AnalyzeActivityWithMinimumResult($input: AnalyzeActivityInput!) {
-  analyzeActivity(input: $input) {
-    activity {
-      id
-      isAnalyzed
-    }
-  }
-}

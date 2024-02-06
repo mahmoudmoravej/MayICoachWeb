@@ -147,9 +147,7 @@ export default function Visions() {
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
               <Button className="flex items-center gap-3" size="sm">
                 <DocumentChartBarIcon strokeWidth={2} className="h-4 w-4" />
-                <Link to={"individuals/" + individualId + "/visions/new"}>
-                  Add Vision
-                </Link>
+                <Link to={"new"}>Add Vision</Link>
               </Button>
             </div>
           </div>

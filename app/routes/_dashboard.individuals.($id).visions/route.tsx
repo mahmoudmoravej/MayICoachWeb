@@ -1,4 +1,6 @@
-import Visions, { loader as visionsloader } from "../_dashboard.visions/route";
+import Visions, {
+  loader as visionsloader,
+} from "../_dashboard.visions._index/route";
 
 export let loader = visionsloader;
 

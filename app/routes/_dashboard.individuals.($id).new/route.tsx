@@ -9,6 +9,7 @@ import {
   IndividualForm,
   IndividualFormData,
 } from "~/components/IndividualForm";
+import { noNull } from "~/utils";
 
 type IndividualCreateFormData = IndividualFormData & {
   isActive: boolean;
@@ -34,9 +35,9 @@ export default function IndividualCreate() {
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (!individual || !data || !data.managers.nodes) return <p>No data</p>;
 
-  const managers = data.managers.nodes.map((manager) => ({
-    id: manager?.id.toString(),
-    fullname: manager?.fullname,
+  const managers = data.managers.nodes.filter(noNull).map((manager) => ({
+    id: manager.id.toString(),
+    fullname: manager.fullname,
   }));
 
   var onSubmit = function () {
