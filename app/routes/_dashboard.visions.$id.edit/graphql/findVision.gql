@@ -1,0 +1,19 @@
+query findVision($id: ID!) {
+  vision(id: $id) {
+    ...VisionFragment
+    individual {
+      fullname
+    }
+  }
+  visionTypes {
+    nodes {
+      id
+      title
+    }
+  }
+  cycles(orderBy: { field: "from", direction: "DESC" }) {
+    nodes {
+      ...CycleFragment
+    }
+  }
+}

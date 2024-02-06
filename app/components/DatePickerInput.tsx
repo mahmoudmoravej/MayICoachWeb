@@ -15,11 +15,13 @@ interface DatePickerInputProps {
   size?: size;
   value?: Date;
   onChange: (date: Date | undefined) => void;
+  disabled?: boolean;
 }
 
 export default function DatePickerInput({
   value: date,
   size,
+  disabled,
   onChange,
 }: DatePickerInputProps) {
   return (
@@ -30,6 +32,7 @@ export default function DatePickerInput({
           onChange={() => null}
           value={date ? format(date, "PPP") : ""}
           crossOrigin={undefined}
+          disabled={disabled}
           className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
           labelProps={{
             className: "before:content-none after:content-none",

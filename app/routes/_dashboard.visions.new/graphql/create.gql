@@ -1,0 +1,7 @@
+mutation CreateVision($input: VisionCreateInput!) {
+  visionCreate(input: $input) {
+    vision {
+      ...VisionFragment
+    }
+  }
+}

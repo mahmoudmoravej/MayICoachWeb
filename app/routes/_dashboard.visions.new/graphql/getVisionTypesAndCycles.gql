@@ -1,0 +1,16 @@
+query getVisionTypesAndCycles($individualId: ID!, $isPersonal: Boolean!) {
+  visionTypes {
+    nodes {
+      id
+      title
+    }
+  }
+  cycles(orderBy: { field: "from", direction: "DESC" }) {
+    nodes {
+      ...CycleFragment
+    }
+  }
+  individual(id: $individualId) @include(if: $isPersonal) {
+    fullname
+  }
+}

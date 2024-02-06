@@ -1,0 +1,10 @@
+mutation UpdateVision($input: VisionUpdateInput!) {
+  visionUpdate(input: $input) {
+    vision {
+      ...VisionFragment
+      individual {
+        fullname
+      }
+    }
+  }
+}
