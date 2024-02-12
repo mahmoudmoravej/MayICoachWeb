@@ -146,15 +146,18 @@ export default function IndividualCoach() {
                 <Tooltip
                   content={
                     "This summary is based on " +
+                    cycle.advice?.contentReadyVisionsTotal.toString() +
+                    " content ready visions out of " +
                     cycle.advice?.visionsTotal.toString() +
-                    " analyzed visions. Click to see more details..."
+                    "total. Click to see more details..."
                   }
                 >
                   <Link
                     to={`/individuals/${id}/visions?cycleid=${cycle.id}`}
                     className="flex items-center gap-1 hover:underline"
                   >
-                    Expectations ({cycle.advice?.visionsTotal})
+                    Expectations ({cycle.advice?.contentReadyVisionsTotal}/
+                    {cycle.advice?.visionsTotal})
                   </Link>
                 </Tooltip>
               </Typography>

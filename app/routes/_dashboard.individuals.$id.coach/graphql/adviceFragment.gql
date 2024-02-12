@@ -11,4 +11,5 @@ fragment AdviceFragment on Advice {
   activitiesTotal
   analyzedActivitiesTotal
   visionsTotal
+  contentReadyVisionsTotal
 }
