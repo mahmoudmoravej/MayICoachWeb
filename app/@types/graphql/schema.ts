@@ -87,6 +87,7 @@ export type Advice = {
   aiEngineId: Scalars['Int']['output'];
   analyzedActivitiesTotal: Scalars['Int']['output'];
   analyzedAt: Scalars['ISO8601DateTime']['output'];
+  contentReadyVisionsTotal: Scalars['Int']['output'];
   cycle?: Maybe<Cycle>;
   cycleId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
@@ -979,16 +980,16 @@ export type GenerateCycleAdviceMutationVariables = Exact<{
 }>;
 
 
-export type GenerateCycleAdviceMutation = { __typename?: 'Mutation', generateCycleAdvice?: { __typename?: 'GenerateCycleAdvicePayload', advice: { __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isVisionAnalyzed: boolean, result?: string | null, visionSummary?: string | null, activitySummary?: string | null, analyzedAt: any, activitiesTotal: number, analyzedActivitiesTotal: number, visionsTotal: number } } | null };
+export type GenerateCycleAdviceMutation = { __typename?: 'Mutation', generateCycleAdvice?: { __typename?: 'GenerateCycleAdvicePayload', advice: { __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isVisionAnalyzed: boolean, result?: string | null, visionSummary?: string | null, activitySummary?: string | null, analyzedAt: any, activitiesTotal: number, analyzedActivitiesTotal: number, visionsTotal: number, contentReadyVisionsTotal: number } } | null };
 
-export type AdviceFragmentFragment = { __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isVisionAnalyzed: boolean, result?: string | null, visionSummary?: string | null, activitySummary?: string | null, analyzedAt: any, activitiesTotal: number, analyzedActivitiesTotal: number, visionsTotal: number };
+export type AdviceFragmentFragment = { __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isVisionAnalyzed: boolean, result?: string | null, visionSummary?: string | null, activitySummary?: string | null, analyzedAt: any, activitiesTotal: number, analyzedActivitiesTotal: number, visionsTotal: number, contentReadyVisionsTotal: number };
 
 export type CoachIndividualQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type CoachIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean, activeCycles?: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null } | null }, adviceList: { __typename?: 'AdviceConnection', nodes?: Array<{ __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isVisionAnalyzed: boolean, result?: string | null, visionSummary?: string | null, activitySummary?: string | null, analyzedAt: any, activitiesTotal: number, analyzedActivitiesTotal: number, visionsTotal: number } | null> | null } };
+export type CoachIndividualQuery = { __typename?: 'Query', individual: { __typename?: 'Individual', id: number, fullname?: string | null, handleGithub?: string | null, handleGoogle?: string | null, jobTitle?: string | null, jobLevelId?: string | null, userId?: number | null, managerId?: number | null, isManager: boolean, activeCycles?: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null } | null }, adviceList: { __typename?: 'AdviceConnection', nodes?: Array<{ __typename?: 'Advice', cycleId: number, id: number, isAnalyzed: boolean, isActivityAnalyzed: boolean, isVisionAnalyzed: boolean, result?: string | null, visionSummary?: string | null, activitySummary?: string | null, analyzedAt: any, activitiesTotal: number, analyzedActivitiesTotal: number, visionsTotal: number, contentReadyVisionsTotal: number } | null> | null } };
 
 export type FindIndividualQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1130,6 +1131,7 @@ export const AdviceFragmentFragmentDoc = gql`
   activitiesTotal
   analyzedActivitiesTotal
   visionsTotal
+  contentReadyVisionsTotal
 }
     `;
 export const IndividualFragmentFragmentDoc = gql`
