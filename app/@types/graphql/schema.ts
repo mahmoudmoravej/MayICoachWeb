@@ -1057,14 +1057,14 @@ export type FindVisionQueryVariables = Exact<{
 }>;
 
 
-export type FindVisionQuery = { __typename?: 'Query', vision: { __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, documentUrl?: string | null, content?: string | null, cycleId?: number | null, individualId?: number | null, validFrom?: any | null, validTo?: any | null, isOrganizational: boolean, individual?: { __typename?: 'Individual', fullname?: string | null } | null, visionType: { __typename?: 'VisionType', title: string } }, visionTypes: { __typename?: 'VisionTypeConnection', nodes?: Array<{ __typename?: 'VisionType', id: number, title: string } | null> | null }, cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null } };
+export type FindVisionQuery = { __typename?: 'Query', vision: { __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, description?: string | null, documentUrl?: string | null, content?: string | null, cycleId?: number | null, individualId?: number | null, validFrom?: any | null, validTo?: any | null, isOrganizational: boolean, individual?: { __typename?: 'Individual', fullname?: string | null } | null, visionType: { __typename?: 'VisionType', title: string } }, visionTypes: { __typename?: 'VisionTypeConnection', nodes?: Array<{ __typename?: 'VisionType', id: number, title: string } | null> | null }, cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null } };
 
 export type UpdateVisionMutationVariables = Exact<{
   input: VisionUpdateInput;
 }>;
 
 
-export type UpdateVisionMutation = { __typename?: 'Mutation', visionUpdate?: { __typename?: 'VisionUpdatePayload', vision: { __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, documentUrl?: string | null, content?: string | null, cycleId?: number | null, individualId?: number | null, validFrom?: any | null, validTo?: any | null, isOrganizational: boolean, individual?: { __typename?: 'Individual', fullname?: string | null } | null, visionType: { __typename?: 'VisionType', title: string } } } | null };
+export type UpdateVisionMutation = { __typename?: 'Mutation', visionUpdate?: { __typename?: 'VisionUpdatePayload', vision: { __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, description?: string | null, documentUrl?: string | null, content?: string | null, cycleId?: number | null, individualId?: number | null, validFrom?: any | null, validTo?: any | null, isOrganizational: boolean, individual?: { __typename?: 'Individual', fullname?: string | null } | null, visionType: { __typename?: 'VisionType', title: string } } } | null };
 
 export type VisionsQueryVariables = Exact<{
   individualId?: InputMaybe<Scalars['ID']['input']>;
@@ -1082,7 +1082,7 @@ export type CreateVisionMutationVariables = Exact<{
 }>;
 
 
-export type CreateVisionMutation = { __typename?: 'Mutation', visionCreate?: { __typename?: 'VisionCreatePayload', vision: { __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, documentUrl?: string | null, content?: string | null, cycleId?: number | null, individualId?: number | null, validFrom?: any | null, validTo?: any | null, isOrganizational: boolean, visionType: { __typename?: 'VisionType', title: string } } } | null };
+export type CreateVisionMutation = { __typename?: 'Mutation', visionCreate?: { __typename?: 'VisionCreatePayload', vision: { __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, description?: string | null, documentUrl?: string | null, content?: string | null, cycleId?: number | null, individualId?: number | null, validFrom?: any | null, validTo?: any | null, isOrganizational: boolean, visionType: { __typename?: 'VisionType', title: string } } } | null };
 
 export type GetVisionTypesAndCyclesQueryVariables = Exact<{
   individualId: Scalars['ID']['input'];
@@ -1092,7 +1092,7 @@ export type GetVisionTypesAndCyclesQueryVariables = Exact<{
 
 export type GetVisionTypesAndCyclesQuery = { __typename?: 'Query', visionTypes: { __typename?: 'VisionTypeConnection', nodes?: Array<{ __typename?: 'VisionType', id: number, title: string } | null> | null }, cycles: { __typename?: 'CycleConnection', nodes?: Array<{ __typename?: 'Cycle', id: number, title: string, description?: string | null, from: any, to: any } | null> | null }, individual?: { __typename?: 'Individual', fullname?: string | null } };
 
-export type VisionFragmentFragment = { __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, documentUrl?: string | null, content?: string | null, cycleId?: number | null, individualId?: number | null, validFrom?: any | null, validTo?: any | null, isOrganizational: boolean, visionType: { __typename?: 'VisionType', title: string } };
+export type VisionFragmentFragment = { __typename?: 'Vision', id: number, visionTypeId: number, documentId?: string | null, description?: string | null, documentUrl?: string | null, content?: string | null, cycleId?: number | null, individualId?: number | null, validFrom?: any | null, validTo?: any | null, isOrganizational: boolean, visionType: { __typename?: 'VisionType', title: string } };
 
 export type GetLoggedInUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1155,6 +1155,7 @@ export const VisionFragmentFragmentDoc = gql`
     title
   }
   documentId
+  description
   documentUrl
   content
   cycleId

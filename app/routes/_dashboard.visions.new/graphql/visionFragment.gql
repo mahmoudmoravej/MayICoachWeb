@@ -5,6 +5,7 @@ fragment VisionFragment on Vision {
     title
   }
   documentId
+  description
   documentUrl
   content
   cycleId

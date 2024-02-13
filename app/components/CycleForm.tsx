@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import {
   Input,
   Button,
@@ -110,6 +110,28 @@ export function CycleForm<T extends CycleFormData>({
                   cycleId={Number.parseInt(id)}
                   mode="button"
                 />
+              </CardFooter>
+            </Card>
+            <Card className="mt-6 w-96">
+              <CardBody>
+                <Typography variant="h5" color="blue-gray" className="mb-2">
+                  Cycle's Visions
+                </Typography>
+                <Typography>
+                  See all the goals, intended outcomes, job descriptions,
+                  visions related to this cycle.
+                </Typography>
+              </CardBody>
+              <CardFooter className="pt-0">
+                <Link to={"/visions?cycleid=" + id}>
+                  <Button
+                    size="sm"
+                    variant="text"
+                    className="flex items-center gap-2"
+                  >
+                    Show Visions
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           </>
