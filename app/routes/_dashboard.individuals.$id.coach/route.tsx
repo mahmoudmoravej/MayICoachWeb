@@ -112,11 +112,10 @@ export default function IndividualCoach() {
               <Typography variant="h6" color="gray" className="mb-4 uppercase">
                 <Tooltip
                   content={
-                    "This summary is based on " +
                     cycle.advice?.analyzedActivitiesTotal.toString() +
-                    " analyzed activities out of " +
+                    " out of " +
                     cycle.advice?.activitiesTotal.toString() +
-                    " total. Click to see more details..."
+                    " activities of this cycle are analyzed and ready to use. Click to see more details..."
                   }
                 >
                   <Link
@@ -133,7 +132,12 @@ export default function IndividualCoach() {
                 {isOnGneratingAdvice ? (
                   <DefaultSkeleton />
                 ) : cycle.advice?.activitySummary ? (
-                  cycle.advice.activitySummary
+                  <pre
+                    className="whitespace-pre-wrap"
+                    style={{ fontFamily: "inherit" }}
+                  >
+                    {cycle.advice.activitySummary}
+                  </pre>
                 ) : (
                   "-"
                 )}
@@ -145,11 +149,10 @@ export default function IndividualCoach() {
               <Typography variant="h6" color="gray" className="mb-4 uppercase">
                 <Tooltip
                   content={
-                    "This summary is based on " +
                     cycle.advice?.contentReadyVisionsTotal.toString() +
-                    " content ready visions out of " +
+                    " out of " +
                     cycle.advice?.visionsTotal.toString() +
-                    "total. Click to see more details..."
+                    "visions for this cycle are ready to use for analysis. Click to see more details..."
                   }
                 >
                   <Link
@@ -166,7 +169,12 @@ export default function IndividualCoach() {
                 {isOnGneratingAdvice ? (
                   <DefaultSkeleton />
                 ) : cycle.advice?.visionSummary ? (
-                  cycle.advice.visionSummary
+                  <pre
+                    className="whitespace-pre-wrap"
+                    style={{ fontFamily: "inherit" }}
+                  >
+                    {cycle.advice.visionSummary}
+                  </pre>
                 ) : (
                   "-"
                 )}
@@ -183,7 +191,12 @@ export default function IndividualCoach() {
                 {isOnGneratingAdvice ? (
                   <DefaultSkeleton />
                 ) : cycle.advice?.result ? (
-                  cycle.advice.result
+                  <pre
+                    className="whitespace-pre-wrap"
+                    style={{ fontFamily: "inherit" }}
+                  >
+                    {cycle.advice.result}
+                  </pre>
                 ) : (
                   "-"
                 )}
