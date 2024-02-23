@@ -21,9 +21,18 @@ function getToken() {
 
   const token = sessionStorage.getItem("token");
   if (token == null) {
-    // throw new Error("Not Authorized!"); we should manage it. Throughing an error affects the whole page rendering process.
+    // throw new Error("Not Authorized!"); we should manage it. throwing an error affects the whole page rendering process.
   }
   return token;
+}
+
+function getOrganizationId(): string {
+  const org_id = sessionStorage.getItem("organization_id");
+  if (org_id == null) {
+    // throw new Error("Not Authorized!"); we should manage it. throwing an error affects the whole page rendering process.
+    return "";
+  }
+  return org_id;
 }
 
 startTransition(() => {
@@ -32,6 +41,7 @@ startTransition(() => {
     uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET", // the same uri in our entry.server file
     headers: {
       Authorization: `Bearer ${getToken()}`,
+      "X-Org-Id": getOrganizationId(),
     },
     defaultOptions: {
       query: {

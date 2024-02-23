@@ -1,11 +1,20 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 
-export function getApolloClient(request: Request, token: string | undefined) {
+export function getApolloClient(
+  request: Request,
+  token: string | undefined,
+  organization_id: string | undefined,
+) {
+  const organization_header = organization_id
+    ? { "X-Org-Id": organization_id }
+    : null;
+
   const linkSettings = {
     uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET",
     headers: {
       // ...Object.fromEntries(request.headers), it is not a good way. It will cause in deployment on render.com.
       Authorization: `Bearer ${token ?? "ERROR TOKEN!"}`,
+      ...organization_header,
     },
     credentials: "include", // or "same-origin" if your backend server is the same domain
   };

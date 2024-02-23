@@ -574,6 +574,14 @@ export type Order = {
   field: Scalars['String']['input'];
 };
 
+export type Organization = {
+  __typename?: 'Organization';
+  id: Scalars['Int']['output'];
+  isPersonal: Scalars['Boolean']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['Int']['output']>;
+};
+
 /** Information about pagination in a connection. */
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -783,6 +791,7 @@ export type ReportUpdatePayload = {
 export type UserInfo = {
   __typename?: 'UserInfo';
   Individual?: Maybe<Individual>;
+  Organization?: Maybe<Organization>;
   UserId: Scalars['Int']['output'];
 };
 
@@ -1097,7 +1106,7 @@ export type VisionFragmentFragment = { __typename?: 'Vision', id: number, vision
 export type GetLoggedInUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLoggedInUserInfoQuery = { __typename?: 'Query', myInfo: { __typename?: 'UserInfo', UserId: number, Individual?: { __typename?: 'Individual', id: number, isManager: boolean } | null } };
+export type GetLoggedInUserInfoQuery = { __typename?: 'Query', myInfo: { __typename?: 'UserInfo', UserId: number, Individual?: { __typename?: 'Individual', id: number, isManager: boolean, organizationId: number } | null } };
 
 export const ActivityFragmentFragmentDoc = gql`
     fragment ActivityFragment on Activity {
@@ -2117,6 +2126,7 @@ export const GetLoggedInUserInfoDocument = gql`
     Individual {
       id
       isManager
+      organizationId
     }
   }
 }
