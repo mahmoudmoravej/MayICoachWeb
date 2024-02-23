@@ -177,5 +177,9 @@ async function wrapRemixServerWithApollo(
 async function getApolloClient(request: Request) {
   let user = await authenticator.isAuthenticated(request);
 
-  return utils.getApolloClient(request, user?.jwt_token);
+  return utils.getApolloClient(
+    request,
+    user?.jwt_token,
+    user?.organization_id.toString(),
+  );
 }

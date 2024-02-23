@@ -3,6 +3,30 @@ import { Form } from "@remix-run/react";
 import { Input, Button, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
+import { LoaderFunctionArgs, json } from "@remix-run/node";
+
+export let loader = ({ params }: LoaderFunctionArgs) => {
+  const organization_id = params.id;
+
+  return json(
+    {},
+    {
+      headers: {
+        ...getAuthenticationOrganizationCookie(organization_id),
+      },
+    },
+  );
+};
+
+function getAuthenticationOrganizationCookie(organization_id?: string) {
+  // TODO: we later remove this as we get the org by subdomain or even the email addrees
+  return {
+    "Set-Cookie": `auth_organization_id=${organization_id}; Path=/; ${
+      organization_id ? "" : "Max-Age=0"
+    }`,
+  };
+}
+
 export function SignIn() {
   return (
     <section className="m-8 flex gap-4">
@@ -66,7 +90,7 @@ export function SignIn() {
             </Typography>
           </div>
           <div className="mt-8 space-y-4">
-            <Form action="/auth/google" method="post">
+            <Form action={`/auth/google`} method="post">
               <Button
                 size="lg"
                 color="white"

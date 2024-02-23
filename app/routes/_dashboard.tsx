@@ -39,8 +39,16 @@ export default function Dashboard() {
   useEffect(() => {
     //TODO: it is a temporary solution, we need to remove token at logout and also store token at login.
 
-    if (user) sessionStorage.setItem("token", user.jwt_token);
-    else sessionStorage.removeItem("token");
+    if (user) {
+      sessionStorage.setItem("token", user.jwt_token);
+      sessionStorage.setItem(
+        "organization_id",
+        user.organization_id?.toString() ?? "",
+      );
+    } else {
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("organization_id");
+    }
   });
 
   return (

@@ -4,6 +4,7 @@ query getLoggedInUserInfo {
     Individual {
       id
       isManager
+      organizationId
     }
   }
 }
