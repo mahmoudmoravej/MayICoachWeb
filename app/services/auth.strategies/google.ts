@@ -51,7 +51,7 @@ export let googleStrategy = new GoogleStrategy(
 
       const individual = myInfo.Individual;
 
-      return {
+      const user: User = {
         email: profile.emails[0].value,
         jwt_token: jwt_token,
         name: profile.displayName,
@@ -59,7 +59,9 @@ export let googleStrategy = new GoogleStrategy(
         user_id: myInfo.UserId,
         is_manager: individual.isManager,
         organization_id: individual.organizationId,
-      } as User;
+        isPersonal: myInfo.Organization!.isPersonal,
+      };
+      return user;
     } catch (error: any) {
       const msg =
         "Error fetching loggined in user info through API. Details: " +

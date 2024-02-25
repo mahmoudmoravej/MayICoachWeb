@@ -20,10 +20,8 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import { LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useParams, useLocation, useNavigate } from "@remix-run/react";
 import { useState } from "react";
-import { authenticator } from "~/services/auth.server";
 import { FetchContentButton } from "./components";
 import { noNull } from "~/utils";
 
@@ -57,13 +55,6 @@ const ORG_TABLE_HEAD_ORGANIZATIONAL = [
   "Content Url",
 ];
 
-export let loader: LoaderFunction = async ({ request }) => {
-  //we should completely change the following appraoch
-  let user = await authenticator.isAuthenticated(request);
-  if (!user) return redirect("/login");
-  return null;
-};
-
 export default function Visions() {
   let { id: individualId } = useParams();
 
@@ -88,8 +79,8 @@ export default function Visions() {
         filter === "personal"
           ? VisionFilterLevel.PersonalOnly
           : filter === "organizational"
-          ? VisionFilterLevel.OrganizationalOnly
-          : undefined,
+            ? VisionFilterLevel.OrganizationalOnly
+            : undefined,
     },
     fetchPolicy: "network-only",
   });

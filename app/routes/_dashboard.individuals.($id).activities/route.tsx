@@ -20,10 +20,9 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import { LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useParams, useLocation, useNavigate } from "@remix-run/react";
 import { useState } from "react";
-import { authenticator } from "~/services/auth.server";
+
 import { AnalyzeButton, ImportModal } from "./components";
 import { noNull } from "~/utils";
 
@@ -43,13 +42,6 @@ const TABS: { label: string; value: FilterType }[] = [
   },
 ];
 const TABLE_HEAD = ["Activity", "Analyzed?", "Date", "Cycle", ""];
-
-export let loader: LoaderFunction = async ({ request }) => {
-  //we should completely change the following appraoch
-  let user = await authenticator.isAuthenticated(request);
-  if (!user) return redirect("/login");
-  return null;
-};
 
 export default function Activities() {
   let { id: individualId } = useParams();

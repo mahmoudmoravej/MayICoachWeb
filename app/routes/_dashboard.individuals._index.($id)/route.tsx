@@ -23,11 +23,9 @@ import {
   Tooltip,
   Spinner,
 } from "@material-tailwind/react";
-import { LoaderFunction, redirect } from "@remix-run/node";
-import { Link, useLoaderData, useNavigate, useParams } from "@remix-run/react";
+import { Link, useNavigate, useParams } from "@remix-run/react";
 import { useState } from "react";
-import { User } from "~/models/user";
-import { authenticator } from "~/services/auth.server";
+import { useAuthenticationContext } from "~/contexts";
 
 type FilterType = "all" | "managers" | "ICs";
 
@@ -48,27 +46,16 @@ const TABS: { label: string; value: FilterType }[] = [
 
 const TABLE_HEAD = ["Name", "Level", "Role", ""];
 
-export let loader: LoaderFunction = async ({ request }) => {
-  //we should completely change the following appraoch
-  let user = await authenticator.isAuthenticated(request);
-  if (!user) return redirect("/login");
-  else return { user };
-};
-
-function useUser() {
-  const data = useLoaderData<{ user?: User }>();
-  return data.user;
-}
-
 export default function Individuals() {
   let { id: managerId } = useParams();
-  const user = useUser();
+  const { user } = useAuthenticationContext();
   const [filter, setFilter] = useState<FilterType>("all");
+  if (user == null) throw new Error("User is null");
 
   let pageTitle = "People";
   let pageSubTitle = "";
 
-  if (managerId == "myteam" && user?.individual_id != null) {
+  if (managerId == "myteam") {
     managerId = user?.individual_id.toString();
   }
 

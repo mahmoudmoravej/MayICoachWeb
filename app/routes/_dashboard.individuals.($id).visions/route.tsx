@@ -1,8 +1,4 @@
-import Visions, {
-  loader as visionsloader,
-} from "../_dashboard.visions._index/route";
-
-export let loader = visionsloader;
+import Visions from "../_dashboard.visions._index/route";
 
 export default function IndividualVisions() {
   return <Visions />;

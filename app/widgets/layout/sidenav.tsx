@@ -4,23 +4,8 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Button, IconButton, Typography } from "@material-tailwind/react";
 
 import { RouteData } from "~/routesData";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { LoaderFunction, redirect } from "@remix-run/node";
-import { authenticator } from "~/services/auth.server";
-import { User } from "~/models/user";
-
-export let loader: LoaderFunction = async ({ request }) => {
-  //we should completely change the following appraoch
-  let user = await authenticator.isAuthenticated(request);
-  if (!user) return redirect("/login");
-  else return { user };
-};
-
-function useUser() {
-  const data = useLoaderData<{ user?: User }>();
-  return data.user;
-}
 
 export function Sidenav({
   brandImg,
@@ -33,7 +18,6 @@ export function Sidenav({
 }) {
   const nav = useNavigate();
   const [openSidenav, setOpenNav] = useState(false);
-  const user = useUser();
 
   //TODO: change the followings to get value from context
   const sidenavType = nav == null ? "dark" : "white"; // this fake comparison is to avoid TS error only.
@@ -101,13 +85,7 @@ export function Sidenav({
             )}
             {pages.map(({ icon, name, path }) => (
               <li key={name}>
-                <NavLink
-                  to={path.replace(
-                    "#{myId}",
-                    user?.individual_id?.toString() ?? "",
-                  )}
-                  end
-                >
+                <NavLink to={path} end>
                   {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}
@@ -115,8 +93,8 @@ export function Sidenav({
                         isActive
                           ? sidenavColor
                           : sidenavType === "dark"
-                          ? "white"
-                          : "blue-gray"
+                            ? "white"
+                            : "blue-gray"
                       }
                       className="flex items-center gap-4 px-4 capitalize"
                       fullWidth

@@ -8,19 +8,19 @@ import { ThemeProvider } from "@material-tailwind/react";
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { AppApolloProvider, AuthenticationProvider } from "./contexts";
+import { ApolloClientProvider, AuthenticationClientProvider } from "./contexts";
 
 startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
-      <AuthenticationProvider>
-        <AppApolloProvider>
+      <AuthenticationClientProvider>
+        <ApolloClientProvider>
           <ThemeProvider>
             <RemixBrowser />
           </ThemeProvider>
-        </AppApolloProvider>
-      </AuthenticationProvider>
+        </ApolloClientProvider>
+      </AuthenticationClientProvider>
     </StrictMode>,
   );
 });

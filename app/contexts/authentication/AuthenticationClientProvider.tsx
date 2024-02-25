@@ -3,15 +3,21 @@ import { useState } from "react";
 import { User } from "~/models/user";
 import { AuthenticationContext } from "./authenticationContext";
 
-export const AuthenticationProvider = ({
+export const AuthenticationClientProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [user, setUser] = useState<User | undefined>();
+  const [user, setUser] = useState<User>(window.__USER_STATE__);
 
   return (
-    <AuthenticationContext.Provider value={{ user: user, setUser: setUser }}>
+    <AuthenticationContext.Provider
+      value={{
+        user: user,
+        setUser: setUser,
+        isAuthenticated: user != null,
+      }}
+    >
       {children}
     </AuthenticationContext.Provider>
   );

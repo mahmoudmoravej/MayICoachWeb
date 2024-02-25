@@ -2,11 +2,13 @@ import React from "react";
 import { User } from "~/models/user";
 
 export const AuthenticationContext = React.createContext<{
-  user?: User;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
+  isAuthenticated: boolean;
 }>({
-  user: undefined,
+  user: null,
   setUser: () => {},
+  isAuthenticated: false,
 });
 
 export function useAuthenticationContext() {

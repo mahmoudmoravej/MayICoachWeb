@@ -3,7 +3,7 @@ import { ApolloProvider } from "@apollo/client";
 import { useAuthenticationContext } from "../authentication/authenticationContext";
 import { useMemo } from "react";
 
-export const AppApolloProvider = ({
+export const ApolloClientProvider = ({
   children,
 }: {
   children: React.ReactNode;
@@ -11,7 +11,6 @@ export const AppApolloProvider = ({
   const { user } = useAuthenticationContext();
 
   const client = useMemo(() => {
-    console.log("Client is created!!!"); //TODO:
     return getApolloClient(
       sessionStorage.getItem("graphql_url"),
       user?.jwt_token,
