@@ -30,7 +30,11 @@ export let googleStrategy = new GoogleStrategy(
     const organization_id = cookie.parse(cookieString).auth_organization_id; //we should not use this temporary cookie anywhere else
 
     try {
-      const client = getApolloClient(request, jwt_token, organization_id);
+      const client = getApolloClient(
+        process.env.GRAPHQL_SCHEMA_URL,
+        jwt_token,
+        organization_id,
+      );
       const result = await client.query<GetLoggedInUserInfoQuery>({
         query: GetLoggedInUserInfoDocument,
         fetchPolicy: "network-only",
