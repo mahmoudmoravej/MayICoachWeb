@@ -1,31 +1,44 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 
+//NOTE! This function will be called on both client and server side.
 export function getApolloClient(
-  request: Request,
-  token: string | undefined,
+  url: string | null | undefined,
+  token: string | null | undefined,
   organization_id: string | undefined,
+  cache: any = null,
 ) {
+  const isServer = typeof window === "undefined";
+
   const organization_header = organization_id
     ? { "X-Org-Id": organization_id }
     : null;
 
   const linkSettings = {
-    uri: process.env.GRAPHQL_SCHEMA_URL || "GRAPHQL_SCHEMA_URL IS NOT SET",
+    uri: url || "GRAPHQL_SCHEMA_URL IS NOT SET",
     headers: {
-      // ...Object.fromEntries(request.headers), it is not a good way. It will cause in deployment on render.com.
       Authorization: `Bearer ${token ?? "ERROR TOKEN!"}`,
       ...organization_header,
     },
-    credentials: "include", // or "same-origin" if your backend server is the same domain
+    ...(isServer && { credentials: "include" }), // or "same-origin" if your backend server is the same domain
   };
 
   const client = new ApolloClient({
-    ssrMode: true,
-    cache: new InMemoryCache(),
+    cache: cache ? new InMemoryCache().restore(cache) : new InMemoryCache(),
     link: createHttpLink(linkSettings),
+    defaultOptions: {
+      query: {
+        fetchPolicy: "network-only",
+      },
+    },
+    ssrMode: true,
+    ssrForceFetchDelay: 1000, // we need this to help ssr with network-only works as expected. so we don;'t see extra queries on the client side.
   });
 
   return client;
+}
+
+export function signOutClient(client: ApolloClient<any>) {
+  client.resetStore();
 }
 
 export function getPureObject<T extends { __typename?: any }>(

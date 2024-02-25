@@ -9,6 +9,7 @@ import { LoaderFunctionArgs } from "@remix-run/node";
 import { useEffect } from "react";
 import { User } from "~/models/user";
 import { Settings } from "~/models/settings";
+import { useAuthenticationContext } from "~/contexts/authentication/authenticationContext";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let user = await authenticator.isAuthenticated(request);
@@ -31,25 +32,15 @@ export default function Dashboard() {
   const sidenavType = routes == null ? "dark" : "white"; // this fake comparison is to avoid TS error only.
   const user = useUser();
   const settings = useSettings();
+  const { setUser: setAuthContextUser } = useAuthenticationContext();
 
   useEffect(() => {
     sessionStorage.setItem("graphql_url", settings.graphql_url);
   }, [settings.graphql_url]);
 
   useEffect(() => {
-    //TODO: it is a temporary solution, we need to remove token at logout and also store token at login.
-
-    if (user) {
-      sessionStorage.setItem("token", user.jwt_token);
-      sessionStorage.setItem(
-        "organization_id",
-        user.organization_id?.toString() ?? "",
-      );
-    } else {
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("organization_id");
-    }
-  });
+    setAuthContextUser(user ? user : undefined);
+  }, [user, setAuthContextUser]);
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">

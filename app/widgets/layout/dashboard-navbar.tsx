@@ -20,11 +20,18 @@ import {
   CreditCardIcon,
   Bars3Icon,
 } from "@heroicons/react/24/solid";
+import { signOutClient } from "~/utils";
+import { useApolloClient } from "@apollo/client";
+import { useAuthenticationContext } from "~/contexts";
 
 export function DashboardNavbar() {
   const { pathname } = useLocation();
-  const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const apolloClient = useApolloClient();
+  const { setUser: setAuthContextUser } = useAuthenticationContext();
+
+  let [layout, page] = pathname.split("/").filter((el) => el !== "");
   const fixedNavbar = false;
+  page = page ? page : "";
 
   return (
     <Navbar
@@ -82,6 +89,10 @@ export function DashboardNavbar() {
               variant="text"
               color="blue-gray"
               className="hidden items-center gap-1 px-4 normal-case xl:flex"
+              onClick={() => {
+                setAuthContextUser(undefined);
+                signOutClient(apolloClient);
+              }}
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
               Sign out

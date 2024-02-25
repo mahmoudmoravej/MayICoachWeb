@@ -152,7 +152,7 @@ async function wrapRemixServerWithApollo(
   remixServer: ReactElement,
   request: Request,
 ) {
-  const client = await getApolloClient(request);
+  const client = await buildApolloClient(request);
 
   const app = <ApolloProvider client={client}>{remixServer}</ApolloProvider>;
 
@@ -174,11 +174,11 @@ async function wrapRemixServerWithApollo(
   return appWithData;
 }
 
-async function getApolloClient(request: Request) {
+async function buildApolloClient(request: Request) {
   let user = await authenticator.isAuthenticated(request);
 
   return utils.getApolloClient(
-    request,
+    process.env.GRAPHQL_SCHEMA_URL,
     user?.jwt_token,
     user?.organization_id.toString(),
   );
