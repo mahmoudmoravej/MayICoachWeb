@@ -19,15 +19,20 @@ import { noNull } from "~/utils";
 
 import { GenerateCycleSummaryButton } from "./components/GenerateCycleSummaryButton";
 import { DefaultSkeleton } from "~/components/DefaultSkeleton";
+import { useAuthenticationContext } from "~/contexts";
 
 export default function IndividualCoach() {
-  const { id } = useParams();
-  if (id == null) throw new Error("id is null");
+  const { id: idParam } = useParams();
+  if (idParam == null) throw new Error("id is null");
   const [open, setOpen] = useState(0);
   const [isOnGneratingAdvice, setIsOnGneratingAdvice] = useState(false);
   const [adviceList, setAdviceList] = useState<AdviceFragmentFragment[] | null>(
     null,
   );
+  const { user } = useAuthenticationContext();
+
+  let id = idParam == "me" ? user?.individual_id.toString() : idParam;
+  if (id == null) throw new Error("id is null");
 
   const { data, loading, error } = useCoachIndividualQuery({
     variables: { id: id },
@@ -127,21 +132,20 @@ export default function IndividualCoach() {
                   </Link>
                 </Tooltip>
               </Typography>
-
-              <Typography color="gray" className="mb-8 font-normal">
-                {isOnGneratingAdvice ? (
-                  <DefaultSkeleton />
-                ) : cycle.advice?.activitySummary ? (
-                  <pre
-                    className="whitespace-pre-wrap"
-                    style={{ fontFamily: "inherit" }}
-                  >
-                    {cycle.advice.activitySummary}
-                  </pre>
-                ) : (
-                  "-"
-                )}
-              </Typography>
+              <pre
+                className="whitespace-pre-wrap"
+                style={{ fontFamily: "inherit" }}
+              >
+                <Typography color="gray" className="mb-8 font-normal">
+                  {isOnGneratingAdvice ? (
+                    <DefaultSkeleton />
+                  ) : cycle.advice?.activitySummary ? (
+                    cycle.advice.activitySummary
+                  ) : (
+                    "-"
+                  )}
+                </Typography>
+              </pre>
             </CardBody>
           </Card>
           <Card className="flex-1">
@@ -165,20 +169,20 @@ export default function IndividualCoach() {
                 </Tooltip>
               </Typography>
 
-              <Typography color="gray" className="mb-8 font-normal">
-                {isOnGneratingAdvice ? (
-                  <DefaultSkeleton />
-                ) : cycle.advice?.visionSummary ? (
-                  <pre
-                    className="whitespace-pre-wrap"
-                    style={{ fontFamily: "inherit" }}
-                  >
-                    {cycle.advice.visionSummary}
-                  </pre>
-                ) : (
-                  "-"
-                )}
-              </Typography>
+              <pre
+                className="whitespace-pre-wrap"
+                style={{ fontFamily: "inherit" }}
+              >
+                <Typography color="gray" className="mb-8 font-normal">
+                  {isOnGneratingAdvice ? (
+                    <DefaultSkeleton />
+                  ) : cycle.advice?.visionSummary ? (
+                    cycle.advice.visionSummary
+                  ) : (
+                    "-"
+                  )}
+                </Typography>
+              </pre>
             </CardBody>
           </Card>
           <Card className="flex-1">
@@ -186,21 +190,20 @@ export default function IndividualCoach() {
               <Typography variant="h6" color="gray" className="mb-4 uppercase">
                 Coaching Advice
               </Typography>
-
-              <Typography color="gray" className="mb-8 font-normal">
-                {isOnGneratingAdvice ? (
-                  <DefaultSkeleton />
-                ) : cycle.advice?.result ? (
-                  <pre
-                    className="whitespace-pre-wrap"
-                    style={{ fontFamily: "inherit" }}
-                  >
-                    {cycle.advice.result}
-                  </pre>
-                ) : (
-                  "-"
-                )}
-              </Typography>
+              <pre
+                className="whitespace-pre-wrap"
+                style={{ fontFamily: "inherit" }}
+              >
+                <Typography color="gray" className="mb-8 font-normal">
+                  {isOnGneratingAdvice ? (
+                    <DefaultSkeleton />
+                  ) : cycle.advice?.result ? (
+                    cycle.advice.result
+                  ) : (
+                    "-"
+                  )}
+                </Typography>
+              </pre>
             </CardBody>
           </Card>
         </div>

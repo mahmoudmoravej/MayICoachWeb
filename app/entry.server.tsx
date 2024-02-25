@@ -12,11 +12,13 @@ import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
-import { ApolloProvider } from "@apollo/client";
+import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { getDataFromTree } from "@apollo/client/react/ssr";
 import { authenticator } from "./services/auth.server";
 import type { ReactElement } from "react";
 import * as utils from "./utils";
+import { AuthenticationServerProvider, ApolloServerProvider } from "./contexts";
+import { User } from "./models/user";
 
 const ABORT_DELAY = 5_000;
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //TODO: remove this line. It is dangerous. We have it because there is an issue with the SSL certificate chain of render.com in production
@@ -152,9 +154,10 @@ async function wrapRemixServerWithApollo(
   remixServer: ReactElement,
   request: Request,
 ) {
-  const client = await buildApolloClient(request);
+  const user = await authenticator.isAuthenticated(request);
+  const client = await buildApolloClient(user);
 
-  const app = <ApolloProvider client={client}>{remixServer}</ApolloProvider>;
+  const app = getServerApp(user, client, remixServer);
 
   await getDataFromTree(app);
   const initialState = client.extract();
@@ -164,9 +167,9 @@ async function wrapRemixServerWithApollo(
       {app}
       <script
         dangerouslySetInnerHTML={{
-          __html: `window.__APOLLO_STATE__=${JSON.stringify(
-            initialState,
-          ).replace(/</g, "\\u003c")}`, // The replace call escapes the < character to prevent cross-site scripting attacks that are possible via the presence of </script> in a string literal
+          __html: `
+            window.__APOLLO_STATE__=${serializeState(initialState)}; 
+            window.__USER_STATE__=${serializeState(user)}`,
         }}
       />
     </>
@@ -174,12 +177,26 @@ async function wrapRemixServerWithApollo(
   return appWithData;
 }
 
-async function buildApolloClient(request: Request) {
-  let user = await authenticator.isAuthenticated(request);
+function serializeState(state: any) {
+  return JSON.stringify(state).replace(/</g, "\\u003c"); // The replace call escapes the < character to prevent cross-site scripting attacks that are possible via the presence of </script> in a string literal
+}
 
+function buildApolloClient(user: User | null) {
   return utils.getApolloClient(
     process.env.GRAPHQL_SCHEMA_URL,
     user?.jwt_token,
     user?.organization_id.toString(),
+  );
+}
+
+function getServerApp(
+  user: User | null,
+  client: ApolloClient<NormalizedCacheObject>,
+  remixServer: ReactElement,
+) {
+  return (
+    <AuthenticationServerProvider user={user}>
+      <ApolloServerProvider client={client}>{remixServer}</ApolloServerProvider>
+    </AuthenticationServerProvider>
   );
 }

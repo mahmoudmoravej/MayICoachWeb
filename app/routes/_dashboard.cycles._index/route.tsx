@@ -11,20 +11,12 @@ import {
   CardFooter,
   Spinner,
 } from "@material-tailwind/react";
-import { LoaderFunction, redirect } from "@remix-run/node";
+
 import { Link } from "@remix-run/react";
-import { authenticator } from "~/services/auth.server";
 import { noNull } from "~/utils";
 import { AssignMissedActivitiesButton } from "~/components/AssignMissedActivitiesButton";
 
 const TABLE_HEAD = ["Title", "From", "To", ""];
-
-export let loader: LoaderFunction = async ({ request }) => {
-  //we should completely change the following appraoch
-  let user = await authenticator.isAuthenticated(request);
-  if (!user) return redirect("/login");
-  else return { user };
-};
 
 export default function Cycles() {
   let pageTitle = "Cycles";

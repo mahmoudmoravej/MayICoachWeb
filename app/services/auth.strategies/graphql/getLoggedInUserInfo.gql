@@ -6,5 +6,8 @@ query getLoggedInUserInfo {
       isManager
       organizationId
     }
+    Organization {
+      isPersonal
+    }
   }
 }

@@ -163,6 +163,7 @@ FirstPageFooter.defaultProps = {
       <a
         href="https://www.creative-tim.com?ref=mtk"
         target="_blank"
+        rel="noreferrer"
         className="text-blue-gray-500 transition-colors hover:text-blue-500"
       >
         Creative Tim

@@ -12,6 +12,7 @@ import {
   LightBulbIcon,
   DocumentChartBarIcon,
 } from "@heroicons/react/24/solid";
+import { User } from "./models/user";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -20,76 +21,101 @@ const icon = {
 export type RouteData = {
   layout?: string;
   title?: string;
+  level?: "personal" | "organization";
   pages: {
     icon: JSX.Element;
     name: string;
     path: string;
+    level?: "personal" | "organization";
   }[];
 };
 
-export const routes: RouteData[] = [
-  {
-    pages: [
-      {
-        icon: <HomeIcon {...icon} />,
-        name: "Home",
-        path: "/",
-      },
-      {
-        icon: <LightBulbIcon {...icon} />,
-        name: "Coach me!",
-        path: "/individuals/#{myId}/coach",
-      },
-    ],
-  },
-  {
-    title: "Organization",
-    pages: [
-      {
-        icon: <InformationCircleIcon {...icon} />,
-        name: "My team",
-        path: "/individuals/myteam",
-      },
-      {
-        icon: <UserCircleIcon {...icon} />,
-        name: "People",
-        path: "/individuals",
-      },
-      {
-        icon: <TableCellsIcon {...icon} />,
-        name: "Visions",
-        path: "/visions",
-      },
-      {
-        icon: <TableCellsIcon {...icon} />,
-        name: "Cycles",
-        path: "/cycles",
-      },
-    ],
-  },
-  {
-    title: "My profile",
-    pages: [
-      {
-        icon: <SignalIcon {...icon} />,
-        name: "My activities",
-        path: "/individuals/#{myId}/activities",
-      },
-      {
-        icon: <DocumentChartBarIcon {...icon} />,
-        name: "My Visions",
-        path: "/individuals/#{myId}/visions",
-      },
-      {
-        icon: <IdentificationIcon {...icon} />,
-        name: "My settings",
-        path: "/individuals/#{myId}/edit",
-      },
-    ],
-  },
-];
+export function getRoutes(user: User | null): RouteData[] {
+  if (user == null) return [];
+  const routes: RouteData[] = [
+    {
+      pages: [
+        {
+          icon: <HomeIcon {...icon} />,
+          name: "Home",
+          path: "/",
+        },
+        {
+          icon: <LightBulbIcon {...icon} />,
+          name: "Coach me!",
+          path: `/individuals/me/coach`,
+        },
+      ],
+    },
+    {
+      title: "Organization",
+      level: "organization",
+      pages: [
+        {
+          icon: <InformationCircleIcon {...icon} />,
+          name: "My team",
+          path: "/individuals/myteam",
+        },
+        {
+          icon: <UserCircleIcon {...icon} />,
+          name: "People",
+          path: "/individuals",
+        },
+        {
+          icon: <TableCellsIcon {...icon} />,
+          name: "Visions",
+          path: "/visions",
+        },
+        {
+          icon: <TableCellsIcon {...icon} />,
+          name: "Cycles",
+          path: "/cycles",
+        },
+      ],
+    },
+    {
+      title: "My profile",
+      pages: [
+        {
+          icon: <SignalIcon {...icon} />,
+          name: "My activities",
+          path: `/individuals/${user.individual_id}/activities`,
+        },
+        {
+          icon: <DocumentChartBarIcon {...icon} />,
+          name: "My Visions",
+          path: `/individuals/${user.individual_id}/visions`,
+        },
+        {
+          icon: <IdentificationIcon {...icon} />,
+          name: "My settings",
+          path: `/individuals/${user.individual_id}/edit`,
+        },
+        {
+          icon: <TableCellsIcon {...icon} />,
+          name: "Cycles",
+          path: "/cycles",
+          level: "personal",
+        },
+      ],
+    },
+  ];
 
-export default routes;
+  return routes
+    .filter(
+      (section) =>
+        section.level == undefined ||
+        section.level == (user.isPersonal ? "personal" : "organization"),
+    )
+    .map((section) => ({
+      ...section,
+      pages: section.pages.filter(
+        (page) =>
+          page.level == undefined ||
+          page.level == (user.isPersonal ? "personal" : "organization"),
+      ),
+    }));
+}
 
 export const teamData: {
   img: string;

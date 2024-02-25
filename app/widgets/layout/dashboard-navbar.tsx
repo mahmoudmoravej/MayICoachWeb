@@ -6,28 +6,18 @@ import {
   IconButton,
   Breadcrumbs,
   Input,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Avatar,
 } from "@material-tailwind/react";
 import {
   UserCircleIcon,
   Cog6ToothIcon,
-  BellIcon,
-  ClockIcon,
-  CreditCardIcon,
   Bars3Icon,
 } from "@heroicons/react/24/solid";
 import { signOutClient } from "~/utils";
 import { useApolloClient } from "@apollo/client";
-import { useAuthenticationContext } from "~/contexts";
 
 export function DashboardNavbar() {
   const { pathname } = useLocation();
   const apolloClient = useApolloClient();
-  const { setUser: setAuthContextUser } = useAuthenticationContext();
 
   let [layout, page] = pathname.split("/").filter((el) => el !== "");
   const fixedNavbar = false;
@@ -80,7 +70,6 @@ export function DashboardNavbar() {
             variant="text"
             color="blue-gray"
             className="grid xl:hidden"
-            onClick={() => {}}
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
@@ -90,8 +79,8 @@ export function DashboardNavbar() {
               color="blue-gray"
               className="hidden items-center gap-1 px-4 normal-case xl:flex"
               onClick={() => {
-                setAuthContextUser(undefined);
-                signOutClient(apolloClient);
+                // setAuthContextUser(undefined); it is not a good practice. It reloads the already loaded/cached pages with empty user data which raises errors in another render before the full redirect happens.
+                signOutClient(apolloClient); // i guess we don't need this one as well.
               }}
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
@@ -105,7 +94,7 @@ export function DashboardNavbar() {
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
           </Link>
-          <Menu>
+          {/* <Menu>
             <MenuHandler>
               <IconButton variant="text" color="blue-gray">
                 <BellIcon className="h-5 w-5 text-blue-gray-500" />
@@ -182,7 +171,7 @@ export function DashboardNavbar() {
                 </div>
               </MenuItem>
             </MenuList>
-          </Menu>
+          </Menu> */}
           <IconButton variant="text" color="blue-gray" onClick={() => {}}>
             <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
           </IconButton>
