@@ -86,7 +86,7 @@ export function SignIn() {
 
           <div className="mt-6 flex justify-between gap-2">
             <Typography variant="small" className="font-medium text-gray-900">
-              <a href="#">Forgot Password?</a>
+              <a href="/">Forgot Password?</a>
             </Typography>
           </div>
           <div className="mt-8 space-y-4">
@@ -167,6 +167,7 @@ export function SignIn() {
         <img
           src="/images/pattern.png"
           className="h-full w-full rounded-3xl object-cover"
+          alt=""
         />
       </div>
     </section>

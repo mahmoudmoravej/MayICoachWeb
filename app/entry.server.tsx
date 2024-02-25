@@ -12,21 +12,12 @@ import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
-import {
-  ApolloClient,
-  ApolloProvider,
-  NormalizedCacheObject,
-} from "@apollo/client";
+import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { getDataFromTree } from "@apollo/client/react/ssr";
 import { authenticator } from "./services/auth.server";
 import type { ReactElement } from "react";
 import * as utils from "./utils";
-import {
-  AuthenticationContext,
-  AuthenticationClientProvider,
-  AuthenticationServerProvider,
-  ApolloServerProvider,
-} from "./contexts";
+import { AuthenticationServerProvider, ApolloServerProvider } from "./contexts";
 import { User } from "./models/user";
 
 const ABORT_DELAY = 5_000;
