@@ -31,7 +31,7 @@ export default function IndividualCoach() {
   );
   const { user } = useAuthenticationContext();
 
-  let id = idParam == "me" ? user?.individual_id.toString() : idParam;
+  let id = idParam == "me" ? user?.individual_id.toString() ?? "" : idParam;
   if (id == null) throw new Error("id is null");
 
   const { data, loading, error } = useCoachIndividualQuery({
