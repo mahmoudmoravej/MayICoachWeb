@@ -9,11 +9,12 @@ import type { User } from "~/models/user";
 import { getApolloClient } from "~/utils";
 import cookie from "cookie";
 
-export let googleStrategy = new GoogleStrategy(
+export const googleSignUpStrategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID ?? "",
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-    callbackURL: "/auth/google/callback",
+    callbackURL: "/auth/google/signup/callback",
+    prompt: "consent",
   },
   async ({
     accessToken,
@@ -27,20 +28,21 @@ export let googleStrategy = new GoogleStrategy(
     const jwt_token = extraParams.id_token;
 
     const cookieString = request.headers.get("cookie") ?? "";
-    const organization_id = cookie.parse(cookieString).auth_organization_id; //we should not use this temporary cookie anywhere else
+    const organization_id =
+      cookie.parse(cookieString).auth_signup_organization_id; //we should not use this temporary cookie anywhere else
 
     try {
       const client = getApolloClient(
         process.env.GRAPHQL_SCHEMA_URL,
         jwt_token,
-        organization_id,
+        { organization_id, sign_up: "1" },
       );
       const result = await client.query<GetLoggedInUserInfoQuery>({
         query: GetLoggedInUserInfoDocument,
-        fetchPolicy: "network-only",
       });
 
       const myInfo = result.data?.myInfo;
+
       if (
         myInfo === undefined ||
         result.error ||
@@ -67,7 +69,7 @@ export let googleStrategy = new GoogleStrategy(
         "Error fetching loggined in user info through API. Details: " +
         JSON.stringify({ url: process.env.GRAPHQL_SCHEMA_URL, error: error });
       console.error(msg);
-      throw new AuthorizationError(msg);
+      throw new AuthorizationError(msg, error);
     }
   },
 );

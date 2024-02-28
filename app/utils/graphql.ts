@@ -4,20 +4,30 @@ import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 export function getApolloClient(
   url: string | null | undefined,
   token: string | null | undefined,
-  organization_id: string | undefined,
+  headers:
+    | {
+        organization_id?: string | undefined;
+        sign_up?: string | undefined;
+      }
+    | null
+    | undefined,
   cache: any = null,
 ) {
   const isServer = typeof window === "undefined";
 
-  const organization_header = organization_id
-    ? { "X-Org-Id": organization_id }
+  const organization_header = headers?.organization_id
+    ? { "X-Org-Id": headers.organization_id }
     : null;
+
+  const signup_header =
+    headers?.sign_up != undefined ? { "X-Sign-Up": headers.sign_up } : null;
 
   const linkSettings = {
     uri: url || "GRAPHQL_SCHEMA_URL IS NOT SET",
     headers: {
       Authorization: `Bearer ${token ?? "ERROR TOKEN!"}`,
       ...organization_header,
+      ...signup_header,
     },
     ...(isServer && { credentials: "include" }), // or "same-origin" if your backend server is the same domain
   };

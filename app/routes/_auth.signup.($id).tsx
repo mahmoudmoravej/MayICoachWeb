@@ -1,96 +1,76 @@
-import { Form } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 
-import { Input, Button, Typography } from "@material-tailwind/react";
+import { Alert, Button, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import cookie from "cookie";
 
 import { LoaderFunctionArgs, json } from "@remix-run/node";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
-export let loader = ({ params }: LoaderFunctionArgs) => {
+export function loader({ params, request }: LoaderFunctionArgs) {
   const organization_id = params.id;
 
+  const cookieString = request.headers.get("cookie") ?? "";
+  const signupError = cookie.parse(cookieString)["signup-error"];
+
   return json(
-    {},
     {
-      headers: {
-        ...getAuthenticationOrganizationCookie(organization_id),
-      },
+      error: signupError,
+    },
+    {
+      headers: [
+        ["Set-Cookie", setClearErrorCookie()],
+        ["Set-Cookie", getAuthenticationOrganizationCookie(organization_id)],
+      ],
     },
   );
-};
-
-function getAuthenticationOrganizationCookie(organization_id?: string) {
-  // TODO: we later remove this as we get the org by subdomain or even the email addrees
-  return {
-    "Set-Cookie": `auth_organization_id=${organization_id}; Path=/; ${
-      organization_id ? "" : "Max-Age=0"
-    }`,
-  };
+}
+function setClearErrorCookie(): string {
+  return "signup-error=; Path=/; Max-Age=0";
 }
 
-export function SignIn() {
+function getAuthenticationOrganizationCookie(organization_id?: string): string {
+  // TODO: we later remove this as we get the org by subdomain or even the email addrees
+  return `auth_signup_organization_id=${organization_id}; Path=/; ${
+    organization_id ? "" : "Max-Age=0"
+  }`;
+}
+
+export function SignUp() {
+  const { error: errorPresent } = useLoaderData<typeof loader>();
+
+  const errorMarkup = true && (
+    <Alert
+      color="amber"
+      icon={<ExclamationTriangleIcon className="h-5 w-5 text-inherit" />}
+    >
+      You are not authorized! You have to{" "}
+      <Link to="/signup" className="hover:underline">
+        sign up
+      </Link>{" "}
+      first.
+    </Alert>
+  );
+
   return (
     <section className="m-8 flex gap-4">
       <div className="mt-24 w-full lg:w-3/5">
         <div className="text-center">
           <Typography variant="h2" className="mb-4 font-bold">
-            Sign In
+            Sign Up
           </Typography>
           <Typography
             variant="paragraph"
             color="blue-gray"
             className="text-lg font-normal"
           >
-            Enter your email and password to Sign In.
+            Select your way to sign up.
           </Typography>
         </div>
         <div className="mx-auto mb-2 mt-8 w-80 max-w-screen-lg lg:w-1/2">
-          <div className="mb-1 flex flex-col gap-6">
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="-mb-3 font-medium"
-            >
-              Your email
-            </Typography>
-            <Input
-              size="lg"
-              placeholder="name@mail.com"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              crossOrigin={undefined}
-            />
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="-mb-3 font-medium"
-            >
-              Password
-            </Typography>
-            <Input
-              type="password"
-              size="lg"
-              placeholder="********"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-              crossOrigin={undefined}
-            />
-          </div>
-
-          <Button className="mt-6" fullWidth>
-            Sign In
-          </Button>
-
-          <div className="mt-6 flex justify-between gap-2">
-            <Typography variant="small" className="font-medium text-gray-900">
-              <a href="/">Forgot Password?</a>
-            </Typography>
-          </div>
           <div className="mt-8 space-y-4">
-            <Form action={`/auth/google`} method="post">
+            {errorPresent && errorMarkup}
+            <Form action={`/auth/google/signup`} method="post">
               <Button
                 size="lg"
                 color="white"
@@ -134,7 +114,7 @@ export function SignIn() {
                     </clipPath>
                   </defs>
                 </svg>
-                <span>Sign in With Google</span>
+                <span>Sign up With Google</span>
               </Button>
             </Form>
             <Button
@@ -149,16 +129,16 @@ export function SignIn() {
                 width={24}
                 alt=""
               />
-              <span>Sign in With Twitter</span>
+              <span>Sign up With Twitter</span>
             </Button>
           </div>
           <Typography
             variant="paragraph"
             className="mt-4 text-center font-medium text-blue-gray-500"
           >
-            Not registered?
-            <Link to="/auth/sign-up" className="ml-1 text-gray-900">
-              Create account
+            Already have an account?
+            <Link to="/signin" className="ml-1 text-gray-900">
+              Sign in
             </Link>
           </Typography>
         </div>
@@ -174,4 +154,4 @@ export function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignUp;

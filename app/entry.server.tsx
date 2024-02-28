@@ -185,7 +185,7 @@ function buildApolloClient(user: User | null) {
   return utils.getApolloClient(
     process.env.GRAPHQL_SCHEMA_URL,
     user?.jwt_token,
-    user?.organization_id.toString(),
+    { organization_id: user?.organization_id.toString() },
   );
 }
 
