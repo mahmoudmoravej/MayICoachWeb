@@ -12,7 +12,7 @@ import { useAuthenticationContext } from "~/contexts/authentication/authenticati
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let user = await authenticator.isAuthenticated(request);
-  if (!user && request.url.indexOf("/login") == -1) return redirect("/login"); //TODO: any danger of infinite loop?
+  if (!user && request.url.indexOf("/signin") == -1) return redirect("/signin"); //TODO: any danger of infinite loop?
 
   const settings: Settings = { graphql_url: process.env.GRAPHQL_SCHEMA_URL! };
   return { user, settings };

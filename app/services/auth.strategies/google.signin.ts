@@ -9,11 +9,12 @@ import type { User } from "~/models/user";
 import { getApolloClient } from "~/utils";
 import cookie from "cookie";
 
-export let googleStrategy = new GoogleStrategy(
+export const googleStrategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID ?? "",
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-    callbackURL: "/auth/google/callback",
+    callbackURL: "/auth/google/signin/callback",
+    prompt: "select_account",
   },
   async ({
     accessToken,
@@ -33,7 +34,7 @@ export let googleStrategy = new GoogleStrategy(
       const client = getApolloClient(
         process.env.GRAPHQL_SCHEMA_URL,
         jwt_token,
-        organization_id,
+        { organization_id },
       );
       const result = await client.query<GetLoggedInUserInfoQuery>({
         query: GetLoggedInUserInfoDocument,
@@ -41,6 +42,7 @@ export let googleStrategy = new GoogleStrategy(
       });
 
       const myInfo = result.data?.myInfo;
+
       if (
         myInfo === undefined ||
         result.error ||
@@ -67,7 +69,7 @@ export let googleStrategy = new GoogleStrategy(
         "Error fetching loggined in user info through API. Details: " +
         JSON.stringify({ url: process.env.GRAPHQL_SCHEMA_URL, error: error });
       console.error(msg);
-      throw new AuthorizationError(msg);
+      throw new AuthorizationError(msg, error);
     }
   },
 );

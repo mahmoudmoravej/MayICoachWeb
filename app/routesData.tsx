@@ -270,10 +270,10 @@ export const siteRoutes: siteRouteType[] = [
   },
   {
     name: "Sign In",
-    path: "/login",
+    path: "/signin",
   },
   {
     name: "Sign Up",
-    path: "/login",
+    path: "/signup",
   },
 ];

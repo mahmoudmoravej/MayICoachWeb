@@ -14,7 +14,7 @@ export const ApolloClientProvider = ({
     return getApolloClient(
       sessionStorage.getItem("graphql_url"),
       user?.jwt_token,
-      user?.organization_id?.toString(),
+      { organization_id: user?.organization_id?.toString() },
       window.__APOLLO_STATE__,
     );
   }, [user?.jwt_token, user?.organization_id]);
