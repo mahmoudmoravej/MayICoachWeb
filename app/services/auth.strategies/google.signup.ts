@@ -9,7 +9,6 @@ import { GoogleStrategy } from "remix-auth-google";
 import type { User } from "~/models/user";
 import { getApolloClient } from "~/utils";
 import cookie from "cookie";
-import { GraphQLError } from "graphql";
 
 export const googleSignUpStrategy = new GoogleStrategy(
   {
