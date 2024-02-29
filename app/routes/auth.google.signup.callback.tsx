@@ -1,4 +1,5 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+
 import { AuthorizationError } from "remix-auth";
 import { authenticator } from "~/services/auth.server";
 
@@ -10,10 +11,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     if (error instanceof Response) return error;
-    if (error instanceof AuthorizationError) {
+    else if (error instanceof AuthorizationError) {
       return redirect("/signup", {
         headers: {
-          "Set-Cookie": "signup-error=unauthorized; Path=/",
+          "Set-Cookie": `signup-error=${error.message}; Path=/`,
         },
       });
     }

@@ -1,6 +1,7 @@
 import {
-  GetLoggedInUserInfoDocument,
-  GetLoggedInUserInfoQuery,
+  SignUpMutation,
+  SignUpDocument,
+  SignUpMutationVariables,
 } from "@app-types/graphql";
 
 import { AuthorizationError } from "remix-auth";
@@ -8,6 +9,7 @@ import { GoogleStrategy } from "remix-auth-google";
 import type { User } from "~/models/user";
 import { getApolloClient } from "~/utils";
 import cookie from "cookie";
+import { GraphQLError } from "graphql";
 
 export const googleSignUpStrategy = new GoogleStrategy(
   {
@@ -28,48 +30,64 @@ export const googleSignUpStrategy = new GoogleStrategy(
     const jwt_token = extraParams.id_token;
 
     const cookieString = request.headers.get("cookie") ?? "";
-    const organization_id =
-      cookie.parse(cookieString).auth_signup_organization_id; //we should not use this temporary cookie anywhere else
+    const organization_id = parseInt(
+      cookie.parse(cookieString).auth_signup_organization_id,
+    ); //we should not use this temporary cookie anywhere else
 
     try {
       const client = getApolloClient(
         process.env.GRAPHQL_SCHEMA_URL,
         jwt_token,
-        { organization_id, sign_up: "1" },
+        { sign_up: "1" },
       );
-      const result = await client.query<GetLoggedInUserInfoQuery>({
-        query: GetLoggedInUserInfoDocument,
+
+      const result = await client.mutate<
+        SignUpMutation,
+        SignUpMutationVariables
+      >({
+        mutation: SignUpDocument,
+        variables: {
+          input: {
+            signUpInput: {
+              organizationId: organization_id > 0 ? organization_id : undefined,
+            },
+          },
+        },
       });
 
-      const myInfo = result.data?.myInfo;
+      const userInfo = result.data?.signUp?.result;
 
       if (
-        myInfo === undefined ||
-        result.error ||
+        userInfo === undefined ||
         result.errors ||
-        myInfo.Individual == null
+        userInfo.Individual == null
       )
         throw new Error("No user info found");
 
-      const individual = myInfo.Individual;
+      const individual = userInfo.Individual;
 
       const user: User = {
         email: profile.emails[0].value,
         jwt_token: jwt_token,
         name: profile.displayName,
         individual_id: individual.id,
-        user_id: myInfo.UserId,
+        user_id: userInfo.UserId,
         is_manager: individual.isManager,
         organization_id: individual.organizationId,
-        isPersonal: myInfo.Organization!.isPersonal,
+        isPersonal: userInfo.Organization!.isPersonal,
       };
       return user;
     } catch (error: any) {
       const msg =
-        "Error fetching loggined in user info through API. Details: " +
+        "Error sign up through API. Details: " +
         JSON.stringify({ url: process.env.GRAPHQL_SCHEMA_URL, error: error });
       console.error(msg);
-      throw new AuthorizationError(msg, error);
+
+      const errorMsg = error.graphQLErrors
+        ? error.graphQLErrors[0].message
+        : "unauthorized";
+
+      throw new AuthorizationError(errorMsg, error);
     }
   },
 );
