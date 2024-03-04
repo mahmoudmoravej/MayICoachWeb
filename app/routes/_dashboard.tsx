@@ -1,37 +1,15 @@
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { Outlet } from "@remix-run/react";
 import { IconButton } from "@material-tailwind/react";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 
 import { Sidenav, DashboardNavbar, Footer } from "~/widgets/layout";
 import { getRoutes } from "~/routesData";
-import { authenticator } from "~/services/auth.server";
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { useEffect } from "react";
-import { Settings } from "~/models/settings";
 import { useAuthenticationContext } from "~/contexts/authentication/authenticationContext";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  let user = await authenticator.isAuthenticated(request);
-  if (!user && request.url.indexOf("/signin") == -1) return redirect("/signin"); //TODO: any danger of infinite loop?
-
-  const settings: Settings = { graphql_url: process.env.GRAPHQL_SCHEMA_URL! };
-  return { user, settings };
-}
-
-function useSettings() {
-  const data = useLoaderData<typeof loader>();
-  return data.settings;
-}
-
 export default function Dashboard() {
-  //TODO: change the followings to get value from context
+  //TODO: change the followings to get value from settings context
   const sidenavType = getRoutes == null ? "dark" : "white"; // this fake comparison is to avoid TS error only.
-  const settings = useSettings();
   const { user } = useAuthenticationContext();
-
-  useEffect(() => {
-    sessionStorage.setItem("graphql_url", settings.graphql_url);
-  }, [settings.graphql_url]);
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
