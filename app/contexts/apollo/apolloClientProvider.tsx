@@ -1,6 +1,6 @@
 import { getApolloClient } from "~/utils";
 import { ApolloProvider } from "@apollo/client";
-import { useAuthenticationContext } from "../authentication/authenticationContext";
+import { useAuthenticationContext } from "../authentication/authenticationContexta";
 import { useMemo } from "react";
 import { useSettingsContext } from "../settings/settingsContext";
 
