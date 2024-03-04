@@ -1,3 +1,5 @@
 export type Settings = {
-  graphql_url: string;
+  graphqlUrl: string;
+  navBarOpen: boolean;
+  setNavBarOpen: (open: boolean) => void;
 };

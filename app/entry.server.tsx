@@ -17,7 +17,11 @@ import { getDataFromTree } from "@apollo/client/react/ssr";
 import { authenticator } from "./services/auth.server";
 import type { ReactElement } from "react";
 import * as utils from "./utils";
-import { AuthenticationServerProvider, ApolloServerProvider } from "./contexts";
+import {
+  AuthenticationServerProvider,
+  ApolloServerProvider,
+  SettingsServerProvider,
+} from "./contexts";
 import { User } from "./models/user";
 
 const ABORT_DELAY = 5_000;
@@ -169,7 +173,8 @@ async function wrapRemixServerWithApollo(
         dangerouslySetInnerHTML={{
           __html: `
             window.__APOLLO_STATE__=${serializeState(initialState)}; 
-            window.__USER_STATE__=${serializeState(user)}`,
+            window.__USER_STATE__=${serializeState(user)};
+            window.__GRAPHQLURL__=${serializeState(process.env.GRAPHQL_SCHEMA_URL)};`,
         }}
       />
     </>
@@ -195,8 +200,17 @@ function getServerApp(
   remixServer: ReactElement,
 ) {
   return (
-    <AuthenticationServerProvider user={user}>
-      <ApolloServerProvider client={client}>{remixServer}</ApolloServerProvider>
-    </AuthenticationServerProvider>
+    <SettingsServerProvider
+      graphqlUrl={
+        process.env.GRAPHQL_SCHEMA_URL ??
+        "process.env.GRAPHQL_SCHEMA_URL is not present"
+      }
+    >
+      <AuthenticationServerProvider user={user}>
+        <ApolloServerProvider client={client}>
+          {remixServer}
+        </ApolloServerProvider>
+      </AuthenticationServerProvider>
+    </SettingsServerProvider>
   );
 }
