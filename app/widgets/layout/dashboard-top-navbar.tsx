@@ -1,12 +1,5 @@
-import { useLocation, Link } from "react-router-dom";
-import {
-  Navbar,
-  Typography,
-  Button,
-  IconButton,
-  Breadcrumbs,
-  Input,
-} from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+import { Navbar, Button, IconButton, Input } from "@material-tailwind/react";
 import {
   UserCircleIcon,
   Cog6ToothIcon,
@@ -14,14 +7,16 @@ import {
 } from "@heroicons/react/24/solid";
 import { signOutClient } from "~/utils";
 import { useApolloClient } from "@apollo/client";
+import { useSettingsContext } from "~/contexts";
 
-export function DashboardNavbar() {
-  const { pathname } = useLocation();
+export function DashboardTopNavbar() {
+  // const { pathname } = useLocation();
   const apolloClient = useApolloClient();
+  const { sideNavBarOpen, setSideNavBarOpen } = useSettingsContext();
 
-  let [layout, page] = pathname.split("/").filter((el) => el !== "");
+  // let [layout, page] = pathname.split("/").filter((el) => el !== "");
   const fixedNavbar = false;
-  page = page ? page : "";
+  // page = page ? page : "";
 
   return (
     <Navbar
@@ -35,8 +30,9 @@ export function DashboardNavbar() {
       blurred={fixedNavbar}
     >
       <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
-        <div className="capitalize">
-          <Breadcrumbs
+        {
+          <div className="capitalize">
+            {/* <Breadcrumbs
             className={`bg-transparent p-0 transition-all ${
               fixedNavbar ? "mt-1" : ""
             }`}
@@ -57,11 +53,12 @@ export function DashboardNavbar() {
             >
               {page}
             </Typography>
-          </Breadcrumbs>
-          <Typography variant="h6" color="blue-gray">
-            {page}
-          </Typography>
-        </div>
+          </Breadcrumbs> 
+             <Typography variant="h6" color="blue-gray">
+              {page}
+            </Typography> */}
+          </div>
+        }
         <div className="flex items-center">
           <div className="mr-auto md:mr-4 md:w-56">
             <Input label="Search" crossOrigin={undefined} />
@@ -70,6 +67,9 @@ export function DashboardNavbar() {
             variant="text"
             color="blue-gray"
             className="grid xl:hidden"
+            onClick={() => {
+              setSideNavBarOpen(!sideNavBarOpen);
+            }}
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
@@ -180,7 +180,3 @@ export function DashboardNavbar() {
     </Navbar>
   );
 }
-
-DashboardNavbar.displayName = "/src/widgets/layout/dashboard-navbar.jsx";
-
-export default DashboardNavbar;

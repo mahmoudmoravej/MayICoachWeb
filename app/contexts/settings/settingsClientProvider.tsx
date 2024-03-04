@@ -8,14 +8,14 @@ export const SettingsClientProvider = ({
   children: React.ReactNode;
 }) => {
   const [graphqlUrl] = useState<string>(window.__GRAPHQLURL__);
-  const [navBarOpen, setNavBarOpen] = useState<boolean>(true);
+  const [sideNavBarOpen, setSideNavBarOpen] = useState<boolean | null>(null);
 
   return (
     <SettingsContext.Provider
       value={{
         graphqlUrl,
-        navBarOpen,
-        setNavBarOpen,
+        sideNavBarOpen,
+        setSideNavBarOpen,
       }}
     >
       {children}

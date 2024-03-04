@@ -39,7 +39,7 @@ function getAuthenticationOrganizationCookie(organization_id?: string): string {
 export function SignUp() {
   const { error: signUpError } = useLoaderData<typeof loader>();
 
-  const errorMarkup = true && (
+  const errorMarkup = signUpError && (
     <Alert
       color="amber"
       icon={<ExclamationTriangleIcon className="h-5 w-5 text-inherit" />}
@@ -75,7 +75,7 @@ export function SignUp() {
         </div>
         <div className="mx-auto mb-2 mt-8 w-80 max-w-screen-lg lg:w-1/2">
           <div className="mt-8 space-y-4">
-            {signUpError && errorMarkup}
+            {errorMarkup}
             <Form action={`/auth/google/signup`} method="post">
               <Button
                 size="lg"

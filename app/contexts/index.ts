@@ -5,3 +5,4 @@ export * from "./apollo/apolloClientProvider";
 export * from "./apollo/apolloServerProvider";
 export * from "./settings/settingsServerProvider";
 export * from "./settings/settingsClientProvider";
+export * from "./settings/settingsContext";
