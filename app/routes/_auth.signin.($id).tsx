@@ -36,9 +36,9 @@ function getAuthenticationOrganizationCookie(organization_id?: string): string {
 }
 
 export default function SignIn() {
-  const { error: errorPresent } = useLoaderData<typeof loader>();
+  const { error: signInError } = useLoaderData<typeof loader>();
 
-  const errorMarkup = true && (
+  const errorMarkup = signInError && (
     <Alert
       color="amber"
       icon={<ExclamationTriangleIcon className="h-5 w-5 text-inherit" />}
@@ -70,7 +70,7 @@ export default function SignIn() {
           </div>
           <div className="mx-auto mb-2 mt-8 w-80 max-w-screen-lg lg:w-1/2">
             <div className="mt-8 space-y-4">
-              {errorPresent && errorMarkup}
+              {errorMarkup}
               <Form action={`/auth/google/signin`} method="post">
                 <Button
                   size="lg"

@@ -3,8 +3,8 @@ import { Settings } from "~/models/settings";
 
 export const SettingsContext = React.createContext<Settings>({
   graphqlUrl: "",
-  navBarOpen: false,
-  setNavBarOpen: () => false,
+  sideNavBarOpen: null,
+  setSideNavBarOpen: () => false,
 });
 
 export function useSettingsContext() {

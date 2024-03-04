@@ -1,10 +1,17 @@
 import { Outlet } from "@remix-run/react";
-import { IconButton } from "@material-tailwind/react";
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 
-import { Sidenav, DashboardNavbar, Footer } from "~/widgets/layout";
+import { Sidenav, DashboardTopNavbar, Footer } from "~/widgets/layout";
 import { getRoutes } from "~/routesData";
 import { useAuthenticationContext } from "~/contexts/authentication/authenticationContext";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { authenticator } from "~/services/auth.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  let user = await authenticator.isAuthenticated(request);
+  if (!user && request.url.indexOf("/signin") == -1) return redirect("/signin"); //TODO: any danger of infinite loop?
+
+  return {};
+}
 
 export default function Dashboard() {
   //TODO: change the followings to get value from settings context
@@ -20,8 +27,8 @@ export default function Dashboard() {
         }
       />
       <div className="p-4 xl:ml-80">
-        <DashboardNavbar />
-        <IconButton
+        <DashboardTopNavbar />
+        {/* <IconButton
           size="lg"
           color="white"
           className="fixed bottom-8 right-8 z-40 rounded-full shadow-blue-gray-900/10"
@@ -29,7 +36,7 @@ export default function Dashboard() {
           onClick={() => {}}
         >
           <Cog6ToothIcon className="h-5 w-5" />
-        </IconButton>
+        </IconButton> */}
         <Outlet />
         <div className="text-blue-gray-600">
           <Footer />

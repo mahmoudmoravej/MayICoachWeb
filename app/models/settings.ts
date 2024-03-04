@@ -1,5 +1,5 @@
 export type Settings = {
   graphqlUrl: string;
-  navBarOpen: boolean;
-  setNavBarOpen: (open: boolean) => void;
+  sideNavBarOpen: boolean | null; //null means default state
+  setSideNavBarOpen: (open: boolean) => void;
 };

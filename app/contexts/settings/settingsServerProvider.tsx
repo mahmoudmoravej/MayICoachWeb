@@ -11,8 +11,8 @@ export const SettingsServerProvider = ({
     <SettingsContext.Provider
       value={{
         graphqlUrl,
-        navBarOpen: false,
-        setNavBarOpen: () => {},
+        sideNavBarOpen: null,
+        setSideNavBarOpen: () => {},
       }}
     >
       {children}
