@@ -4,7 +4,7 @@ import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 
 import { Sidenav, DashboardNavbar, Footer } from "~/widgets/layout";
 import { getRoutes } from "~/routesData";
-import { useAuthenticationContext } from "~/contexts/authentication/authenticationContexta";
+import { useAuthenticationContext } from "~/contexts/authentication/authenticationContext";
 
 export default function Dashboard() {
   //TODO: change the followings to get value from settings context

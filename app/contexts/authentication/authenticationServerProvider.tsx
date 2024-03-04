@@ -1,20 +1,18 @@
-import { useState } from "react";
-
 import { User } from "~/models/user";
-import { AuthenticationContext } from "./authenticationContexta";
+import { AuthenticationContext } from "./authenticationContext";
 
-export const AuthenticationClientProvider = ({
+export const AuthenticationServerProvider = ({
+  user,
   children,
 }: {
+  user: User | null;
   children: React.ReactNode;
 }) => {
-  const [user, setUser] = useState<User>(window.__USER_STATE__);
-
   return (
     <AuthenticationContext.Provider
       value={{
         user: user,
-        setUser: setUser,
+        setUser: () => {},
         isAuthenticated: user != null,
       }}
     >
