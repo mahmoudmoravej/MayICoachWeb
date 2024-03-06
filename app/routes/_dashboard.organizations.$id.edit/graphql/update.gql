@@ -1,0 +1,7 @@
+mutation UpdateOrganization($input: OrganizationUpdateInput!) {
+  organizationUpdate(input: $input) {
+    organization {
+      ...OrganizationFragment
+    }
+  }
+}

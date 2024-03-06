@@ -1,0 +1,5 @@
+query findOrganization($id: ID!) {
+  organization(id: $id) {
+    ...OrganizationFragment
+  }
+}
