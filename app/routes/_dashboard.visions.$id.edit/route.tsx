@@ -5,6 +5,7 @@ import { Card, Typography } from "@material-tailwind/react";
 import {
   FindVisionQuery,
   UpdateVisionMutation,
+  VisionUpdate,
   useFindVisionQuery,
   useUpdateVisionMutation,
 } from "@app-types/graphql";
@@ -54,14 +55,11 @@ export default function VisionEdit() {
   }));
 
   var onSubmit = function () {
-    const { id: _, ...input } = { ...vision };
-    const validityRange =
-      vision.cycleId != null ? { validFrom: null, validTo: null } : {};
     updateMethod({
       variables: {
         input: {
           id: id,
-          visionInput: { ...input, ...validityRange },
+          visionInput: getSubmitData(vision),
         },
       },
       onError: (error) => {
@@ -109,6 +107,16 @@ function getEditData(
 
   const { visionType: _, individual: __, ...visionData } = data?.vision;
   return getPureObject(visionData);
+}
+
+function getSubmitData(
+  data: Exclude<VisionEditFormData, null | undefined>,
+): VisionUpdate {
+  const { id: _, ...input } = data;
+  const validityRange =
+    data.cycleId != null ? { validFrom: null, validTo: null } : {};
+
+  return { ...input, ...validityRange };
 }
 
 function getPartOfDescription(

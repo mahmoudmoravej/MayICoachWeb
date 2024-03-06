@@ -25,7 +25,7 @@ import {
 } from "@material-tailwind/react";
 import { Link, useNavigate, useParams } from "@remix-run/react";
 import { useState } from "react";
-import { useAuthenticationContext } from "~/contexts";
+import { useUser } from "~/contexts";
 
 type FilterType = "all" | "managers" | "ICs";
 
@@ -48,15 +48,14 @@ const TABLE_HEAD = ["Name", "Level", "Role", ""];
 
 export default function Individuals() {
   let { id: managerId } = useParams();
-  const { user } = useAuthenticationContext();
+  const user = useUser();
   const [filter, setFilter] = useState<FilterType>("all");
-  if (user == null) throw new Error("User is null");
 
   let pageTitle = "People";
   let pageSubTitle = "";
 
   if (managerId == "myteam") {
-    managerId = user?.individual_id.toString();
+    managerId = user.individual_id.toString();
   }
 
   const { data, loading, error } = useIndividualsQuery({

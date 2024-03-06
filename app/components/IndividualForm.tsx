@@ -12,6 +12,7 @@ import {
 } from "@material-tailwind/react";
 
 import { IndividualUpdate } from "@app-types/graphql";
+import { useUser } from "~/contexts";
 
 export type IndividualFormData = IndividualUpdate;
 
@@ -30,6 +31,8 @@ export function IndividualForm<T extends IndividualFormData>({
   managers,
   onSubmit,
 }: IndividualFormProps<T>) {
+  const user = useUser();
+
   return (
     <div className="flex">
       <div className="w-1/2">
@@ -65,40 +68,44 @@ export function IndividualForm<T extends IndividualFormData>({
                 updateData({ ...individual, jobTitle: target.value });
               }}
             />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Reports to
-            </Typography>
-            <Select
-              size="lg"
-              label=""
-              value={individual.managerId?.toString()}
-              onChange={(selectedValue) => {
-                updateData({
-                  ...individual,
-                  managerId: parseInt(selectedValue!),
-                });
-              }}
-            >
-              {managers?.map(({ id, fullname }) => (
-                <Option key={id} value={id?.toString()}>
-                  {fullname}
-                </Option>
-              ))}
-            </Select>
-            <Switch
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              label={
-                <Typography variant="h6" color="blue-gray">
-                  Manager?
+            {!user.isPersonalOrganization ? (
+              <>
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Reports to
                 </Typography>
-              }
-              color="green"
-              crossOrigin={undefined}
-              checked={individual.isManager ?? false}
-              onChange={({ target }) => {
-                updateData({ ...individual, isManager: target.checked });
-              }}
-            />
+                <Select
+                  size="lg"
+                  label=""
+                  value={individual.managerId?.toString()}
+                  onChange={(selectedValue) => {
+                    updateData({
+                      ...individual,
+                      managerId: parseInt(selectedValue!),
+                    });
+                  }}
+                >
+                  {managers?.map(({ id, fullname }) => (
+                    <Option key={id} value={id?.toString()}>
+                      {fullname}
+                    </Option>
+                  ))}
+                </Select>
+                <Switch
+                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  label={
+                    <Typography variant="h6" color="blue-gray">
+                      Manager?
+                    </Typography>
+                  }
+                  color="green"
+                  crossOrigin={undefined}
+                  checked={individual.isManager ?? false}
+                  onChange={({ target }) => {
+                    updateData({ ...individual, isManager: target.checked });
+                  }}
+                />
+              </>
+            ) : null}
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Github Handle
             </Typography>
@@ -114,7 +121,6 @@ export function IndividualForm<T extends IndividualFormData>({
                 updateData({ ...individual, handleGithub: target.value });
               }}
             />
-
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Google Handle
             </Typography>

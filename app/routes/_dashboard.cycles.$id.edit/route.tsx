@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 
 import {
+  CycleUpdate,
   FindCycleQuery,
   UpdateCycleMutation,
   useFindCycleQuery,
@@ -37,12 +38,11 @@ export default function CycleEdit() {
   if (!cycle || !data) return <p>No data</p>;
 
   var onSubmit = function () {
-    const { id: _, ...input } = { ...cycle };
     updateMethod({
       variables: {
         input: {
           id: id,
-          cycleInput: { ...input },
+          cycleInput: getSubmitData(cycle),
         },
       },
       onError: (error) => {
@@ -79,4 +79,12 @@ function getEditData(
   }
 
   return getPureObject(data?.cycle);
+}
+
+function getSubmitData(
+  data: Exclude<CycleEditFormData, null | undefined>,
+): CycleUpdate {
+  const { id: _, ...input } = data;
+
+  return input;
 }

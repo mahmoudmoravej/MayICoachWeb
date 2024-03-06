@@ -309,6 +309,7 @@ export type Individual = {
   jobTitle?: Maybe<Scalars['String']['output']>;
   manager?: Maybe<Individual>;
   managerId?: Maybe<Scalars['Int']['output']>;
+  organization: OrganizationBasicInfo;
   organizationId: Scalars['Int']['output'];
   reports: IndividualConnection;
   userId?: Maybe<Scalars['Int']['output']>;
@@ -625,10 +626,9 @@ export type Organization = {
   id: Scalars['Int']['output'];
   isPersonal: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
-  ownerUserId: Scalars['Int']['output'];
+  owner: User;
   useSystemAiEngine: Scalars['Boolean']['output'];
   useSystemGithubToken: Scalars['Boolean']['output'];
-  userId?: Maybe<Scalars['Int']['output']>;
 };
 
 
@@ -639,11 +639,18 @@ export type OrganizationAiEnginesArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type OrganizationBasicInfo = {
+  __typename?: 'OrganizationBasicInfo';
+  id: Scalars['Int']['output'];
+  isPersonal: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type OrganizationUpdate = {
   githubOrgs?: InputMaybe<Scalars['String']['input']>;
   githubToken?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
-  ownerUserId: Scalars['Int']['input'];
+  ownerEmail: Scalars['String']['input'];
   useSystemAiEngine: Scalars['Boolean']['input'];
   useSystemGithubToken: Scalars['Boolean']['input'];
 };
@@ -704,7 +711,7 @@ export type Query = {
   /** Returns a list of individuals */
   individuals: IndividualConnection;
   /** Returns logged in user details */
-  myInfo: UserInfo;
+  myInfo: Individual;
   /** Returns an organization */
   organization: Organization;
   /** Returns a vision */
@@ -894,14 +901,13 @@ export type SignUpPayload = {
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** Returns signed up user info */
-  result: UserInfo;
+  individual: Individual;
 };
 
-export type UserInfo = {
-  __typename?: 'UserInfo';
-  Individual?: Maybe<Individual>;
-  Organization?: Maybe<Organization>;
-  UserId: Scalars['Int']['output'];
+export type User = {
+  __typename?: 'User';
+  avatarUrl?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
 };
 
 export type Vision = {
@@ -1175,16 +1181,16 @@ export type FindOrganizationQueryVariables = Exact<{
 }>;
 
 
-export type FindOrganizationQuery = { __typename?: 'Query', organization: { __typename?: 'Organization', id: number, name: string, ownerUserId: number, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } };
+export type FindOrganizationQuery = { __typename?: 'Query', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } };
 
-export type OrganizationFragmentFragment = { __typename?: 'Organization', id: number, name: string, ownerUserId: number, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null };
+export type OrganizationFragmentFragment = { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null };
 
 export type UpdateOrganizationMutationVariables = Exact<{
   input: OrganizationUpdateInput;
 }>;
 
 
-export type UpdateOrganizationMutation = { __typename?: 'Mutation', organizationUpdate?: { __typename?: 'OrganizationUpdatePayload', organization: { __typename?: 'Organization', id: number, name: string, ownerUserId: number, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } } | null };
+export type UpdateOrganizationMutation = { __typename?: 'Mutation', organizationUpdate?: { __typename?: 'OrganizationUpdatePayload', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } } | null };
 
 export type FindVisionQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1231,14 +1237,14 @@ export type VisionFragmentFragment = { __typename?: 'Vision', id: number, vision
 export type GetLoggedInUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLoggedInUserInfoQuery = { __typename?: 'Query', myInfo: { __typename?: 'UserInfo', UserId: number, Individual?: { __typename?: 'Individual', id: number, isManager: boolean, organizationId: number } | null, Organization?: { __typename?: 'Organization', isPersonal: boolean } | null } };
+export type GetLoggedInUserInfoQuery = { __typename?: 'Query', myInfo: { __typename?: 'Individual', id: number, isManager: boolean, organization: { __typename?: 'OrganizationBasicInfo', id: number, isPersonal: boolean } } };
 
 export type SignUpMutationVariables = Exact<{
   input: SignUpInput;
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signUp?: { __typename?: 'SignUpPayload', result: { __typename?: 'UserInfo', UserId: number, Individual?: { __typename?: 'Individual', id: number, isManager: boolean, organizationId: number } | null, Organization?: { __typename?: 'Organization', isPersonal: boolean } | null } } | null };
+export type SignUpMutation = { __typename?: 'Mutation', signUp?: { __typename?: 'SignUpPayload', individual: { __typename?: 'Individual', id: number, isManager: boolean, organization: { __typename?: 'OrganizationBasicInfo', id: number, isPersonal: boolean } } } | null };
 
 export const ActivityFragmentFragmentDoc = gql`
     fragment ActivityFragment on Activity {
@@ -1292,7 +1298,10 @@ export const OrganizationFragmentFragmentDoc = gql`
     fragment OrganizationFragment on Organization {
   id
   name
-  ownerUserId
+  owner {
+    email
+  }
+  isPersonal
   githubOrgs
   useSystemGithubToken
   githubToken
@@ -2405,13 +2414,10 @@ export type GetVisionTypesAndCyclesQueryResult = Apollo.QueryResult<GetVisionTyp
 export const GetLoggedInUserInfoDocument = gql`
     query getLoggedInUserInfo {
   myInfo {
-    UserId
-    Individual {
+    id
+    isManager
+    organization {
       id
-      isManager
-      organizationId
-    }
-    Organization {
       isPersonal
     }
   }
@@ -2452,14 +2458,11 @@ export type GetLoggedInUserInfoQueryResult = Apollo.QueryResult<GetLoggedInUserI
 export const SignUpDocument = gql`
     mutation signUp($input: SignUpInput!) {
   signUp(input: $input) {
-    result {
-      UserId
-      Individual {
+    individual {
+      id
+      isManager
+      organization {
         id
-        isManager
-        organizationId
-      }
-      Organization {
         isPersonal
       }
     }
