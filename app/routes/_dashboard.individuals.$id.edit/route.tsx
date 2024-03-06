@@ -4,6 +4,7 @@ import { Card, Typography } from "@material-tailwind/react";
 
 import {
   FindIndividualQuery,
+  IndividualUpdate,
   UpdateIndividualMutation,
   useFindIndividualQuery,
   useUpdateIndividualMutation,
@@ -50,12 +51,11 @@ export default function IndividualEdit() {
     }));
 
   var onSubmit = function () {
-    const { id: _, ...input } = { ...individual };
     updateMethod({
       variables: {
         input: {
           id: id,
-          individualInput: { ...input },
+          individualInput: getSubmitData(individual),
         },
       },
       onError: (error) => {
@@ -97,4 +97,12 @@ function getEditData(
   }
 
   return getPureObject(data?.individual);
+}
+
+function getSubmitData(
+  individual: Exclude<IndividualEditFormData, null | undefined>,
+): IndividualUpdate {
+  const { id: _, ...input } = individual;
+
+  return input;
 }

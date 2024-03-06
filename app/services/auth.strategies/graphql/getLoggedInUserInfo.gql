@@ -1,12 +1,9 @@
 query getLoggedInUserInfo {
   myInfo {
-    UserId
-    Individual {
+    id
+    isManager
+    organization {
       id
-      isManager
-      organizationId
-    }
-    Organization {
       isPersonal
     }
   }

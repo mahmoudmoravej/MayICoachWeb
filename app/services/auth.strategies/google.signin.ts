@@ -41,27 +41,19 @@ export const googleStrategy = new GoogleStrategy(
         fetchPolicy: "network-only",
       });
 
-      const myInfo = result.data?.myInfo;
+      const individual = result.data?.myInfo;
 
-      if (
-        myInfo === undefined ||
-        result.error ||
-        result.errors ||
-        myInfo.Individual == null
-      )
+      if (individual === undefined || result.error || result.errors)
         throw new Error("No user info found");
-
-      const individual = myInfo.Individual;
 
       const user: User = {
         email: profile.emails[0].value,
         jwt_token: jwt_token,
         name: profile.displayName,
         individual_id: individual.id,
-        user_id: myInfo.UserId,
         is_manager: individual.isManager,
-        organization_id: individual.organizationId,
-        isPersonal: myInfo.Organization!.isPersonal,
+        organization_id: individual.organization.id,
+        isPersonalOrganization: individual.organization.isPersonal,
       };
       return user;
     } catch (error: any) {

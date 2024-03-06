@@ -4,6 +4,7 @@ import { Card, Typography } from "@material-tailwind/react";
 
 import {
   FindOrganizationQuery,
+  OrganizationUpdate,
   UpdateOrganizationMutation,
   useFindOrganizationQuery,
   useUpdateOrganizationMutation,
@@ -42,12 +43,11 @@ export default function OrganizationEdit() {
   if (!organization || !data) return <p>No data</p>;
 
   var onSubmit = function () {
-    const { id: _, ...input } = { ...organization };
     updateMethod({
       variables: {
         input: {
           id: id,
-          organizationInput: { ...input },
+          organizationInput: getSubmitData(organization),
         },
       },
       onError: (error) => {
@@ -63,7 +63,8 @@ export default function OrganizationEdit() {
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
-        Modifying {organization.name}
+        Modifying {organization.isPersonal ? "Account" : "Organization"}{" "}
+        Settings
       </Typography>
       <OrganizationForm
         id={id}
@@ -86,5 +87,14 @@ function getEditData(
     return null;
   }
 
-  return getPureObject(data?.organization);
+  const { owner, ...orgData } = data?.organization;
+
+  return getPureObject({ ...orgData, ownerEmail: owner?.email });
+}
+
+function getSubmitData(
+  data: Exclude<OrganizationEditFormData, null | undefined>,
+): OrganizationUpdate {
+  const { id: _, isPersonal: __, ...input } = data;
+  return input;
 }

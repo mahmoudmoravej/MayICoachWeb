@@ -9,6 +9,7 @@ import {
   useUpdateActivityMutation,
   useAnalyzeActivityMutation,
   AnalyzeActivityMutation,
+  ActivityUpdate,
 } from "@app-types/graphql";
 import { ActivityForm, ActivityFormData } from "~/components/ActivityForm";
 import { DefaultSkeleton } from "~/components/DefaultSkeleton";
@@ -45,12 +46,12 @@ export default function ActivityEdit() {
 
   var onSubmit = function () {
     setIsSaving(true);
-    const { ...input } = { ...activity };
+
     updateMethod({
       variables: {
         input: {
           id: id,
-          activityInput: { ...input },
+          activityInput: getSubmitData(activity),
         },
       },
       onError: (error) => {
@@ -119,4 +120,12 @@ function getEditData(
     prompt: activity.prompt,
     result: activity.result,
   };
+}
+
+function getSubmitData(
+  data: Exclude<ActivityEditFormData, null | undefined>,
+): ActivityUpdate {
+  const { id: _, ...input } = data;
+
+  return input;
 }

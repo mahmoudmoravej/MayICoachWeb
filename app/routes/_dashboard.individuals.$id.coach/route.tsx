@@ -19,7 +19,7 @@ import { noNull } from "~/utils";
 
 import { GenerateCycleSummaryButton } from "./components/GenerateCycleSummaryButton";
 import { DefaultSkeleton } from "~/components/DefaultSkeleton";
-import { useAuthenticationContext } from "~/contexts";
+import { useUser } from "~/contexts";
 
 export default function IndividualCoach() {
   const { id: idParam } = useParams();
@@ -29,10 +29,9 @@ export default function IndividualCoach() {
   const [adviceList, setAdviceList] = useState<AdviceFragmentFragment[] | null>(
     null,
   );
-  const { user } = useAuthenticationContext();
+  const user = useUser();
 
-  let id = idParam == "me" ? user?.individual_id.toString() ?? "" : idParam;
-  if (id == null) throw new Error("id is null");
+  let id = idParam == "me" ? user.individual_id.toString() : idParam;
 
   const { data, loading, error } = useCoachIndividualQuery({
     variables: { id: id },

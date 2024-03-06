@@ -1,13 +1,10 @@
 mutation signUp($input: SignUpInput!) {
   signUp(input: $input) {
-    result {
-      UserId
-      Individual {
+    individual {
+      id
+      isManager
+      organization {
         id
-        isManager
-        organizationId
-      }
-      Organization {
         isPersonal
       }
     }

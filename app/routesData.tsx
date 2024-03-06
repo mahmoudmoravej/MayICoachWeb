@@ -11,6 +11,7 @@ import {
   IdentificationIcon,
   LightBulbIcon,
   DocumentChartBarIcon,
+  Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
 import { User } from "./models/user";
 
@@ -30,8 +31,7 @@ export type RouteData = {
   }[];
 };
 
-export function getRoutes(user: User | null): RouteData[] {
-  if (user == null) return [];
+export function getRoutes(user: User): RouteData[] {
   const routes: RouteData[] = [
     {
       pages: [
@@ -71,31 +71,62 @@ export function getRoutes(user: User | null): RouteData[] {
           name: "Cycles",
           path: "/cycles",
         },
+        {
+          icon: <Cog6ToothIcon {...icon} />,
+          name: "Settings",
+          path: `/organizations/${user.organization_id}/edit`,
+        },
       ],
     },
     {
       title: "My profile",
+      level: "personal",
       pages: [
         {
           icon: <SignalIcon {...icon} />,
-          name: "My activities",
+          name: "activities",
           path: `/individuals/${user.individual_id}/activities`,
         },
         {
           icon: <DocumentChartBarIcon {...icon} />,
-          name: "My Visions",
+          name: "Visions",
           path: `/individuals/${user.individual_id}/visions`,
-        },
-        {
-          icon: <IdentificationIcon {...icon} />,
-          name: "My settings",
-          path: `/individuals/${user.individual_id}/edit`,
         },
         {
           icon: <TableCellsIcon {...icon} />,
           name: "Cycles",
           path: "/cycles",
-          level: "personal",
+        },
+        {
+          icon: <IdentificationIcon {...icon} />,
+          name: "Account",
+          path: `/individuals/${user.individual_id}/edit`,
+        },
+        {
+          icon: <Cog6ToothIcon {...icon} />,
+          name: "Settings",
+          path: `/organizations/${user.organization_id}/edit`,
+        },
+      ],
+    },
+    {
+      title: "My profile",
+      level: "organization",
+      pages: [
+        {
+          icon: <SignalIcon {...icon} />,
+          name: "activities",
+          path: `/individuals/${user.individual_id}/activities`,
+        },
+        {
+          icon: <DocumentChartBarIcon {...icon} />,
+          name: "Visions",
+          path: `/individuals/${user.individual_id}/visions`,
+        },
+        {
+          icon: <IdentificationIcon {...icon} />,
+          name: "Account",
+          path: `/individuals/${user.individual_id}/edit`,
         },
       ],
     },
@@ -105,14 +136,16 @@ export function getRoutes(user: User | null): RouteData[] {
     .filter(
       (section) =>
         section.level == undefined ||
-        section.level == (user.isPersonal ? "personal" : "organization"),
+        section.level ==
+          (user.isPersonalOrganization ? "personal" : "organization"),
     )
     .map((section) => ({
       ...section,
       pages: section.pages.filter(
         (page) =>
           page.level == undefined ||
-          page.level == (user.isPersonal ? "personal" : "organization"),
+          page.level ==
+            (user.isPersonalOrganization ? "personal" : "organization"),
       ),
     }));
 }

@@ -2,7 +2,7 @@ import { Outlet } from "@remix-run/react";
 
 import { Sidenav, DashboardTopNavbar, Footer } from "~/widgets/layout";
 import { getRoutes } from "~/routesData";
-import { useAuthenticationContext } from "~/contexts/authentication/authenticationContext";
+import { useUser } from "~/contexts/authentication/authenticationContext";
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { authenticator } from "~/services/auth.server";
 
@@ -16,7 +16,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Dashboard() {
   //TODO: change the followings to get value from settings context
   const sidenavType = getRoutes == null ? "dark" : "white"; // this fake comparison is to avoid TS error only.
-  const { user } = useAuthenticationContext();
+  const user = useUser();
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">

@@ -1,7 +1,10 @@
 fragment OrganizationFragment on Organization {
   id
   name
-  ownerUserId
+  owner {
+    email
+  }
+  isPersonal
   githubOrgs
   useSystemGithubToken
   githubToken

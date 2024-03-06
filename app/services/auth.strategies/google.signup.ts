@@ -54,26 +54,19 @@ export const googleSignUpStrategy = new GoogleStrategy(
         },
       });
 
-      const userInfo = result.data?.signUp?.result;
+      const individual = result.data?.signUp?.individual;
 
-      if (
-        userInfo === undefined ||
-        result.errors ||
-        userInfo.Individual == null
-      )
+      if (individual === undefined || result.errors)
         throw new Error("No user info found");
-
-      const individual = userInfo.Individual;
 
       const user: User = {
         email: profile.emails[0].value,
         jwt_token: jwt_token,
         name: profile.displayName,
         individual_id: individual.id,
-        user_id: userInfo.UserId,
         is_manager: individual.isManager,
-        organization_id: individual.organizationId,
-        isPersonal: userInfo.Organization!.isPersonal,
+        organization_id: individual.organization.id,
+        isPersonalOrganization: individual.organization.isPersonal,
       };
       return user;
     } catch (error: any) {
