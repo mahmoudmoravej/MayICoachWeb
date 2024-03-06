@@ -1,0 +1,19 @@
+fragment OrganizationFragment on Organization {
+  id
+  name
+  ownerUserId
+  githubOrgs
+  useSystemGithubToken
+  githubToken
+  useSystemAiEngine
+  aiEngines {
+    nodes {
+      id
+      type {
+        id
+        title
+      }
+      settings
+    }
+  }
+}
