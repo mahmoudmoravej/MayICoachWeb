@@ -13,7 +13,7 @@ import {
   OrganizationForm,
   OrganizationFormData,
 } from "~/components/OrganizationForm";
-import { getPureObject } from "~/utils";
+import { getPureObject, noNull } from "~/utils";
 
 type OrganizationEditFormData =
   | (OrganizationFormData & { id?: number | null })
@@ -87,14 +87,29 @@ function getEditData(
     return null;
   }
 
-  const { owner, ...orgData } = data?.organization;
+  const { owner, aiEngines: detailedAiEngines, ...orgData } = data.organization;
 
-  return getPureObject({ ...orgData, ownerEmail: owner?.email });
+  const aiEngines = detailedAiEngines?.nodes
+    ?.filter(noNull)
+    .map(({ id, settings, type: { title } }) => ({
+      id: id,
+      title,
+      settings: settings ?? "",
+    }));
+
+  return getPureObject({ ...orgData, aiEngines, ownerEmail: owner?.email });
 }
 
 function getSubmitData(
   data: Exclude<OrganizationEditFormData, null | undefined>,
 ): OrganizationUpdate {
-  const { id: _, isPersonal: __, ...input } = data;
-  return input;
+  const { id: _, isPersonal: __, aiEngines, ...input } = data;
+
+  return {
+    ...input,
+    aiEngines: aiEngines?.map(({ id, settings }) => ({
+      id,
+      settings,
+    })),
+  };
 }

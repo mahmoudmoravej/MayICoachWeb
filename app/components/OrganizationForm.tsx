@@ -7,12 +7,21 @@ import {
   Card,
   List,
   ListItem,
+  CardBody,
+  Textarea,
 } from "@material-tailwind/react";
 
 import { OrganizationUpdate } from "@app-types/graphql";
 import { ChangeEventHandler } from "react";
 
-export type OrganizationFormData = OrganizationUpdate & { isPersonal: boolean };
+export type OrganizationFormData = Omit<OrganizationUpdate, "aiEngines"> & {
+  isPersonal: boolean;
+} & {
+  aiEngines:
+    | { id: number; title: string; settings: string }[]
+    | null
+    | undefined;
+};
 
 export interface OrganizationFormProps<T extends OrganizationFormData> {
   id?: string;
@@ -47,7 +56,7 @@ export function OrganizationForm<T extends OrganizationFormData>({
   return (
     <div className="flex">
       <div className="w-1/2">
-        <Form className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-96">
+        <Form className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-auto">
           <div className="mb-1 flex flex-col gap-6">
             {!organization.isPersonal && (
               <>
@@ -150,7 +159,6 @@ export function OrganizationForm<T extends OrganizationFormData>({
                 />
               </>
             )}
-
             <Card>
               <List>
                 <ListItem className="p-0">
@@ -175,6 +183,43 @@ export function OrganizationForm<T extends OrganizationFormData>({
                 </ListItem>
               </List>
             </Card>
+            {!organization.useSystemAiEngine && (
+              <>
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  My AI Engines Settings
+                </Typography>
+
+                {organization?.aiEngines?.map(({ id, title, settings }) => (
+                  <div key={id}>
+                    <Card>
+                      <CardBody>
+                        <Typography color="blue-gray" variant="h6">
+                          {title}
+                        </Typography>
+                        <Textarea
+                          size="lg"
+                          className=" h-48 !border-t-blue-gray-200 focus:!border-t-gray-900"
+                          resize={true}
+                          rows={15}
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                          value={formatJson(settings)}
+                          onChange={({ target }) => {
+                            updateData({
+                              ...organization,
+                              aiEngines: [
+                                { id, title, settings: target.value },
+                              ],
+                            });
+                          }}
+                        />
+                      </CardBody>
+                    </Card>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
 
           <Button className="mt-6" fullWidth onClick={onSubmit}>
@@ -182,6 +227,15 @@ export function OrganizationForm<T extends OrganizationFormData>({
           </Button>
         </Form>
       </div>
+      <div className="mt-6  w-96"></div>
     </div>
   );
+}
+
+function formatJson(json: string) {
+  try {
+    return JSON.stringify(JSON.parse(json), null, 2);
+  } catch {
+    return json;
+  }
 }
