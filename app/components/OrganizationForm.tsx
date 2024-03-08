@@ -19,7 +19,7 @@ export type OrganizationFormData = Omit<OrganizationUpdate, "aiEngines"> & {
   isSystem: boolean;
 } & {
   aiEngines:
-    | { id: number; title: string; settings?: string | null }[]
+    | { id: number; title: string; settings: string }[]
     | null
     | undefined;
 };
