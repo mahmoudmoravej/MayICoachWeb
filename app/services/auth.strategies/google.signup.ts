@@ -4,11 +4,11 @@ import {
   SignUpMutationVariables,
 } from "@app-types/graphql";
 
-import { AuthorizationError } from "remix-auth";
 import { GoogleStrategy } from "remix-auth-google";
 import type { User } from "~/models/user";
-import { getApolloClient } from "~/utils";
+import { buildAuthenticationMessage, getApolloClient } from "~/utils";
 import cookie from "cookie";
+import { AuthorizationError } from "remix-auth";
 
 export const googleSignUpStrategy = new GoogleStrategy(
   {
@@ -48,7 +48,8 @@ export const googleSignUpStrategy = new GoogleStrategy(
         variables: {
           input: {
             signUpInput: {
-              organizationId: organization_id > 0 ? organization_id : undefined,
+              organizationId:
+                organization_id >= 0 ? organization_id : undefined,
             },
           },
         },
@@ -75,9 +76,12 @@ export const googleSignUpStrategy = new GoogleStrategy(
         JSON.stringify({ url: process.env.GRAPHQL_SCHEMA_URL, error: error });
       console.error(msg);
 
-      const errorMsg = error.graphQLErrors
-        ? error.graphQLErrors[0].message
-        : "unauthorized";
+      const errorMsg = buildAuthenticationMessage({
+        organization_id,
+        message: error.graphQLErrors
+          ? error.graphQLErrors[0].message
+          : "unauthorized",
+      });
 
       throw new AuthorizationError(errorMsg, error);
     }

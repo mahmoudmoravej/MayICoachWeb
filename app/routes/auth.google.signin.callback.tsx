@@ -1,6 +1,8 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { AuthorizationError } from "remix-auth";
+
 import { authenticator } from "~/services/auth.server";
+import { parseAuthenticationMessage } from "~/utils";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -10,12 +12,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     if (error instanceof Response) return error;
-    if (error instanceof AuthorizationError) {
-      return redirect("/signin", {
-        headers: {
-          "Set-Cookie": "signin-error=unauthorized; Path=/",
+    else if (error instanceof AuthorizationError) {
+      const errorMessageDetails = parseAuthenticationMessage(error.message);
+
+      return redirect(
+        errorMessageDetails.organization_id != null
+          ? `/signin/${errorMessageDetails.organization_id}`
+          : "/signin",
+        {
+          headers: {
+            "Set-Cookie": "signin-error=unauthorized; Path=/",
+          },
         },
-      });
+      );
     }
   }
 }

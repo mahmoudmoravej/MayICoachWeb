@@ -63,7 +63,12 @@ export default function OrganizationEdit() {
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
-        Modifying {organization.isPersonal ? "Account" : "Organization"}{" "}
+        Modifying{" "}
+        {organization.isPersonal
+          ? "Account"
+          : organization.isSystem
+            ? "System"
+            : "Organization"}{" "}
         Settings
       </Typography>
       <OrganizationForm
@@ -103,7 +108,7 @@ function getEditData(
 function getSubmitData(
   data: Exclude<OrganizationEditFormData, null | undefined>,
 ): OrganizationUpdate {
-  const { id: _, isPersonal: __, aiEngines, ...input } = data;
+  const { id: _, isPersonal: __, isSystem: ___, aiEngines, ...input } = data;
 
   return {
     ...input,
