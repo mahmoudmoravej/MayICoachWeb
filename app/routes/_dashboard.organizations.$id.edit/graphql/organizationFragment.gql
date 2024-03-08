@@ -5,6 +5,7 @@ fragment OrganizationFragment on Organization {
     email
   }
   isPersonal
+  isSystem
   githubOrgs
   useSystemGithubToken
   githubToken

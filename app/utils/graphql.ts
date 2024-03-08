@@ -62,3 +62,23 @@ export function getPureObject<T extends { __typename?: any }>(
 export function noNull<T>(value: T | null): value is NonNullable<T> {
   return value !== null;
 }
+export type AuthenticationErrorMessage = {
+  message: string;
+  organization_id?: number;
+};
+
+export function parseAuthenticationMessage(
+  message: string,
+): AuthenticationErrorMessage {
+  try {
+    return JSON.parse(message) as AuthenticationErrorMessage;
+  } catch (error) {
+    return { message };
+  }
+}
+
+export function buildAuthenticationMessage(
+  message: AuthenticationErrorMessage,
+) {
+  return JSON.stringify(message);
+}

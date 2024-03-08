@@ -20,8 +20,8 @@ export type Scalars = {
 
 export type Activity = {
   __typename?: 'Activity';
-  aiEngine: AiEngine;
-  aiEngineId: Scalars['Int']['output'];
+  aiEngineType: AiEngineType;
+  aiEngineTypeId: Scalars['Int']['output'];
   channelActivityId: Scalars['String']['output'];
   channelActivityUrl?: Maybe<Scalars['String']['output']>;
   channelId: Scalars['Int']['output'];
@@ -83,8 +83,8 @@ export type Advice = {
   activitiesTotal: Scalars['Int']['output'];
   activityPrompt?: Maybe<Scalars['String']['output']>;
   activitySummary?: Maybe<Scalars['String']['output']>;
-  aiEngine: AiEngine;
-  aiEngineId: Scalars['Int']['output'];
+  aiEngineType: AiEngineType;
+  aiEngineTypeId: Scalars['Int']['output'];
   analyzedActivitiesTotal: Scalars['Int']['output'];
   analyzedAt: Scalars['ISO8601DateTime']['output'];
   contentReadyVisionsTotal: Scalars['Int']['output'];
@@ -630,6 +630,7 @@ export type Organization = {
   githubToken?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   isPersonal: Scalars['Boolean']['output'];
+  isSystem: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   owner: User;
   useSystemAiEngine: Scalars['Boolean']['output'];
@@ -1187,16 +1188,16 @@ export type FindOrganizationQueryVariables = Exact<{
 }>;
 
 
-export type FindOrganizationQuery = { __typename?: 'Query', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } };
+export type FindOrganizationQuery = { __typename?: 'Query', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, isSystem: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } };
 
-export type OrganizationFragmentFragment = { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null };
+export type OrganizationFragmentFragment = { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, isSystem: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null };
 
 export type UpdateOrganizationMutationVariables = Exact<{
   input: OrganizationUpdateInput;
 }>;
 
 
-export type UpdateOrganizationMutation = { __typename?: 'Mutation', organizationUpdate?: { __typename?: 'OrganizationUpdatePayload', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } } | null };
+export type UpdateOrganizationMutation = { __typename?: 'Mutation', organizationUpdate?: { __typename?: 'OrganizationUpdatePayload', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, isSystem: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } } | null };
 
 export type FindVisionQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1308,6 +1309,7 @@ export const OrganizationFragmentFragmentDoc = gql`
     email
   }
   isPersonal
+  isSystem
   githubOrgs
   useSystemGithubToken
   githubToken

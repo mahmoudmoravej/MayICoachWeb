@@ -3,11 +3,11 @@ import {
   GetLoggedInUserInfoQuery,
 } from "@app-types/graphql";
 
-import { AuthorizationError } from "remix-auth";
 import { GoogleStrategy } from "remix-auth-google";
 import type { User } from "~/models/user";
-import { getApolloClient } from "~/utils";
+import { buildAuthenticationMessage, getApolloClient } from "~/utils";
 import cookie from "cookie";
+import { AuthorizationError } from "remix-auth";
 
 export const googleStrategy = new GoogleStrategy(
   {
@@ -57,11 +57,15 @@ export const googleStrategy = new GoogleStrategy(
       };
       return user;
     } catch (error: any) {
-      const msg =
-        "Error fetching loggined in user info through API. Details: " +
-        JSON.stringify({ url: process.env.GRAPHQL_SCHEMA_URL, error: error });
-      console.error(msg);
-      throw new AuthorizationError(msg, error);
+      const errorMsg = buildAuthenticationMessage({
+        organization_id: parseInt(organization_id),
+        message:
+          "Error fetching loggined in user info through API. Details: " +
+          JSON.stringify({ url: process.env.GRAPHQL_SCHEMA_URL, error: error }),
+      });
+
+      console.error(errorMsg);
+      throw new AuthorizationError(errorMsg, error);
     }
   },
 );
