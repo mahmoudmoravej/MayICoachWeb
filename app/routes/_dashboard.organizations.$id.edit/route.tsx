@@ -108,7 +108,16 @@ function getEditData(
 function getSubmitData(
   data: Exclude<OrganizationEditFormData, null | undefined>,
 ): OrganizationUpdate {
-  const { id: _, isPersonal: __, isSystem: ___, aiEngines, ...input } = data;
+  const {
+    id: _1,
+    isPersonal: _2,
+    isSystem: _3,
+    systemAiEngineUsedPromptTokens: _4,
+    systemAiEngineUsedCompletionTokens: _5,
+    systemAiEngineMaxTokens: _6,
+    aiEngines,
+    ...input
+  } = data;
 
   return {
     ...input,
