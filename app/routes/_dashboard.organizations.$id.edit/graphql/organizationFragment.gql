@@ -10,6 +10,9 @@ fragment OrganizationFragment on Organization {
   useSystemGithubToken
   githubToken
   useSystemAiEngine
+  systemAiEngineUsedPromptTokens
+  systemAiEngineUsedCompletionTokens
+  systemAiEngineMaxTokens
   aiEngines {
     nodes {
       id

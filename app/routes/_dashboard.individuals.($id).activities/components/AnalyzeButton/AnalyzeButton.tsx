@@ -23,7 +23,11 @@ export function AnalyzeButton({
       },
       onError: (error) => {
         setIsSaving(false);
-        alert(error.message);
+        alert(
+          error.graphQLErrors && error.graphQLErrors.length > 0
+            ? error.graphQLErrors[0].message
+            : error.message,
+        );
       },
       onCompleted: (data) => {
         setIsSaving(false);

@@ -633,6 +633,9 @@ export type Organization = {
   isSystem: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   owner: User;
+  systemAiEngineMaxTokens: Scalars['Int']['output'];
+  systemAiEngineUsedCompletionTokens: Scalars['Int']['output'];
+  systemAiEngineUsedPromptTokens: Scalars['Int']['output'];
   useSystemAiEngine: Scalars['Boolean']['output'];
   useSystemGithubToken: Scalars['Boolean']['output'];
 };
@@ -1188,16 +1191,16 @@ export type FindOrganizationQueryVariables = Exact<{
 }>;
 
 
-export type FindOrganizationQuery = { __typename?: 'Query', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, isSystem: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } };
+export type FindOrganizationQuery = { __typename?: 'Query', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, isSystem: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, systemAiEngineUsedPromptTokens: number, systemAiEngineUsedCompletionTokens: number, systemAiEngineMaxTokens: number, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } };
 
-export type OrganizationFragmentFragment = { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, isSystem: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null };
+export type OrganizationFragmentFragment = { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, isSystem: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, systemAiEngineUsedPromptTokens: number, systemAiEngineUsedCompletionTokens: number, systemAiEngineMaxTokens: number, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null };
 
 export type UpdateOrganizationMutationVariables = Exact<{
   input: OrganizationUpdateInput;
 }>;
 
 
-export type UpdateOrganizationMutation = { __typename?: 'Mutation', organizationUpdate?: { __typename?: 'OrganizationUpdatePayload', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, isSystem: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } } | null };
+export type UpdateOrganizationMutation = { __typename?: 'Mutation', organizationUpdate?: { __typename?: 'OrganizationUpdatePayload', organization: { __typename?: 'Organization', id: number, name: string, isPersonal: boolean, isSystem: boolean, githubOrgs?: string | null, useSystemGithubToken: boolean, githubToken?: string | null, useSystemAiEngine: boolean, systemAiEngineUsedPromptTokens: number, systemAiEngineUsedCompletionTokens: number, systemAiEngineMaxTokens: number, owner: { __typename?: 'User', email: string }, aiEngines?: { __typename?: 'AiEngineConnection', nodes?: Array<{ __typename?: 'AiEngine', id: number, settings?: string | null, type: { __typename?: 'AiEngineType', id: number, title: string } } | null> | null } | null } } | null };
 
 export type FindVisionQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1314,6 +1317,9 @@ export const OrganizationFragmentFragmentDoc = gql`
   useSystemGithubToken
   githubToken
   useSystemAiEngine
+  systemAiEngineUsedPromptTokens
+  systemAiEngineUsedCompletionTokens
+  systemAiEngineMaxTokens
   aiEngines {
     nodes {
       id
