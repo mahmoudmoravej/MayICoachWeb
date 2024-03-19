@@ -1,7 +1,6 @@
 import { Form } from "@remix-run/react";
 import {
   Input,
-  Button,
   Typography,
   Radio,
   Card,
@@ -13,6 +12,7 @@ import {
 
 import { OrganizationUpdate } from "@app-types/graphql";
 import { ChangeEventHandler } from "react";
+import { Button } from "@mui/material";
 
 export type OrganizationFormData = Omit<OrganizationUpdate, "aiEngines"> & {
   isPersonal: boolean;
@@ -264,8 +264,7 @@ export function OrganizationForm<T extends OrganizationFormData>({
               </>
             )}
           </div>
-
-          <Button className="mt-6" fullWidth onClick={onSubmit}>
+          <Button variant="contained" fullWidth onClick={onSubmit}>
             Save
           </Button>
         </Form>

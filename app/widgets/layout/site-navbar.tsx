@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
   Navbar as MTNavbar,
-  MobileNav,
   Typography,
   Button,
   IconButton,
+  Collapse,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { siteRouteType } from "~/routesData";
@@ -97,11 +97,11 @@ export function SiteNavbar({
           )}
         </IconButton>
       </div>
-      <MobileNav
-        className="rounded-xl bg-white px-4 pb-4 pt-2 text-blue-gray-900"
+      <Collapse
+        className="rounded-xl bg-white text-blue-gray-900"
         open={openNav}
       >
-        <div className="container mx-auto">
+        <div className="mx-aut container  px-4 pb-4 pt-2">
           {navList}
           <a
             href="https://www.material-tailwind.com/blocks/react?ref=mtkr"
@@ -117,7 +117,7 @@ export function SiteNavbar({
             className: "w-full block",
           })}
         </div>
-      </MobileNav>
+      </Collapse>
     </MTNavbar>
   );
 }
