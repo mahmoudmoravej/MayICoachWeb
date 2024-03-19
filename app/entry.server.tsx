@@ -23,6 +23,7 @@ import {
   SettingsServerProvider,
 } from "./contexts";
 import { User } from "./models/user";
+import { MuiServerProvider } from "./mui/MuiServerProvider";
 
 const ABORT_DELAY = 5_000;
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //TODO: remove this line. It is dangerous. We have it because there is an issue with the SSL certificate chain of render.com in production
@@ -207,9 +208,11 @@ function getServerApp(
       }
     >
       <AuthenticationServerProvider user={user}>
-        <ApolloServerProvider client={client}>
-          {remixServer}
-        </ApolloServerProvider>
+        <MuiServerProvider>
+          <ApolloServerProvider client={client}>
+            {remixServer}
+          </ApolloServerProvider>
+        </MuiServerProvider>
       </AuthenticationServerProvider>
     </SettingsServerProvider>
   );

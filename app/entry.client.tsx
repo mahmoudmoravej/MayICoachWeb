@@ -13,6 +13,7 @@ import {
   AuthenticationClientProvider,
   SettingsClientProvider,
 } from "./contexts";
+import { MuiClientProvider } from "./mui/MuiClientProvider";
 
 startTransition(() => {
   hydrateRoot(
@@ -22,7 +23,9 @@ startTransition(() => {
         <AuthenticationClientProvider>
           <ApolloClientProvider>
             <ThemeProvider>
-              <RemixBrowser />
+              <MuiClientProvider>
+                <RemixBrowser />
+              </MuiClientProvider>
             </ThemeProvider>
           </ApolloClientProvider>
         </AuthenticationClientProvider>
