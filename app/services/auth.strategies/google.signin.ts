@@ -8,6 +8,7 @@ import type { User } from "~/models/user";
 import { buildAuthenticationMessage, getApolloClient } from "~/utils";
 import cookie from "cookie";
 import { AuthorizationError } from "remix-auth";
+import "dotenv/config";
 
 export const googleStrategy = new GoogleStrategy(
   {

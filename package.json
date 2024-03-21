@@ -3,8 +3,8 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "dev": "PORT=4000 remix dev",
-    "start": "PORT=4000 remix-serve ./build/index.js",
+    "dev": "PORT=3000 remix dev",
+    "start": "PORT=3000 remix-serve ./build/index.js",
     "typecheck": "tsc",
     "graphql": "graphql-codegen --config graphql.codegen.ts",
     "lint": "eslint .",
