@@ -1,19 +1,16 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction } from "@remix-run/node";
+import stylesheet from "~/tailwind.css";
 import {
   Links,
-  LiveReload,
   Meta,
-  MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
 
-import stylesheet from "~/tailwind.css";
-
 import { getMuiLinks } from "./mui/getMuiLinks";
-import { getMuiMeta } from "./mui/getMuiMeta";
+import { MuiMeta } from "./mui/MuiMeta";
+import { LinksFunction } from "@remix-run/node";
 import { MuiDocument } from "./mui/MuiDocument";
 
 export const links: LinksFunction = () => [
@@ -22,26 +19,33 @@ export const links: LinksFunction = () => [
 
   ...getMuiLinks(),
 ];
-
-export const meta: MetaFunction = () => [...getMuiMeta()];
-
 export default function App() {
   return (
-    <MuiDocument>
-      <html lang="en">
-        <head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width,initial-scale=1" />
-          <Meta />
-          <Links />
-        </head>
-        <body>
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <MuiMeta />
+        <Links />
+      </head>
+      <body>
+        <MuiDocument>
           <Outlet />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-        </body>
-      </html>
-    </MuiDocument>
+        </MuiDocument>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
   );
 }
+
+// export default function Apps() {
+//   return (
+//     <>
+//       <MuiDocument>
+//         <Outlet />
+//       </MuiDocument>
+//     </>
+//   );
+// }

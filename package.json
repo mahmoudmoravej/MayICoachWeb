@@ -4,7 +4,7 @@
   "scripts": {
     "build": "remix build",
     "dev": "PORT=4000 remix dev",
-    "start": "remix-serve build",
+    "start": "PORT=4000 remix-serve ./build/index.js",
     "typecheck": "tsc",
     "graphql": "graphql-codegen --config graphql.codegen.ts",
     "lint": "eslint .",
