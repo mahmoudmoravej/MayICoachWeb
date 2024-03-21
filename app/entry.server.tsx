@@ -24,6 +24,7 @@ import {
 } from "./contexts";
 import { User } from "./models/user";
 import { MuiProvider } from "./mui/MuiProvider";
+import "dotenv/config";
 
 const ABORT_DELAY = 5_000;
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //TODO: remove this line. It is dangerous. We have it because there is an issue with the SSL certificate chain of render.com in production
@@ -184,7 +185,7 @@ async function wrapRemixServerWithApollo(
 }
 
 function serializeState(state: any) {
-  return JSON.stringify(state).replace(/</g, "\\u003c"); // The replace call escapes the < character to prevent cross-site scripting attacks that are possible via the presence of </script> in a string literal
+  return JSON.stringify(state)?.replace(/</g, "\\u003c") ?? ""; // The replace call escapes the < character to prevent cross-site scripting attacks that are possible via the presence of </script> in a string literal
 }
 
 function buildApolloClient(user: User | null) {

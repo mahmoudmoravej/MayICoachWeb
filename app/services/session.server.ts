@@ -1,5 +1,6 @@
 // app/services/session.server.ts
 import { createCookieSessionStorage } from "@remix-run/node";
+import "dotenv/config";
 
 // export the whole sessionStorage object
 export let sessionStorage = createCookieSessionStorage({
