@@ -1,18 +1,20 @@
 import { Form } from "@remix-run/react";
-import {
-  Input,
-  Typography,
-  Radio,
-  Card,
-  List,
-  ListItem,
-  CardBody,
-  Textarea,
-} from "@material-tailwind/react";
+import { Radio } from "@material-tailwind/react";
 
 import { OrganizationUpdate } from "@app-types/graphql";
 import { ChangeEventHandler } from "react";
-import { Button } from "@mui/material";
+
+import {
+  Button,
+  TextField as Input,
+  TextareaAutosize,
+  Card,
+  CardContent,
+  List,
+  ListItem,
+  Typography,
+  CardHeader,
+} from "@mui/material";
 
 export type OrganizationFormData = Omit<OrganizationUpdate, "aiEngines"> & {
   isPersonal: boolean;
@@ -64,35 +66,23 @@ export function OrganizationForm<T extends OrganizationFormData>({
           <div className="mb-1 flex flex-col gap-6">
             {!organization.isPersonal && !organization.isSystem && (
               <>
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Name
-                </Typography>
                 <Input
-                  size="lg"
-                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                  crossOrigin={undefined}
+                  label="Name"
                   value={organization.name ?? ""}
-                  readOnly={organization.isSystem}
+                  InputProps={{
+                    readOnly: organization.isSystem,
+                  }}
                   onChange={({ target }) => {
                     updateData({ ...organization, name: target.value });
                   }}
                 />
 
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Owner
-                </Typography>
                 <Input
-                  size="lg"
-                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                  crossOrigin={undefined}
+                  label="Owner Email"
                   value={organization.ownerEmail ?? ""}
-                  readOnly={organization.isSystem}
+                  InputProps={{
+                    readOnly: organization.isSystem,
+                  }}
                   onChange={({ target }) => {
                     updateData({ ...organization, ownerEmail: target.value });
                   }}
@@ -101,16 +91,8 @@ export function OrganizationForm<T extends OrganizationFormData>({
             )}
             {!organization.isSystem && (
               <>
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Github Organizations (comma separated)
-                </Typography>
                 <Input
-                  size="lg"
-                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                  crossOrigin={undefined}
+                  label="Github Organizations (comma separated)"
                   value={organization.githubOrgs ?? ""}
                   onChange={({ target }) => {
                     updateData({ ...organization, githubOrgs: target.value });
@@ -118,128 +100,118 @@ export function OrganizationForm<T extends OrganizationFormData>({
                 />
               </>
             )}
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              Github API Key
-            </Typography>
 
-            <Card>
-              <List>
-                {!organization.isSystem && (
-                  <ListItem className="p-0">
+            <Card variant="outlined">
+              <CardHeader subheader="Github API Key" />
+              <CardContent>
+                <List>
+                  {!organization.isSystem && (
+                    <ListItem>
+                      <Radio
+                        name="github_token"
+                        label="system default"
+                        crossOrigin={undefined}
+                        value={true.toString()}
+                        checked={organization.useSystemGithubToken}
+                        onChange={onUseSystemDefaultGithubToken}
+                      />
+                    </ListItem>
+                  )}
+                  <ListItem>
                     <Radio
                       name="github_token"
-                      label="system default"
-                      crossOrigin={undefined}
-                      value={true.toString()}
-                      checked={organization.useSystemGithubToken}
-                      onChange={onUseSystemDefaultGithubToken}
-                    />
-                  </ListItem>
-                )}
-                <ListItem className="p-0">
-                  <Radio
-                    name="github_token"
-                    label="custom: "
-                    labelProps={{
-                      className: "text-nowrap",
-                    }}
-                    crossOrigin={undefined}
-                    value={false.toString()}
-                    checked={!organization.useSystemGithubToken}
-                    onChange={onUseSystemDefaultGithubToken}
-                  />
-                  <Input
-                    size="lg"
-                    className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                    labelProps={{
-                      className: "before:content-none after:content-none",
-                    }}
-                    crossOrigin={undefined}
-                    value={
-                      organization.useSystemGithubToken
-                        ? ""
-                        : organization.githubToken ?? ""
-                    }
-                    disabled={organization.useSystemGithubToken}
-                    onChange={({ target }) => {
-                      updateData({
-                        ...organization,
-                        githubToken: target.value,
-                      });
-                    }}
-                  />
-                </ListItem>
-              </List>
-            </Card>
-
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
-              AI Engines Settings
-            </Typography>
-            {!organization.isSystem && (
-              <Card>
-                <List>
-                  <ListItem className="p-0">
-                    <Radio
-                      name="ai_engine"
-                      label={
-                        <div>
-                          <Typography color="blue-gray" className="font-medium">
-                            system default
-                          </Typography>
-                          {!organization.isSystem && (
-                            <Typography
-                              variant="small"
-                              color="gray"
-                              className="font-normal italic"
-                            >
-                              consumed{" "}
-                              {(
-                                organization.systemAiEngineUsedCompletionTokens +
-                                organization.systemAiEngineUsedPromptTokens
-                              ).toLocaleString()}{" "}
-                              of{" "}
-                              {organization.systemAiEngineMaxTokens.toLocaleString()}{" "}
-                              allowed tokens.
-                            </Typography>
-                          )}
-                        </div>
-                      }
-                      crossOrigin={undefined}
-                      value={true.toString()}
-                      checked={organization.useSystemAiEngine}
-                      onChange={onUseSystemAiEngine}
-                    />
-                  </ListItem>
-                  <ListItem className="p-0">
-                    <Radio
-                      name="ai_engine"
-                      label="custom"
+                      label="custom: "
+                      labelProps={{
+                        className: "text-nowrap",
+                      }}
                       crossOrigin={undefined}
                       value={false.toString()}
-                      checked={!organization.useSystemAiEngine}
-                      onChange={onUseSystemAiEngine}
+                      checked={!organization.useSystemGithubToken}
+                      onChange={onUseSystemDefaultGithubToken}
+                    />
+                    <Input
+                      value={
+                        organization.useSystemGithubToken
+                          ? ""
+                          : organization.githubToken ?? ""
+                      }
+                      disabled={organization.useSystemGithubToken}
+                      onChange={({ target }) => {
+                        updateData({
+                          ...organization,
+                          githubToken: target.value,
+                        });
+                      }}
                     />
                   </ListItem>
                 </List>
+              </CardContent>
+            </Card>
+
+            {!organization.isSystem && (
+              <Card variant="outlined">
+                <CardHeader subheader="AI Engines Settings" />
+                <CardContent>
+                  <List>
+                    <ListItem>
+                      <Radio
+                        name="ai_engine"
+                        label={
+                          <div>
+                            <Typography
+                              color="blue-gray"
+                              className="font-medium"
+                            >
+                              system default
+                            </Typography>
+                            {!organization.isSystem && (
+                              <Typography
+                                variant="body2"
+                                color="gray"
+                                className="font-normal italic"
+                              >
+                                consumed{" "}
+                                {(
+                                  organization.systemAiEngineUsedCompletionTokens +
+                                  organization.systemAiEngineUsedPromptTokens
+                                ).toLocaleString()}{" "}
+                                of{" "}
+                                {organization.systemAiEngineMaxTokens.toLocaleString()}{" "}
+                                allowed tokens.
+                              </Typography>
+                            )}
+                          </div>
+                        }
+                        crossOrigin={undefined}
+                        value={true.toString()}
+                        checked={organization.useSystemAiEngine}
+                        onChange={onUseSystemAiEngine}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <Radio
+                        name="ai_engine"
+                        label="custom"
+                        crossOrigin={undefined}
+                        value={false.toString()}
+                        checked={!organization.useSystemAiEngine}
+                        onChange={onUseSystemAiEngine}
+                      />
+                    </ListItem>
+                  </List>
+                </CardContent>
               </Card>
             )}
             {!organization.useSystemAiEngine && (
               <>
                 {organization?.aiEngines?.map(({ id, title, settings }) => (
                   <div key={id}>
-                    <Card>
-                      <CardBody>
-                        <Typography color="blue-gray" variant="h6">
-                          {title}
-                        </Typography>
-                        <Textarea
-                          size="lg"
-                          className=" h-48 !border-t-blue-gray-200 focus:!border-t-gray-900"
-                          resize={true}
-                          rows={15}
-                          labelProps={{
-                            className: "before:content-none after:content-none",
-                          }}
+                    <Card variant="outlined">
+                      <CardHeader subheader={title} />
+                      <CardContent>
+                        <TextareaAutosize
+                          className=" w-full"
+                          maxRows={15}
                           value={formatJson(settings)}
                           onChange={({ target }) => {
                             const aiEngines = [
@@ -257,7 +229,7 @@ export function OrganizationForm<T extends OrganizationFormData>({
                             });
                           }}
                         />
-                      </CardBody>
+                      </CardContent>
                     </Card>
                   </div>
                 ))}
