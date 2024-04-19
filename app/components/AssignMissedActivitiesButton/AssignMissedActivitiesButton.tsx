@@ -16,7 +16,7 @@ export function AssignMissedActivitiesButton({
   const [isSaving, setIsSaving] = useState(false);
   const [assignMissedActivitiesMethod] = useAssignActivitiesMutation();
 
-  var onAssign = function () {
+  const onAssign = function () {
     setIsSaving(true);
     assignMissedActivitiesMethod({
       variables: {

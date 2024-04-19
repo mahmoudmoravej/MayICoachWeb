@@ -19,8 +19,8 @@ import { AssignMissedActivitiesButton } from "~/components/AssignMissedActivitie
 const TABLE_HEAD = ["Title", "From", "To", ""];
 
 export default function Cycles() {
-  let pageTitle = "Cycles";
-  let pageSubTitle = "";
+  const pageTitle = "Cycles";
+  const pageSubTitle = "";
 
   const { data, loading, error } = useCyclesQuery({
     fetchPolicy: "network-only",

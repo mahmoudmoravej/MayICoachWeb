@@ -1,8 +1,11 @@
-import {
+import type {
   ApolloClient,
-  ApolloProvider,
   NormalizedCacheObject,
-} from "@apollo/client";
+} from "@apollo/client/index.js";
+
+import { default as apollo } from "@apollo/client";
+
+const { ApolloProvider } = apollo;
 
 export const ApolloServerProvider = ({
   client,

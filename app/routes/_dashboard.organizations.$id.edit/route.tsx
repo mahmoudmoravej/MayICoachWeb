@@ -42,7 +42,7 @@ export default function OrganizationEdit() {
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (!organization || !data) return <p>No data</p>;
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     updateMethod({
       variables: {
         input: {

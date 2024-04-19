@@ -12,7 +12,7 @@ export const SettingsServerProvider = ({
       value={{
         graphqlUrl,
         sideNavBarOpen: null,
-        setSideNavBarOpen: () => {},
+        setSideNavBarOpen: () => null,
       }}
     >
       {children}

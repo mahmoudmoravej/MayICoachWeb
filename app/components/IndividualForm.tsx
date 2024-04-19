@@ -152,9 +152,9 @@ export function IndividualForm<T extends IndividualFormData>({
                   User Visions
                 </Typography>
                 <Typography>
-                  you can see all user's visions, like organizational assigned
-                  or personal intended outcomes, job level description, next job
-                  level description, goals, etc.
+                  you can see all user&apos;s visions, like organizational
+                  assigned or personal intended outcomes, job level description,
+                  next job level description, goals, etc.
                 </Typography>
               </CardBody>
               <CardFooter className="pt-0">

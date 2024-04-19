@@ -37,7 +37,7 @@ export default function CycleEdit() {
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (!cycle || !data) return <p>No data</p>;
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     updateMethod({
       variables: {
         input: {

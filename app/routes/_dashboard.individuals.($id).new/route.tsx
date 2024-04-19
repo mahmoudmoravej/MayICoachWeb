@@ -40,7 +40,7 @@ export default function IndividualCreate() {
     fullname: manager.fullname,
   }));
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     createMethod({
       variables: {
         input: {

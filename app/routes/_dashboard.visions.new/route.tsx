@@ -50,7 +50,7 @@ export default function VisionCreate() {
     to: new Date(cycle.to),
   }));
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     const validityRange =
       vision.cycleId != null ? { validFrom: null, validTo: null } : {};
     createMethod({

@@ -7,7 +7,7 @@ export function FetchContentButton({ visionId }: { visionId: string }) {
   const [isSaving, setIsSaving] = useState(false);
   const [analyzeActivityMethod] = useAnalyzeActivityWithMinimumResultMutation();
 
-  var onAnalyzeAndSave = function () {
+  const onAnalyzeAndSave = function () {
     setIsSaving(true);
     analyzeActivityMethod({
       variables: {

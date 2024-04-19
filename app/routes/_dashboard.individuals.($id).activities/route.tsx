@@ -17,9 +17,10 @@ import {
   Tab,
   Tabs,
   TabsHeader,
-  Select,
   Option,
+  Select,
 } from "@material-tailwind/react";
+
 import { Link, useParams, useLocation, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 
@@ -44,7 +45,7 @@ const TABS: { label: string; value: FilterType }[] = [
 const TABLE_HEAD = ["Activity", "Analyzed?", "Date", "Cycle", ""];
 
 export default function Activities() {
-  let { id: individualId } = useParams();
+  const { id: individualId } = useParams();
   if (individualId == null) throw new Error("id is null");
 
   const [filter, setFilter] = useState<FilterType>("all");

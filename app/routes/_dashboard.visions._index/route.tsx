@@ -56,7 +56,7 @@ const ORG_TABLE_HEAD_ORGANIZATIONAL = [
 ];
 
 export default function Visions() {
-  let { id: individualId } = useParams();
+  const { id: individualId } = useParams();
 
   const [filter, setFilter] = useState<FilterType>("all");
 

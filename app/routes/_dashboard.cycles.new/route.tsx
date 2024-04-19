@@ -16,7 +16,7 @@ export default function CycleCreate() {
   const [createMethod] = useCreateCycleMutation();
   const nav = useNavigate();
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     createMethod({
       variables: {
         input: {

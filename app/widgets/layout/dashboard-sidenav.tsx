@@ -7,7 +7,6 @@ import { useNavigate } from "@remix-run/react";
 import { useSettingsContext } from "~/contexts/settings/settingsContext";
 
 export function Sidenav({
-  brandImg,
   brandName,
   routes,
 }: {
@@ -50,7 +49,7 @@ export function Sidenav({
         </Link>
       </div>
       <div className="m-4">
-        {routes.map(({ layout, title, pages }, key) => (
+        {routes.map(({ title, pages }, key) => (
           <ul key={key} className="mb-4 flex flex-col gap-1">
             {title && (
               <li className="mx-3.5 mb-2 mt-4">

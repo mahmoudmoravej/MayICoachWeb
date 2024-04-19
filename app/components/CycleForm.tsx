@@ -96,7 +96,7 @@ export function CycleForm<T extends CycleFormData>({
             <Card className="mt-6 w-96">
               <CardBody>
                 <Typography variant="h5" color="blue-gray" className="mb-2">
-                  Cycle's Activities
+                  Cycle&apos;s Activities
                 </Typography>
                 <Typography>
                   If you have changed the dates of this cycle or it is a new
@@ -115,7 +115,7 @@ export function CycleForm<T extends CycleFormData>({
             <Card className="mt-6 w-96">
               <CardBody>
                 <Typography variant="h5" color="blue-gray" className="mb-2">
-                  Cycle's Visions
+                  Cycle&apos;s Visions
                 </Typography>
                 <Typography>
                   See all the goals, intended outcomes, job descriptions,

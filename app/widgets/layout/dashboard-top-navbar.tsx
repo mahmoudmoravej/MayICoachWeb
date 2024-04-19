@@ -172,7 +172,7 @@ export function DashboardTopNavbar() {
               </MenuItem>
             </MenuList>
           </Menu> */}
-          <IconButton variant="text" color="blue-gray" onClick={() => {}}>
+          <IconButton variant="text" color="blue-gray" onClick={() => null}>
             <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
           </IconButton>
         </div>

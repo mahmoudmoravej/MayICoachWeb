@@ -31,7 +31,7 @@ export default function IndividualCoach() {
   );
   const user = useUser();
 
-  let id = idParam == "me" ? user.individual_id.toString() : idParam;
+  const id = idParam == "me" ? user.individual_id.toString() : idParam;
 
   const { data, loading, error } = useCoachIndividualQuery({
     variables: { id: id },

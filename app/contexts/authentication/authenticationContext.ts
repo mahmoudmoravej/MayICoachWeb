@@ -10,7 +10,7 @@ type AuthenticationContextProps = {
 export const AuthenticationContext =
   React.createContext<AuthenticationContextProps>({
     user: null,
-    setUser: () => {},
+    setUser: () => null,
     isAuthenticated: false,
   });
 

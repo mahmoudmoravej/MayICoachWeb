@@ -50,7 +50,7 @@ export default function IndividualEdit() {
       fullname: m?.fullname,
     }));
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     updateMethod({
       variables: {
         input: {

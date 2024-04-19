@@ -54,7 +54,7 @@ export default function VisionEdit() {
     to: new Date(cycle.to),
   }));
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     updateMethod({
       variables: {
         input: {
@@ -101,11 +101,11 @@ function getEditData(
     | null
     | undefined,
 ): VisionEditFormData | null {
-  if (!data) {
+  if (!data || !data.vision) {
     return null;
   }
 
-  const { visionType: _, individual: __, ...visionData } = data?.vision;
+  const { visionType: _, individual: __, ...visionData } = data.vision;
   return getPureObject(visionData);
 }
 

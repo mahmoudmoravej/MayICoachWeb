@@ -34,7 +34,7 @@ export function GenerateCycleSummaryButton({
     onSaving?.(isSaving, generatedAdvice);
   };
 
-  var onGenerateCycleSummary = function () {
+  const onGenerateCycleSummary = function () {
     changeIsSaving(true);
     generateCycleAdviceMethod({
       variables: {
