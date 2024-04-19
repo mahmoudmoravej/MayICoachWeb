@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
-import { Typography, IconButton } from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Typography, IconButton } = material;
 
 const year = new Date().getFullYear();
 

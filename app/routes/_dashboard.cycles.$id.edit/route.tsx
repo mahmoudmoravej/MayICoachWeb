@@ -1,6 +1,8 @@
 import { useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Card, Typography } = material;
 
 import {
   CycleUpdate,
@@ -9,6 +11,7 @@ import {
   useFindCycleQuery,
   useUpdateCycleMutation,
 } from "@app-types/graphql";
+
 import { CycleForm, CycleFormData } from "~/components/CycleForm";
 import { getPureObject } from "~/utils";
 

@@ -3,7 +3,9 @@ import {
   useGenerateCycleAdviceMutation,
 } from "@app-types/graphql";
 import { LightBulbIcon } from "@heroicons/react/24/outline";
-import { Spinner, Button } from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Spinner, Button } = material;
 
 import { useState } from "react";
 

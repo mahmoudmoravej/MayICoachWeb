@@ -1,5 +1,7 @@
 import { Form, Link } from "@remix-run/react";
-import {
+
+import { default as material } from "@material-tailwind/react";
+const {
   Input,
   Button,
   Typography,
@@ -9,7 +11,7 @@ import {
   Card,
   CardBody,
   CardFooter,
-} from "@material-tailwind/react";
+} = material;
 
 import { IndividualUpdate } from "@app-types/graphql";
 import { useUser } from "~/contexts";

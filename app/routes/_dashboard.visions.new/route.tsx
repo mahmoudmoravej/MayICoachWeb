@@ -1,12 +1,14 @@
 import { useNavigate, useParams } from "@remix-run/react";
 import { useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+import { default as material } from "@material-tailwind/react";
 import {
   useCreateVisionMutation,
   useGetVisionTypesAndCyclesQuery,
 } from "@app-types/graphql";
 import { VisionForm, VisionFormData } from "~/components/VisionForm";
 import { noNull } from "~/utils";
+
+const { Card, Typography } = material;
 
 type VisionCreateFormData = VisionFormData;
 

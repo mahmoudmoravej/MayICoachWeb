@@ -1,6 +1,8 @@
 import { useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Card, Typography } = material;
 
 import {
   FindIndividualQuery,

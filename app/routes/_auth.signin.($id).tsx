@@ -1,5 +1,8 @@
 import { Form, useLoaderData } from "@remix-run/react";
-import { Alert, Button, Typography } from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Alert, Button, Typography } = material;
+
 import { Link } from "react-router-dom";
 
 import { LoaderFunctionArgs, json } from "@remix-run/node";

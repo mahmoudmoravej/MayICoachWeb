@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
-import { Button, Typography } from "@material-tailwind/react";
+import { default as material } from "@material-tailwind/react";
+const { Button, Typography } = material;
 
 import { RouteData } from "~/routesData";
 import { useNavigate } from "@remix-run/react";

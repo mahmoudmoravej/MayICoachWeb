@@ -1,13 +1,8 @@
 import { Form, Link } from "@remix-run/react";
-import {
-  Input,
-  Button,
-  Typography,
-  Card,
-  CardBody,
-  CardFooter,
-  Textarea,
-} from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Input, Button, Typography, Card, CardBody, CardFooter, Textarea } =
+  material;
 
 import { CycleUpdate } from "@app-types/graphql";
 import DatePickerInput from "./DatePickerInput";

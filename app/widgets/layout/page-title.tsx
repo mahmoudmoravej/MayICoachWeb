@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
-import { Typography } from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Typography } = material;
 
 export function PageTitle({
   section,

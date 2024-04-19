@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
-import { Navbar, Button, IconButton, Input } from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Navbar, Button, IconButton, Input } = material;
 import {
   UserCircleIcon,
   Cog6ToothIcon,
   Bars3Icon,
 } from "@heroicons/react/24/solid";
 import { signOutClient } from "~/utils";
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client/index.js";
 import { useSettingsContext } from "~/contexts";
 
 export function DashboardTopNavbar() {

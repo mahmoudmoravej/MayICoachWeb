@@ -1,5 +1,7 @@
 import React from "react";
-import {
+
+import { default as material } from "@material-tailwind/react";
+const {
   Card,
   CardBody,
   CardHeader,
@@ -9,7 +11,8 @@ import {
   Input,
   Textarea,
   Checkbox,
-} from "@material-tailwind/react";
+} = material;
+
 import { FingerPrintIcon } from "@heroicons/react/24/solid";
 import { PageTitle, FirstPageFooter as Footer } from "~/widgets/layout";
 import { FeatureCard, TeamCard } from "~/widgets/cards";

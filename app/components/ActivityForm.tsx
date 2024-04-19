@@ -1,5 +1,8 @@
 import { Form } from "@remix-run/react";
-import { Button, Typography, Textarea } from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Button, Typography, Textarea } = material;
+
 import { BoltIcon } from "@heroicons/react/24/solid";
 
 import { ActivityUpdate } from "@app-types/graphql";

@@ -1,13 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import {
-  Navbar as MTNavbar,
-  Typography,
-  Button,
-  IconButton,
-  Collapse,
-} from "@material-tailwind/react";
+
+import { default as material } from "@material-tailwind/react";
+const { Navbar: MTNavbar, Typography, Button, IconButton, Collapse } = material;
+
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { siteRouteType } from "~/routesData";
 

@@ -3,7 +3,9 @@ import {
   ArrowTopRightOnSquareIcon,
   DocumentChartBarIcon,
 } from "@heroicons/react/24/solid";
-import {
+import { default as material } from "@material-tailwind/react";
+
+const {
   Card,
   CardHeader,
   Typography,
@@ -19,7 +21,8 @@ import {
   TabsHeader,
   Select,
   Option,
-} from "@material-tailwind/react";
+} = material;
+
 import { Link, useParams, useLocation, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { FetchContentButton } from "./components";

@@ -1,5 +1,7 @@
 import { Link, useParams } from "@remix-run/react";
-import {
+
+import { default as material } from "@material-tailwind/react";
+const {
   Accordion,
   AccordionBody,
   AccordionHeader,
@@ -8,7 +10,7 @@ import {
   Spinner,
   Tooltip,
   Typography,
-} from "@material-tailwind/react";
+} = material;
 
 import {
   AdviceFragmentFragment,
