@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 
-import { default as material } from "@material-tailwind/react";
-const { Typography } = material;
+import { Typography } from "@mui/material";
 
 export function PageTitle({
   section,
@@ -14,13 +13,13 @@ export function PageTitle({
 }) {
   return (
     <div className="mx-auto w-full px-4 text-center lg:w-6/12">
-      <Typography variant="lead" className="font-semibold">
+      <Typography variant="caption" className="font-semibold">
         {section}
       </Typography>
       <Typography variant="h2" color="blue-gray" className="my-3">
         {heading}
       </Typography>
-      <Typography variant="lead" className="text-blue-gray-500">
+      <Typography variant="caption" className="text-blue-gray-500">
         {children}
       </Typography>
     </div>

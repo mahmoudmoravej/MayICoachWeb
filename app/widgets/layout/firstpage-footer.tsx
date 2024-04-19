@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 
-import { default as material } from "@material-tailwind/react";
-const { Typography, IconButton } = material;
+import { Typography, IconButton } from "@mui/material";
 
 const year = new Date().getFullYear();
 
@@ -37,10 +36,7 @@ export function FirstPageFooter({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <IconButton
-                    color="white"
-                    className="rounded-full bg-transparent shadow-none"
-                  >
+                  <IconButton className="rounded-full bg-transparent shadow-none">
                     <Typography color={color}>
                       <i className={`fa-brands fa-${name}`} />
                     </Typography>
@@ -53,7 +49,7 @@ export function FirstPageFooter({
             {menus.map(({ name, items }) => (
               <div key={name}>
                 <Typography
-                  variant="small"
+                  variant="body2"
                   color="blue-gray"
                   className="mb-2 block font-medium uppercase"
                 >
@@ -63,11 +59,8 @@ export function FirstPageFooter({
                   {items.map((item) => (
                     <li key={item.name}>
                       <Typography
-                        as="a"
-                        href={item.path}
-                        target="_blank"
                         rel="noreferrer"
-                        variant="small"
+                        variant="body2"
                         className="mb-2 block font-normal text-blue-gray-500 hover:text-blue-gray-700"
                       >
                         {item.name}
@@ -83,7 +76,7 @@ export function FirstPageFooter({
         <div className="flex flex-wrap items-center justify-center md:justify-between">
           <div className="mx-auto w-full px-4 text-center">
             <Typography
-              variant="small"
+              variant="body2"
               className="font-normal text-blue-gray-500"
             >
               {copyright}

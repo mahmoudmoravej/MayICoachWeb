@@ -2,8 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-import { default as material } from "@material-tailwind/react";
-const { Navbar: MTNavbar, Typography, Button, IconButton, Collapse } = material;
+import {
+  AppBar,
+  Typography,
+  Button,
+  IconButton,
+  Collapse,
+} from "@mui/material";
 
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { siteRouteType } from "~/routesData";
@@ -29,13 +34,7 @@ export function SiteNavbar({
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       {routes.map(({ name, path, icon, href, target }) => (
-        <Typography
-          key={name}
-          as="li"
-          variant="small"
-          color="inherit"
-          className="capitalize"
-        >
+        <Typography key={name} variant="body2" className="capitalize">
           {href ? (
             <a
               href={href}
@@ -67,7 +66,7 @@ export function SiteNavbar({
   );
 
   return (
-    <MTNavbar color="transparent" className="p-3">
+    <AppBar color="transparent" className="p-3">
       <div className="container mx-auto flex items-center justify-between text-white">
         <Link to="/">
           <Typography className="ml-2 mr-4 cursor-pointer py-1.5 font-bold">
@@ -81,9 +80,7 @@ export function SiteNavbar({
           })}
         </div>
         <IconButton
-          variant="text"
-          size="sm"
-          color="white"
+          size="small"
           className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
           onClick={() => setOpenNav(!openNav)}
         >
@@ -94,10 +91,7 @@ export function SiteNavbar({
           )}
         </IconButton>
       </div>
-      <Collapse
-        className="rounded-xl bg-white text-blue-gray-900"
-        open={openNav}
-      >
+      <Collapse className="rounded-xl bg-white text-blue-gray-900" in={openNav}>
         <div className="mx-aut container  px-4 pb-4 pt-2">
           {navList}
           <a
@@ -106,7 +100,7 @@ export function SiteNavbar({
             className="mb-2 block"
             rel="noreferrer"
           >
-            <Button variant="text" size="sm" fullWidth>
+            <Button variant="text" size="small" fullWidth>
               pro version
             </Button>
           </a>
@@ -115,7 +109,7 @@ export function SiteNavbar({
           })}
         </div>
       </Collapse>
-    </MTNavbar>
+    </AppBar>
   );
 }
 
@@ -123,7 +117,7 @@ SiteNavbar.defaultProps = {
   brandName: "mAy I Coach",
   action: (
     <a href="/" target="_blank" rel="noreferrer">
-      <Button variant="gradient" size="sm" fullWidth>
+      <Button variant="text" size="small" fullWidth>
         free 30 days trial!
       </Button>
     </a>

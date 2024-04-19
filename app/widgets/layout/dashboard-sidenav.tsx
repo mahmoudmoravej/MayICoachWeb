@@ -1,7 +1,14 @@
 import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
-import { default as material } from "@material-tailwind/react";
-const { Button, Typography } = material;
+
+import {
+  ListItem,
+  Typography,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 
 import { RouteData } from "~/routesData";
 import { useNavigate } from "@remix-run/react";
@@ -51,47 +58,29 @@ export function Sidenav({
       </div>
       <div className="m-4">
         {routes.map(({ title, pages }, key) => (
-          <ul key={key} className="mb-4 flex flex-col gap-1">
+          <List key={key}>
             {title && (
-              <li className="mx-3.5 mb-2 mt-4">
+              <ListItem className="mx-3.5 mb-2 mt-4">
                 <Typography
-                  variant="small"
+                  variant="body2"
                   color={sidenavType === "dark" ? "white" : "blue-gray"}
                   className="font-black uppercase opacity-75"
                 >
                   {title}
                 </Typography>
-              </li>
+              </ListItem>
             )}
             {pages.map(({ icon, name, path }) => (
-              <li key={name}>
-                <NavLink to={path} end>
-                  {({ isActive }) => (
-                    <Button
-                      variant={isActive ? "gradient" : "text"}
-                      color={
-                        isActive
-                          ? sidenavColor
-                          : sidenavType === "dark"
-                            ? "white"
-                            : "blue-gray"
-                      }
-                      className="flex items-center gap-4 px-4 capitalize"
-                      fullWidth
-                    >
-                      {icon}
-                      <Typography
-                        color="inherit"
-                        className="font-medium capitalize"
-                      >
-                        {name}
-                      </Typography>
-                    </Button>
-                  )}
-                </NavLink>
-              </li>
+              <NavLink to={path} key={name}>
+                {({ isActive }) => (
+                  <ListItemButton key={name} selected={isActive}>
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText>{name}</ListItemText>
+                  </ListItemButton>
+                )}
+              </NavLink>
             ))}
-          </ul>
+          </List>
         ))}
       </div>
     </aside>
