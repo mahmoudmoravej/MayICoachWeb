@@ -71,9 +71,9 @@ export function Sidenav({
               </ListItem>
             )}
             {pages.map(({ icon, name, path }) => (
-              <NavLink to={path} key={name}>
+              <NavLink to={path} key={name} end>
                 {({ isActive }) => (
-                  <ListItemButton key={name} selected={isActive}>
+                  <ListItemButton selected={isActive} href="">
                     <ListItemIcon>{icon}</ListItemIcon>
                     <ListItemText>{name}</ListItemText>
                   </ListItemButton>

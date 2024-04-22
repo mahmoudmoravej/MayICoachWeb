@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
 
-import { default as material } from "@material-tailwind/react";
+import material from "@material-tailwind/react";
 const { Card, CardBody, Typography, IconButton } = material;
+
+console.log("!!!", Card);
 
 export function FeatureCard({
   color,

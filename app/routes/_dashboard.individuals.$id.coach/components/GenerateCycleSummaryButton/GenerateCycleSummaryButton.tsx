@@ -4,8 +4,7 @@ import {
 } from "@app-types/graphql";
 import { LightBulbIcon } from "@heroicons/react/24/outline";
 
-import { default as material } from "@material-tailwind/react";
-const { Spinner, Button } = material;
+import { CircularProgress, Button } from "@mui/material";
 
 import { useState } from "react";
 
@@ -56,13 +55,12 @@ export function GenerateCycleSummaryButton({
 
   return (
     <Button
-      size="sm"
-      variant="gradient"
+      size="small"
       className="float-right flex items-center gap-2"
       onClick={onGenerateCycleSummary}
     >
       {isSaving ? (
-        <Spinner className="h-4 w-4" />
+        <CircularProgress className="h-4 w-4" />
       ) : (
         <>
           <LightBulbIcon className="h-5 w-5 text-inherit" />
