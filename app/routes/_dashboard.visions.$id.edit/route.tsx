@@ -1,6 +1,8 @@
 import { useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+
+import * as material from "@material-tailwind/react";
+const { Card, Typography } = material;
 
 import {
   FindVisionQuery,
@@ -54,7 +56,7 @@ export default function VisionEdit() {
     to: new Date(cycle.to),
   }));
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     updateMethod({
       variables: {
         input: {
@@ -101,11 +103,11 @@ function getEditData(
     | null
     | undefined,
 ): VisionEditFormData | null {
-  if (!data) {
+  if (!data || !data.vision) {
     return null;
   }
 
-  const { visionType: _, individual: __, ...visionData } = data?.vision;
+  const { visionType: _, individual: __, ...visionData } = data.vision;
   return getPureObject(visionData);
 }
 

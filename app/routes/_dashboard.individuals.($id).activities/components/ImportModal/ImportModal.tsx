@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Spinner,
-} from "@material-tailwind/react";
+  CircularProgress,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import { useImportActivitiesMutation } from "@app-types/graphql";
 
 export interface ImportModalProps {
@@ -46,14 +46,9 @@ export function ImportModal({
 
   return (
     <>
-      <Dialog
-        open={open}
-        handler={handleClose}
-        size="md"
-        dismiss={{ enabled: false }}
-      >
-        <DialogHeader>Import Activities</DialogHeader>
-        <DialogBody className="gap-4">
+      <Dialog open={open} onClose={handleClose} maxWidth="md">
+        <DialogTitle>Import Activities</DialogTitle>
+        <DialogContent className="gap-4">
           Activities are getting imported every 5 minutes. But, if you want to
           sync them manually, you can do it here. This will try to import the
           following activities:
@@ -65,29 +60,29 @@ export function ImportModal({
             <li>Recorded meetings from Google Meet</li>
             <li>etc...</li>
           </ul>
-        </DialogBody>
-        <DialogFooter>
+        </DialogContent>
+        <DialogActions>
           <Button
-            variant="text"
-            color="red"
+            variant="contained"
+            color="error"
             onClick={() => handleClose(false)}
             className="mr-1"
           >
             <span>Cancel</span>
           </Button>
           <Button
-            variant="gradient"
-            color="green"
+            variant="contained"
+            color="error"
             onClick={handleImport}
             disabled={importing}
           >
             {importing ? (
-              <Spinner className="h-4 w-4"></Spinner>
+              <CircularProgress className="h-4 w-4"></CircularProgress>
             ) : (
               <span>Import</span>
             )}
           </Button>
-        </DialogFooter>
+        </DialogActions>
       </Dialog>
     </>
   );

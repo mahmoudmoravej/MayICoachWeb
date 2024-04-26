@@ -1,6 +1,9 @@
 import { useNavigate, useParams } from "@remix-run/react";
 import { useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+
+import * as material from "@material-tailwind/react";
+const { Card, Typography } = material;
+
 import {
   useCreateIndividualMutation,
   useGetManagersQuery,
@@ -40,7 +43,7 @@ export default function IndividualCreate() {
     fullname: manager.fullname,
   }));
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     createMethod({
       variables: {
         input: {

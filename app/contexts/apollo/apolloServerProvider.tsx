@@ -1,8 +1,8 @@
 import {
   ApolloClient,
-  ApolloProvider,
   NormalizedCacheObject,
-} from "@apollo/client";
+  ApolloProvider,
+} from "@apollo/client/index.js";
 
 export const ApolloServerProvider = ({
   client,

@@ -1,5 +1,7 @@
 import React from "react";
-import {
+
+import * as material from "@material-tailwind/react";
+const {
   Card,
   CardBody,
   CardHeader,
@@ -9,7 +11,8 @@ import {
   Input,
   Textarea,
   Checkbox,
-} from "@material-tailwind/react";
+} = material;
+
 import { FingerPrintIcon } from "@heroicons/react/24/solid";
 import { PageTitle, FirstPageFooter as Footer } from "~/widgets/layout";
 import { FeatureCard, TeamCard } from "~/widgets/cards";
@@ -74,14 +77,14 @@ export function Home() {
                 Working with us is a pleasure
               </Typography>
               <Typography className="mb-8 font-normal text-blue-gray-500">
-                Don't let your uses guess by attaching tooltips and popoves to
-                any element. Just make sure you enable them first via
+                Don&apos;t let your uses guess by attaching tooltips and popoves
+                to any element. Just make sure you enable them first via
                 JavaScript.
                 <br />
                 <br />
                 The kit comes with three pre-built pages to help you get started
-                faster. You can change the text and images and you're good to
-                go. Just make sure you enable them first via JavaScript.
+                faster. You can change the text and images and you&apos;re good
+                to go. Just make sure you enable them first via JavaScript.
               </Typography>
               <Button variant="filled">read more</Button>
             </div>

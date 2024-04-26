@@ -1,12 +1,14 @@
 import { useNavigate, useParams } from "@remix-run/react";
 import { useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
 import {
   useCreateVisionMutation,
   useGetVisionTypesAndCyclesQuery,
 } from "@app-types/graphql";
 import { VisionForm, VisionFormData } from "~/components/VisionForm";
 import { noNull } from "~/utils";
+
+const { Card, Typography } = material;
 
 type VisionCreateFormData = VisionFormData;
 
@@ -50,7 +52,7 @@ export default function VisionCreate() {
     to: new Date(cycle.to),
   }));
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     const validityRange =
       vision.cycleId != null ? { validFrom: null, validTo: null } : {};
     createMethod({

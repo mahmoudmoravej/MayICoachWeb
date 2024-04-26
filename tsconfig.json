@@ -1,14 +1,22 @@
 {
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
-
+  "include": [
+    "env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/.server/**/*.ts",
+    "**/.server/**/*.tsx",
+    "**/.client/**/*.ts",
+    "**/.client/**/*.tsx"
+  ],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
-    "target": "ES2019",
+    "target": "ES2022",
     "strict": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,7 +26,7 @@
       "~/*": ["./app/*"]
     },
     "typeRoots": ["node_modules/@types", "./node_modules"],
-    "types": ["vitest/globals"],
+    "types": ["@remix-run/node", "vite/client", "vitest/globals"],
 
     "skipLibCheck": true, //becuase we have types in app/@types, we cannot exlude the node_modules folder. having this skip "*.d.ts" files.
     // Remix takes care of building everything in `remix build`.

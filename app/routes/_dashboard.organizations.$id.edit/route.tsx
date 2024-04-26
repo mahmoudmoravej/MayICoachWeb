@@ -1,6 +1,8 @@
 import { useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+
+import * as material from "@material-tailwind/react";
+const { Card, Typography } = material;
 
 import {
   FindOrganizationQuery,
@@ -42,7 +44,7 @@ export default function OrganizationEdit() {
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (!organization || !data) return <p>No data</p>;
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     updateMethod({
       variables: {
         input: {

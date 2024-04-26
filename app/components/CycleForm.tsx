@@ -1,13 +1,8 @@
 import { Form, Link } from "@remix-run/react";
-import {
-  Input,
-  Button,
-  Typography,
-  Card,
-  CardBody,
-  CardFooter,
-  Textarea,
-} from "@material-tailwind/react";
+
+import * as material from "@material-tailwind/react";
+const { Input, Button, Typography, Card, CardBody, CardFooter, Textarea } =
+  material;
 
 import { CycleUpdate } from "@app-types/graphql";
 import DatePickerInput from "./DatePickerInput";
@@ -96,7 +91,7 @@ export function CycleForm<T extends CycleFormData>({
             <Card className="mt-6 w-96">
               <CardBody>
                 <Typography variant="h5" color="blue-gray" className="mb-2">
-                  Cycle's Activities
+                  Cycle&apos;s Activities
                 </Typography>
                 <Typography>
                   If you have changed the dates of this cycle or it is a new
@@ -115,7 +110,7 @@ export function CycleForm<T extends CycleFormData>({
             <Card className="mt-6 w-96">
               <CardBody>
                 <Typography variant="h5" color="blue-gray" className="mb-2">
-                  Cycle's Visions
+                  Cycle&apos;s Visions
                 </Typography>
                 <Typography>
                   See all the goals, intended outcomes, job descriptions,

@@ -6,7 +6,8 @@ import {
   HomeIcon,
   SignalIcon,
 } from "@heroicons/react/24/solid";
-import {
+import * as material from "@material-tailwind/react";
+const {
   Card,
   CardHeader,
   Input,
@@ -22,7 +23,8 @@ import {
   IconButton,
   Tooltip,
   Spinner,
-} from "@material-tailwind/react";
+} = material;
+
 import { Link, useNavigate, useParams } from "@remix-run/react";
 import { useState } from "react";
 import { useUser } from "~/contexts";

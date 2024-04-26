@@ -2,15 +2,16 @@ import PropTypes from "prop-types";
 // import { Typography } from "@material-tailwind/react";
 // import { HeartIcon } from "@heroicons/react/24/solid";
 
-export function Footer({
-  brandName,
-  brandLink,
-  routes,
-}: {
-  brandName: string;
-  brandLink: string;
-  routes: { name: string; path: string }[];
-}) {
+// props: {
+//   brandName: string;
+//   brandLink: string;
+//   routes: {
+//     name: string;
+//     path: string;
+//   }
+//   [];
+// }
+export function Footer() {
   // const year = new Date().getFullYear();
 
   return (

@@ -7,7 +7,7 @@ import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { authenticator } from "~/services/auth.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let user = await authenticator.isAuthenticated(request);
+  const user = await authenticator.isAuthenticated(request);
   if (!user && request.url.indexOf("/signin") == -1) return redirect("/signin"); //TODO: any danger of infinite loop?
 
   return {};

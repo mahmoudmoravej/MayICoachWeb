@@ -12,7 +12,7 @@ export const AuthenticationServerProvider = ({
     <AuthenticationContext.Provider
       value={{
         user: user,
-        setUser: () => {},
+        setUser: () => null,
         isAuthenticated: user != null,
       }}
     >

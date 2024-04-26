@@ -1,6 +1,8 @@
 import { useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+
+import * as material from "@material-tailwind/react";
+const { Card, Typography } = material;
 
 import {
   FindActivityQuery,
@@ -44,7 +46,7 @@ export default function ActivityEdit() {
 
   const title = data.activity.title;
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     setIsSaving(true);
 
     updateMethod({
@@ -67,7 +69,7 @@ export default function ActivityEdit() {
     });
   };
 
-  var onAnalyzeAndSave = function () {
+  const onAnalyzeAndSave = function () {
     setIsSaving(true);
     analyzeActivityMethod({
       variables: {

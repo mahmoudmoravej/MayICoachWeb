@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
-import { Navbar, Button, IconButton, Input } from "@material-tailwind/react";
+
 import {
   UserCircleIcon,
   Cog6ToothIcon,
   Bars3Icon,
 } from "@heroicons/react/24/solid";
+import { AppBar, Button, IconButton, TextField } from "@mui/material";
 import { signOutClient } from "~/utils";
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client/index.js";
 import { useSettingsContext } from "~/contexts";
 
 export function DashboardTopNavbar() {
@@ -19,15 +20,16 @@ export function DashboardTopNavbar() {
   // page = page ? page : "";
 
   return (
-    <Navbar
-      color={fixedNavbar ? "white" : "transparent"}
-      className={`rounded-xl transition-all ${
+    <AppBar
+      position="sticky"
+      color="default"
+      className={` transition-all ${
         fixedNavbar
           ? "sticky top-4 z-40 py-3 shadow-md shadow-blue-gray-500/5"
           : "px-0 py-1"
       }`}
-      fullWidth
-      blurred={fixedNavbar}
+      // fullWidth
+      // blurred={fixedNavbar}
     >
       <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
         {
@@ -61,11 +63,10 @@ export function DashboardTopNavbar() {
         }
         <div className="flex items-center">
           <div className="mr-auto md:mr-4 md:w-56">
-            <Input label="Search" crossOrigin={undefined} />
+            {/* <TextField title="Search" size="small" /> */}
           </div>
           <IconButton
-            variant="text"
-            color="blue-gray"
+            color="default"
             className="grid xl:hidden"
             onClick={() => {
               setSideNavBarOpen(!sideNavBarOpen);
@@ -76,7 +77,6 @@ export function DashboardTopNavbar() {
           <Link to="/logout">
             <Button
               variant="text"
-              color="blue-gray"
               className="hidden items-center gap-1 px-4 normal-case xl:flex"
               onClick={() => {
                 // setAuthContextUser(undefined); it is not a good practice. It reloads the already loaded/cached pages with empty user data which raises errors in another render before the full redirect happens.
@@ -86,11 +86,7 @@ export function DashboardTopNavbar() {
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
               Sign out
             </Button>
-            <IconButton
-              variant="text"
-              color="blue-gray"
-              className="grid xl:hidden"
-            >
+            <IconButton className="grid xl:hidden">
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
           </Link>
@@ -172,11 +168,11 @@ export function DashboardTopNavbar() {
               </MenuItem>
             </MenuList>
           </Menu> */}
-          <IconButton variant="text" color="blue-gray" onClick={() => {}}>
+          <IconButton onClick={() => null}>
             <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
           </IconButton>
         </div>
       </div>
-    </Navbar>
+    </AppBar>
   );
 }

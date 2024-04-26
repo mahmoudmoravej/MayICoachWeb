@@ -1,6 +1,6 @@
 import { useAnalyzeActivityWithMinimumResultMutation } from "@app-types/graphql";
 import { BoltIcon } from "@heroicons/react/24/solid";
-import { Tooltip, IconButton, Spinner } from "@material-tailwind/react";
+import { Tooltip, IconButton, CircularProgress } from "@mui/material";
 import { useState } from "react";
 
 export function AnalyzeButton({
@@ -13,7 +13,7 @@ export function AnalyzeButton({
   const [isSaving, setIsSaving] = useState(false);
   const [analyzeActivityMethod] = useAnalyzeActivityWithMinimumResultMutation();
 
-  var onAnalyzeAndSave = function () {
+  const onAnalyzeAndSave = function () {
     setIsSaving(true);
     analyzeActivityMethod({
       variables: {
@@ -38,10 +38,10 @@ export function AnalyzeButton({
   return isAnalyzed ? (
     ""
   ) : (
-    <Tooltip content="Analyze with AI & Save!">
-      <IconButton variant="text" onClick={onAnalyzeAndSave}>
+    <Tooltip title="Analyze with AI & Save!">
+      <IconButton size="small" onClick={onAnalyzeAndSave}>
         {isSaving ? (
-          <Spinner className="h-4 w-4" />
+          <CircularProgress className="h-4 w-4" />
         ) : (
           <BoltIcon strokeWidth={2} className="h-4 w-4" />
         )}

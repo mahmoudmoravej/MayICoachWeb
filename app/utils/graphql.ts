@@ -1,4 +1,8 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  createHttpLink,
+} from "@apollo/client/index.js";
 
 //NOTE! This function will be called on both client and server side.
 export function getApolloClient(

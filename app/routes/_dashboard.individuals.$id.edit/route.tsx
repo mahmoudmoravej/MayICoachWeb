@@ -1,6 +1,8 @@
 import { useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+
+import * as material from "@material-tailwind/react";
+const { Card, Typography } = material;
 
 import {
   FindIndividualQuery,
@@ -50,7 +52,7 @@ export default function IndividualEdit() {
       fullname: m?.fullname,
     }));
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     updateMethod({
       variables: {
         input: {

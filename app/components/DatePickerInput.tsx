@@ -1,12 +1,9 @@
 // https://www.material-tailwind.com/docs/react/plugins/date-picker
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import {
-  Popover,
-  PopoverHandler,
-  Input,
-  PopoverContent,
-} from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
+const { Popover, PopoverHandler, Input, PopoverContent } = material;
+
 import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
 import { size } from "@material-tailwind/react/types/components/input";

@@ -1,13 +1,7 @@
 import { Form } from "@remix-run/react";
-import {
-  Input,
-  Button,
-  Typography,
-  Textarea,
-  Select,
-  Option,
-  Switch,
-} from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
+const { Input, Button, Typography, Textarea, Select, Option, Switch } =
+  material;
 
 import { VisionUpdate } from "@app-types/graphql";
 import DatePickerInput from "./DatePickerInput";

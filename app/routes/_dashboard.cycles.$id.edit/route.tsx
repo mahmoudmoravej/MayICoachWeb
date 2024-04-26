@@ -1,6 +1,8 @@
 import { useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
+
+import * as material from "@material-tailwind/react";
+const { Card, Typography } = material;
 
 import {
   CycleUpdate,
@@ -9,6 +11,7 @@ import {
   useFindCycleQuery,
   useUpdateCycleMutation,
 } from "@app-types/graphql";
+
 import { CycleForm, CycleFormData } from "~/components/CycleForm";
 import { getPureObject } from "~/utils";
 
@@ -37,7 +40,7 @@ export default function CycleEdit() {
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (!cycle || !data) return <p>No data</p>;
 
-  var onSubmit = function () {
+  const onSubmit = function () {
     updateMethod({
       variables: {
         input: {

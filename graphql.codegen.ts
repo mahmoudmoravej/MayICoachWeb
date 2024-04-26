@@ -15,10 +15,12 @@ const config: CodegenConfig = {
       plugins: [
         "typescript",
         "typescript-operations",
-        "typescript-react-apollo",
+        "typescript-react-apollo", //help on this plugin: https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-react-apollo
       ],
       config: {
         withHooks: true,
+        // useTypeImports: true,
+        // emitLegacyCommonJSImports: true,
       },
     },
   },

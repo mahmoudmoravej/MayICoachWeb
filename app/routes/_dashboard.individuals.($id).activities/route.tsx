@@ -8,18 +8,19 @@ import {
   CardHeader,
   Typography,
   Button,
-  CardBody,
+  CardContent,
   Chip,
-  CardFooter,
+  CardActions,
   IconButton,
   Tooltip,
-  Spinner,
+  CircularProgress,
   Tab,
   Tabs,
-  TabsHeader,
+  ListItem,
   Select,
-  Option,
-} from "@material-tailwind/react";
+  SelectChangeEvent,
+} from "@mui/material";
+
 import { Link, useParams, useLocation, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 
@@ -44,7 +45,7 @@ const TABS: { label: string; value: FilterType }[] = [
 const TABLE_HEAD = ["Activity", "Analyzed?", "Date", "Cycle", ""];
 
 export default function Activities() {
-  let { id: individualId } = useParams();
+  const { id: individualId } = useParams();
   if (individualId == null) throw new Error("id is null");
 
   const [filter, setFilter] = useState<FilterType>("all");
@@ -68,7 +69,7 @@ export default function Activities() {
 
   if (error) return <p>{JSON.stringify(error)}</p>;
   if (loading || data?.activities?.nodes == null)
-    return <Spinner className="w-full" />;
+    return <CircularProgress className="w-full" />;
 
   const pageTitle = `${data?.individual.fullname ?? ""}'s activities`;
 
@@ -104,8 +105,8 @@ export default function Activities() {
     />
   );
 
-  const handle_cycle_change = (value: string | undefined) => {
-    value = value ?? "0";
+  const handle_cycle_change = (event: SelectChangeEvent<string>) => {
+    const value = event.target.value ?? "0";
     setSelectedCycle(parseInt(value));
 
     if (value == "0") queryParams.delete("cycleid");
@@ -130,7 +131,7 @@ export default function Activities() {
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
               <Button
                 className="flex items-center gap-3"
-                size="sm"
+                size="small"
                 variant="outlined"
                 onClick={() => setImportDialogOpen(true)}
               >
@@ -142,7 +143,7 @@ export default function Activities() {
               </Button>
               <Button
                 className="flex items-center gap-3"
-                size="sm"
+                size="small"
                 variant="outlined"
               >
                 <ArrowDownOnSquareStackIcon
@@ -156,31 +157,28 @@ export default function Activities() {
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             {" "}
             <Tabs value={filter} className="w-full md:w-max">
-              <TabsHeader>
-                {TABS.map(({ label, value }) => (
-                  <Tab
-                    key={value}
-                    value={value}
-                    onClick={() => setFilter(value)}
-                  >
-                    &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                  </Tab>
-                ))}
-              </TabsHeader>
+              {TABS.map(({ label, value }) => (
+                <Tab
+                  key={value}
+                  value={value}
+                  onClick={() => setFilter(value)}
+                  label={label}
+                />
+              ))}
             </Tabs>
           </div>
         </CardHeader>
-        <CardBody className="overflow-scroll px-0">
+        <CardContent className="overflow-scroll px-0">
           <Select
-            size="lg"
-            variant="static"
+            size="small"
+            variant="filled"
             value={selectedCycle.toString()}
             onChange={handle_cycle_change}
           >
             {cycles?.map(({ id, title }) => (
-              <Option key={id} value={id?.toString()}>
+              <ListItem key={id} value={id?.toString()}>
                 {title}
-              </Option>
+              </ListItem>
             ))}
           </Select>
           <table className="mt-4 w-full min-w-max table-auto text-left">
@@ -192,7 +190,7 @@ export default function Activities() {
                     className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
                   >
                     <Typography
-                      variant="small"
+                      variant="body2"
                       color="blue-gray"
                       className="font-normal leading-none opacity-70"
                     >
@@ -252,7 +250,7 @@ export default function Activities() {
                               </Typography>
                             </Link>
                             <Typography
-                              variant="small"
+                              variant="body2"
                               className="font-normal italic"
                             >
                               {channelId == 1 ? "Contribution" : "Reviewed"}
@@ -263,17 +261,17 @@ export default function Activities() {
                       <td className={classes}>
                         <div className="w-max">
                           <Chip
-                            variant="ghost"
-                            size="sm"
-                            value={isAnalyzed ? "Yes" : "No"}
-                            color={isAnalyzed ? "green" : "blue-gray"}
+                            variant="outlined"
+                            size="small"
+                            label={isAnalyzed ? "Yes" : "No"}
+                            color={isAnalyzed ? "success" : "default"}
                           />
                         </div>
                       </td>
                       <td className={classes}>
                         <div className="flex flex-col">
                           <Typography
-                            variant="small"
+                            variant="body2"
                             color="blue-gray"
                             className="font-normal"
                           >
@@ -291,7 +289,7 @@ export default function Activities() {
                       <td className={classes}>
                         <div className="flex flex-col">
                           <Typography
-                            variant="small"
+                            variant="body2"
                             color="blue-gray"
                             className="font-normal"
                           >
@@ -301,9 +299,9 @@ export default function Activities() {
                       </td>
 
                       <td className={classes}>
-                        <Link to={url!} target="_blank" rel="noreferrer">
-                          <Tooltip content="Show PR">
-                            <IconButton variant="text">
+                        <Link to={url ?? ""} target="_blank" rel="noreferrer">
+                          <Tooltip title="Show PR">
+                            <IconButton size="small">
                               <ArrowTopRightOnSquareIcon className="h-4 w-4" />
                             </IconButton>
                           </Tooltip>
@@ -319,20 +317,20 @@ export default function Activities() {
               )}
             </tbody>
           </table>
-        </CardBody>
-        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-          <Typography variant="small" color="blue-gray" className="font-normal">
+        </CardContent>
+        <CardActions className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+          <Typography variant="body2" color="blue-gray" className="font-normal">
             Page 1 of 10
           </Typography>
           <div className="flex gap-2">
-            <Button variant="outlined" size="sm">
+            <Button variant="outlined" size="small">
               Previous
             </Button>
-            <Button variant="outlined" size="sm">
+            <Button variant="outlined" size="small">
               Next
             </Button>
           </div>
-        </CardFooter>
+        </CardActions>
       </Card>
     </>
   );
