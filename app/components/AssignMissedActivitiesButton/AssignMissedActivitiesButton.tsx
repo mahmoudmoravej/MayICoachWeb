@@ -1,7 +1,7 @@
 import { useAssignActivitiesMutation } from "@app-types/graphql";
 import { BoltIcon } from "@heroicons/react/24/solid";
 
-import { default as material } from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
 const { Tooltip, IconButton, Spinner, Button } = material;
 
 import { useState } from "react";

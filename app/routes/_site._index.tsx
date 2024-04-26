@@ -1,6 +1,6 @@
 import React from "react";
 
-import { default as material } from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
 const {
   Card,
   CardBody,

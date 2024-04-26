@@ -1,6 +1,6 @@
 import { useNavigate } from "@remix-run/react";
 import { useState } from "react";
-import { default as material } from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
 const { Card, Typography } = material;
 
 import { useCreateCycleMutation } from "@app-types/graphql";

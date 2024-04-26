@@ -1,5 +1,5 @@
 import { Form } from "@remix-run/react";
-import { default as material } from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
 const { Input, Button, Typography, Textarea, Select, Option, Switch } =
   material;
 

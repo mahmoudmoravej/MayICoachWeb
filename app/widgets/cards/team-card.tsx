@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import { default as material } from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
 const { Card, Avatar, Typography } = material;
 
 export function TeamCard({

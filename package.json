@@ -36,7 +36,8 @@
     "react-day-picker": "^8.10.0",
     "react-dom": "^18.2.0",
     "remix-auth": "^3.6.0",
-    "remix-auth-google": "^2.0.0"
+    "remix-auth-google": "^2.0.0",
+    "vite-plugin-cjs-interop": "^2.1.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",

@@ -1,6 +1,6 @@
 import { Form } from "@remix-run/react";
 
-import { default as material } from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
 const { Button, Typography, Textarea } = material;
 
 import { BoltIcon } from "@heroicons/react/24/solid";

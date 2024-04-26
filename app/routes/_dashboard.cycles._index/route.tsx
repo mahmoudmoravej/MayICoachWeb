@@ -2,7 +2,7 @@ import { useCyclesQuery } from "@app-types/graphql";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { UserPlusIcon } from "@heroicons/react/24/solid";
 
-import { default as material } from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
 const {
   Card,
   CardHeader,

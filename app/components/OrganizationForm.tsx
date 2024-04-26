@@ -1,6 +1,6 @@
 import { Form } from "@remix-run/react";
 
-import { default as material } from "@material-tailwind/react";
+import * as material from "@material-tailwind/react";
 const { Radio } = material;
 
 import { OrganizationUpdate } from "@app-types/graphql";
